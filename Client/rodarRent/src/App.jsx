@@ -1,5 +1,5 @@
 import React from 'react';
-import CarList from './componets/cars/cars';
+import CarList from './components/Cars/Cars';
 
 function App() {
   return (
