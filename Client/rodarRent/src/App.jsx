@@ -1,4 +1,3 @@
-import React from 'react';
 import CarList from './components/Cars/Cars';
 
 function App() {
