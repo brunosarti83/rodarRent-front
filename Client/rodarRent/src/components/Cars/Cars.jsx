@@ -32,25 +32,26 @@ const CarList = () => {
   const endIndex = startIndex + carsPerPage;
   const carsToShow = filteredCars.slice(startIndex, endIndex);
 
+ 
   return (
-    <div>
-      <div className="flex">
-        <div className="w-1/4 p-4">
-          <h1 className="text-xl font-bold mb-4">Filter By</h1>
-          <CarFilter carData={carData} onFilter={handleFilter} />
+    <div className="flex">
+      <div className="w-1/4 p-4" style={{ maxWidth: '295px', height: '827px' }}>
+        <h1 className="text-xl font-bold mb-4">Filter By</h1>
+        <CarFilter carData={carData} onFilter={handleFilter} />
+      </div>
+      <div className="flex flex-col items-end w-3/4 p-4 ml-auto" style={{ width: '1146px', height: '827px', overflowY: 'auto' }}>
+        <div className="grid grid-cols-3 gap-4">
+          {carsToShow.map((car) => (
+            <CarCard key={car.id} car={car} />
+          ))}
         </div>
-        <div className="w-3/4 p-4 grid grid-cols-3 gap-4">
-        {carsToShow.map((car) => (
-          <CarCard key={car.id} car={car} />
-        ))}
-      </div>
-      </div>
-      <div className="w-full px-4">
-        <Pagination 
-        carList={filteredCars} 
-        carsPerPage={carsPerPage}
-         onPageChange={onPageChange}
+        <div className="w-full mt-4">
+          <Pagination 
+            carList={filteredCars} 
+            carsPerPage={carsPerPage}
+            onPageChange={onPageChange}
           />
+        </div>
       </div>
     </div>
   );
