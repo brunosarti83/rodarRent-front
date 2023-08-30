@@ -1,12 +1,13 @@
+import CarList from './components/Cars/Cars';
+
 function App() {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
+    <div>
 
-    </>
-  )
+      <CarList />
+
+    </div>
+  );
 }
 
-export default App
+export default App;
