@@ -5,7 +5,18 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize:{
+        landing:'5rem'
+      },
+    },
+    fontFamily:{
+      poppins:["poppins","sans-serif"]
+    },
+
+    height:{
+      landing:'690px'
+    }
   },
   plugins: [],
 }

@@ -2,6 +2,7 @@ import {Route, Routes, useLocation} from 'react-router-dom'
 import routesHelper from './helpers/routes';
 import CarList from './components/Cars/Cars';
 import Nav from './components/Nav/Nav';
+import Landing from './views/Landing/Landing';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       {renderNav ? <Nav/> : null}
       <Routes>
         <Route path={routesHelper.cars} element={<CarList/>}/>
+        <Route path={routesHelper.landing} element={<Landing/>}/>
       </Routes>
     </div>
   );
