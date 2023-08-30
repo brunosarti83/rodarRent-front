@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import image from "../../assets/img/landingImage.png";
+import validate from "../Register/validateRegister";
 
 const Register = () => {
   const [userData, setUserData] = useState({
+    name: "",
+    lastName: "",
+    email: "",
+    address: "",
+    country: "",
+    city: "",
+    postalCode: "",
+    password: "",
+    repeatPass: "",
+  });
+  const [errors, setErrors] = useState({
     name: "",
     lastName: "",
     email: "",
@@ -17,11 +29,18 @@ const Register = () => {
   const handleChange = (event) => {
     const property = event.target.name;
     const value = event.target.value;
+    validate({ ...userData, [property]: value });
     setUserData({ ...userData, [property]: value });
+    setErrors(validate({ ...userData, [property]: value }));
   };
   const handleSubmit = (event) => {
-    event.preventDefault(); //EN EL EVENTO SUBMIT EVITA QUE SE RECARGUE LA PAGINA
-    alert("Exito");
+    event.preventDefault();
+    if (errors) {
+      alert("Data saved successfully");
+      //history.push("/home");
+    } else {
+      alert("There's been a problem!!");
+    }
   };
 
   return (
@@ -40,6 +59,9 @@ const Register = () => {
           value={userData.name}
           onChange={handleChange}
         />
+        <span className={errors.name ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.name}
+          </span>
         <label
           className="font-poppins flex m-1 justify-start"
           htmlFor="lastName"
@@ -53,6 +75,9 @@ const Register = () => {
           value={userData.lastName}
           onChange={handleChange}
         />
+        <span className={errors.lastName ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.lastName}
+          </span>
         <label className="font-poppins flex m-1 justify-start" htmlFor="email">
           E-mail
         </label>
@@ -63,6 +88,9 @@ const Register = () => {
           value={userData.email}
           onChange={handleChange}
         />
+        <span className={errors.email ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.email}
+          </span>
         <label
           className="font-poppins flex m-1 justify-start"
           htmlFor="address"
@@ -76,6 +104,9 @@ const Register = () => {
           value={userData.address}
           onChange={handleChange}
         />
+        <span className={errors.address ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.address}
+          </span>
         <label
           className="font-poppins flex m-1 justify-start"
           htmlFor="country"
@@ -89,6 +120,9 @@ const Register = () => {
           value={userData.country}
           onChange={handleChange}
         />
+        <span className={errors.country ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.country}
+          </span>
         <label className="font-poppins flex m-1 justify-start" htmlFor="city">
           City
         </label>
@@ -99,6 +133,9 @@ const Register = () => {
           value={userData.city}
           onChange={handleChange}
         />
+        <span className={errors.city ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.city}
+          </span>
         <label
           className="font-poppins flex m-1 justify-start"
           htmlFor="postalCode"
@@ -112,6 +149,9 @@ const Register = () => {
           value={userData.postalCode}
           onChange={handleChange}
         />
+        <span className={errors.postalCode ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.postalCode}
+          </span>
         <label
           className="font-poppins flex m-1 justify-start"
           htmlFor="password"
@@ -125,6 +165,9 @@ const Register = () => {
           value={userData.password}
           onChange={handleChange}
         />
+        <span className={errors.password ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.password}
+          </span>
         <label
           className="font-poppins flex m-1 justify-start"
           htmlFor="repeatPass"
@@ -138,6 +181,9 @@ const Register = () => {
           value={userData.repeatPass}
           onChange={handleChange}
         />
+        <span className={errors.repeatPass ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+            {errors.repeatPass}
+          </span>
         <div className="flex flex-col mt-4 mb-4">
           <button
             className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
@@ -168,7 +214,7 @@ const Register = () => {
         </div>
       </form>
 
-      <div className="z-10 flex flex-col flex-wrap w-1/2 items-center mt-60">
+      <div className="z-10 flex flex-col flex-wrap w-1/2 items-center mt-50">
         <img
           className="fixed w-4/5"
           src={image}
