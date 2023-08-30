@@ -26,11 +26,13 @@ function Landing() {
         { name: 'Subaru', src: subaru },
         { name: "Volkswagen", src: volkswagen }
     ]
-
+    
     return (
         <div>
             <div className='flex' >
-                <div className=' font-poppins pl-28 pt-10 w-2/5'>
+                <div data-aos="fade-right"
+                    data-aos-offset="300"
+                    data-aos-easing="ease-in-sine" data-aos-duration='1000' data-aos-delay='300' className='font-poppins pl-28 pt-10 w-2/5'>
                     <div className='text-landing font-extrabold' >
                         <h1>Premium</h1>
                         <h1>Car Rental</h1>
@@ -38,13 +40,17 @@ function Landing() {
                     </div>
                     <p>We offer professional car rental  in our range of high-end vehicles.</p>
                 </div>
-                <div className='relative w-3/5 h-landing overflow-x-hidden' >
+                <div data-aos="fade-left" data-aos-duration="2000" data-aos-delay="800" className='relative w-3/5 h-landing overflow-x-hidden' >
                     <img className='absolute scale-110 left-64' src={landingImage} alt="" />
                 </div>
             </div>
-            <div className='flex items-center justify-around p-5 h-28'>
-                {brandLogos.map((brand,index)=>(
-                    <div className=' w-36' key={index} >
+            <div data-aos="fade-zoom-in"
+                data-aos-easing="ease-in-back"
+                data-aos-duration="2000"
+                data-aos-delay="500"
+                data-aos-offset="0" className='flex items-center justify-around p-5 mt-7'>
+                {brandLogos.map((brand, index) => (
+                    <div className=' w-28' key={index} >
                         <img className='w-full' key={index} src={brand.src} alt={brand.name} />
                     </div>
                 ))}

@@ -9,14 +9,16 @@ export default {
       fontSize:{
         landing:'5rem'
       },
+      animation:{
+        
+      },
+      height:{
+        landing:'690px'
+      }
     },
     fontFamily:{
       poppins:["poppins","sans-serif"]
     },
-
-    height:{
-      landing:'690px'
-    }
   },
   plugins: [],
 }

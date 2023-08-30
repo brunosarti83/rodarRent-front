@@ -1,13 +1,19 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import routesHelper from "../../helpers/routes"
 import tireLogo from '../../assets/img/tireLogo.png'
 
 function Nav() {
+
+    const location = useLocation()
+    const isLanding = location.pathname !== '/'
+
     return (
         <header className="flex px-16 py-2 justify-between font-poppins" >
             <div className="flex items-center" >
                 <img className="w-16" src={tireLogo} alt="tire-logo" />
-                <h2 className=" text-2xl">RodarRent</h2>
+                <h2 className=" text-2xl">
+                    {isLanding ? <Link to={routesHelper.landing}>RodarRent</Link> :'RodarRent'}
+                </h2>
             </div>
             <nav className="flex items-center" >
                 <ul className="flex text-xl" >
