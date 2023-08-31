@@ -4,7 +4,8 @@ const routesHelper = {
     login: '/login',
     register: '/register',
     aboutUs: '/aboutUs',
-    contact: '/contact'
+    contact: '/contact',
+    detail: "./detail"
 }
 
 export default routesHelper
