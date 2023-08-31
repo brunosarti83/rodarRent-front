@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import image from "../../assets/img/landingImage.png";
+import { useState } from "react";
 import validate from "./validateLogin";
+import formImage from '../../assets/img/loginRegister/login.png'
 //import { useHistory } from "react-router-dom";
 
 const Login = () => {
@@ -44,16 +44,14 @@ const Login = () => {
   };
 
   return (
-    <div className="relative flex flex-row">
-      {isLoggedIn ? (
-        <h4>Welcome back!, {loginData.email}!</h4>
-      ) : (
-        <form className="z-20 backdrop-blur-sm p-12 flex flex-col flex-wrap w-1/2 rounded-xl">
-          <h1 className="font-poppins p-6 text-4xl">Welcome back!</h1>
-          <hr className="ml-8 mr-8 text-gray" />
-          <h6 className="font-poppins p-4 text-gray">
+    <div className="border w-full h-noNav flex items-center justify-center">
+      <div className="border rounded-l-3xl">
+        <form className="z-20 px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
+          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? user.email : ''}</h1>
+          <h6 className="font-poppins pb-6 text-gray">
             Please enter your details
           </h6>
+          <hr className="ml-8 mr-8 text-gray" />
           <label
             className="font-poppins flex m-1 justify-start"
             htmlFor="email"
@@ -61,7 +59,7 @@ const Login = () => {
             E-mail
           </label>
           <input
-            className="font-poppins text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-xl border border-gray"
+            className="font-poppins text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray"
             type="text"
             name="email"
             placeholder="Type your e-mail"
@@ -78,7 +76,7 @@ const Login = () => {
             Password
           </label>
           <input
-            className="font-poppins text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-xl border border-gray"
+            className="font-poppins text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray"
             type="password"
             name="password"
             placeholder="Type your password"
@@ -90,13 +88,13 @@ const Login = () => {
           </span>
           <div className="flex flex-col mt-4 mb-4">
             <button
-              className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+              className="font-poppins  bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
               onClick={handleLogin}
             >
               Sing In
             </button>
             <a
-              className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-xl border border-gray"
+              className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray transition duration-300 ease-in-out hover:drop-shadow-none "
               href="#"
             >
               <img
@@ -120,10 +118,15 @@ const Login = () => {
             </a>
           </div>
         </form>
-      )}
-
-      <div className="z-10 flex flex-col flex-wrap w-1/2 items-center justify-center">
-        <img className="fixed w-4/5" src={image} alt="No existe la imagen" />
+      </div>
+      <div className="  rounded-r-3xl bg-blue py-28">
+        <div className="text-4xl text-center font-semibold pb-6 text-white" >
+          <h1>One step closer to</h1>
+          <h1>your dream car!</h1>
+        </div>
+        <div className="w-100 h-auto" >
+          <img className="w-max " src={formImage} alt="side-login-car-image" />
+        </div>
       </div>
     </div>
   );

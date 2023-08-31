@@ -9,19 +9,21 @@ export default {
       fontSize:{
         landing:'5rem'
       },
-      animation:{
-        
-      },
       height:{
-        landing:'690px'
+        landing:'690px',
+        noNav:'91.5vh'
+      },
+      width:{
+        '100':'29rem'
+      },
+      colors:{
+        'blue':'#163C85',
       }
     },
     fontFamily:{
       poppins:["poppins","sans-serif"]
     },
-    colors:{
-      'blue':'#163C85',
-    }
+
   },
   plugins: [],
 }
