@@ -44,8 +44,8 @@ const Login = () => {
   };
 
   return (
-    <div className="border w-full h-noNav flex items-center justify-center">
-      <div className="border rounded-l-3xl">
+    <div className="w-full h-noNav bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
+      <div className="border rounded-l-3xl h-form">
         <form className="z-20 px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
           <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? user.email : ''}</h1>
           <h6 className="font-poppins pb-6 text-gray">
@@ -94,7 +94,7 @@ const Login = () => {
               Sing In
             </button>
             <a
-              className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray transition duration-300 ease-in-out hover:drop-shadow-none "
+              className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:text-black transition duration-300 ease-in-out hover:drop-shadow-none "
               href="#"
             >
               <img
@@ -119,7 +119,7 @@ const Login = () => {
           </div>
         </form>
       </div>
-      <div className="  rounded-r-3xl bg-blue py-28">
+      <div className=" h-form rounded-r-3xl bg-blue py-28">
         <div className="text-4xl text-center font-semibold pb-6 text-white" >
           <h1>One step closer to</h1>
           <h1>your dream car!</h1>
