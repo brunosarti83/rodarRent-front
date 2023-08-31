@@ -3,7 +3,7 @@ import routesHelper from "../../helpers/routes"
 import tireLogo from '../../assets/img/tireLogo.png'
 
 function Nav() {
-
+    
     const location = useLocation()
     const isLanding = location.pathname !== '/'
 

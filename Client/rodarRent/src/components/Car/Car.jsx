@@ -1,13 +1,14 @@
 
+
 const CarCard = ({ car }) => {
   return (
-    <div>
-      <img src={car.imageUrl} alt={`${car.brand} ${car.model}`} />
-      <h2>{`${car.brand} ${car.model}`}</h2>
-      <p>Transmission: {car.transmission}</p>
-      <p>Fuel Type: {car.fuelType}</p>
-      <p>Capacity: {car.capacity}</p>
-      <p>pricePerDay: {car.pricePerDay}</p>
+    <div className="border p-4">
+      <img src={car.imageUrl} alt={`${car.brand} ${car.model}`} className="mb-2" />
+      <h2 className="text-lg font-semibold">{`${car.brand} ${car.model}`}</h2>
+      <p className="text-sm">Transmission: {car.transmission}</p>
+      <p className="text-sm">Fuel Type: {car.fuelType}</p>
+      <p className="text-sm">Capacity: {car.capacity}</p>
+      <p className="text-sm">Price per Day: {car.pricePerDay}</p>
     </div>
   );
 };

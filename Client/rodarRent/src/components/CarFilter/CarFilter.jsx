@@ -27,27 +27,12 @@ const CarFilter = ({ carData, onFilter }) => {
   };
 
   return (
-    <div>
-      <div>
-        <label>Brand:</label>
-        <select value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
-          <option value="">All Brands</option>
-          {uniqueBrands.map((brand) => (
-            <option key={brand} value={brand}>{brand}</option>
-          ))}
-        </select>
+    <div style={{ padding: '1rem', borderRight: '1px solid #e2e8f0' }}>
+      <div style={{ marginBottom: '1rem' }}>
+        <h2 className="text-lg font-semibold mb-2">Filter By</h2>
       </div>
-      <div>
-        <label>Model:</label>
-        <select value={selectedModel} onChange={(e) => setSelectedModel(e.target.value)}>
-          <option value="">All Models</option>
-          {uniqueModels.map((model) => (
-            <option key={model} value={model}>{model}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label>Transmissions:</label>
+      <div style={{ marginBottom: '1rem' }}>
+        <h3 className="text-md font-semibold mb-2">Transmissions</h3>
         {uniqueTransmissions.map((transmission) => (
           <label key={transmission}>
             <input
@@ -66,8 +51,8 @@ const CarFilter = ({ carData, onFilter }) => {
           </label>
         ))}
       </div>
-      <div>
-        <label>Fuel Types:</label>
+      <div style={{ marginBottom: '1rem' }}>
+        <h3 className="text-md font-semibold mb-2">Fuel Types</h3>
         {uniqueFuelTypes.map((fuelType) => (
           <label key={fuelType}>
             <input
@@ -86,8 +71,8 @@ const CarFilter = ({ carData, onFilter }) => {
           </label>
         ))}
       </div>
-      <div>
-        <label>Capacities:</label>
+      <div style={{ marginBottom: '1rem' }}>
+        <h3 className="text-md font-semibold mb-2">Capacities</h3>
         {uniqueCapacities.map((capacity) => (
           <label key={capacity}>
             <input
@@ -106,8 +91,25 @@ const CarFilter = ({ carData, onFilter }) => {
           </label>
         ))}
       </div>
-      <div>
-        <label>Price Per Day:</label>
+      <div style={{ marginBottom: '1rem' }}>
+        <h3 className="text-md font-semibold mb-2">Brand</h3>
+        <select
+          className="border rounded p-2 w-full"
+          value={selectedBrand}
+          onChange={(e) => setSelectedBrand(e.target.value)}
+        >
+          <option value="">All Brands</option>
+          {uniqueBrands.map((brand) => (
+            <option key={brand} value={brand}>{brand}</option>
+          ))}
+        </select>
+      </div>
+      <div style={{ marginBottom: '1rem' }}>
+        <h3 className="text-md font-semibold mb-2">Model</h3>
+        {/* ... (model filter JSX) */}
+      </div>
+      <div style={{ marginBottom: '1rem' }}>
+        <h3 className="text-md font-semibold mb-2">Price Per Day</h3>
         <input
           type="range"
           min={0}
@@ -117,7 +119,14 @@ const CarFilter = ({ carData, onFilter }) => {
         />
         <span>${priceRange[0]} - ${priceRange[1]}</span>
       </div>
-      <button onClick={handleApplyFilter}>Apply Filter</button>
+      <div>
+        <button 
+          onClick={handleApplyFilter}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+        >
+          Apply Filter
+        </button>
+      </div>
     </div>
   );
 };
