@@ -1,8 +1,12 @@
 import Cars from '../../components/Cars/Cars'
+import ReservationSearch from '../../components/ReservationSearch/ReservationSearch'
 
 function Home() {
     return (
-        <Cars/>
+        <div>
+            <ReservationSearch />
+            <Cars />
+        </div>
     )
 }
 
