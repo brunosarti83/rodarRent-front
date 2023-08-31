@@ -6,19 +6,18 @@ export default {
   ],
   theme: {
     extend: {
-      height:{
-        landing:'700px'
-      },
-      lineHeight:{
-        landing:'120px'
-      },
       fontSize:{
-        landing:'4.7rem'
+        landing:'5rem'
+      },
+      animation:{
+        
+      },
+      height:{
+        landing:'690px'
       }
     },
     fontFamily:{
-      poppins:["Poppins", "sans-serif"],
-      home:['helvetica', 'sans serif']
+      poppins:["poppins","sans-serif"]
     },
     colors:{
       'blue':'#163C85',
