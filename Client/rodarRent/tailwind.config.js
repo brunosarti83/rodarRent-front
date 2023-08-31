@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode:'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -11,7 +12,8 @@ export default {
       },
       height:{
         landing:'690px',
-        noNav:'91.5vh'
+        noNav:'91.7vh',
+        form:'738px'
       },
       width:{
         '100':'29rem'
