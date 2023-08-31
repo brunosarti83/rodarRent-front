@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import image from "../../assets/img/landingImage.png";
 import validate from "../Register/validateRegister";
 
@@ -14,6 +14,7 @@ const Register = () => {
     password: "",
     repeatPass: "",
   });
+
   const [errors, setErrors] = useState({
     name: "",
     lastName: "",
@@ -33,6 +34,7 @@ const Register = () => {
     setUserData({ ...userData, [property]: value });
     setErrors(validate({ ...userData, [property]: value }));
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (errors) {
@@ -219,7 +221,6 @@ const Register = () => {
           className="fixed w-4/5"
           src={image}
           alt="No existe la imagen"
-          srcset=""
         />
       </div>
     </div>
