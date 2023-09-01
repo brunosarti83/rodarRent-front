@@ -1,4 +1,4 @@
-import Cars from '../../components/Cars/Cars'
+import Cars from '../../components/CarList/CarList'
 
 function Home() {
     return (
