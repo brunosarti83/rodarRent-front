@@ -8,15 +8,19 @@ export default {
   theme: {
     extend: {
       fontSize:{
-        landing:'5rem'
+        landingDesktop:'5.4rem',
+        landingLaptop:'4.4rem'
       },
       height:{
-        landing:'690px',
-        noNav:'91.7vh',
-        form:'738px'
+        landingDesktop:'770px',
+        landingLaptop:'560px',
+        noNavDesktop:'93.1vh',
+        noNavLaptop:'91.2vh',
+        form:'738px',
       },
       width:{
-        '100':'29rem'
+        '100':'29rem',
+        '120':'39rem'
       },
       colors:{
         'blue':'#163C85',
