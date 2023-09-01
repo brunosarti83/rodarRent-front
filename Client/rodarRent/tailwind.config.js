@@ -8,11 +8,14 @@ export default {
   theme: {
     extend: {
       fontSize:{
-        landing:'5rem'
+        landingDesktop:'5rem',
+        landingLaptop:'4.4rem'
       },
       height:{
-        landing:'690px',
-        noNav:'93.1vh',
+        landingDesktop:'690px',
+        landingLaptop:'560px',
+        noNavDesktop:'93.1vh',
+        noNavLaptop:'91.2vh',
         form:'738px'
       },
       width:{
