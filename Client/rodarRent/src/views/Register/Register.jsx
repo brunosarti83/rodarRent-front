@@ -1,5 +1,4 @@
 import { useState } from "react";
-import image from "../../assets/img/landingImage.png";
 import validate from "../Register/validateRegister";
 
 const Register = () => {
