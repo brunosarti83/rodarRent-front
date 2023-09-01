@@ -1,6 +1,8 @@
 import { useState } from "react";
 import validate from "./validateLogin";
 import formImage from '../../assets/img/loginRegister/login.png'
+import { Link } from "react-router-dom";
+import routesHelper from "../../helpers/routes";
 //import { useHistory } from "react-router-dom";
 
 const Login = () => {
@@ -44,9 +46,9 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-noNav bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
+    <div className="w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md bg-white rounded-l-3xl h-form  dark:bg-slate-900">
-        <form className="z-20 px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
+        <form className="px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
           <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? user.email : ''}</h1>
           <h6 className="font-poppins pb-6 text-gray">
             Please enter your details
@@ -59,7 +61,7 @@ const Login = () => {
             E-mail
           </label>
           <input
-            className="font-poppins text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray"
+            className="font-poppins text-black text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray"
             type="text"
             name="email"
             placeholder="Type your e-mail"
@@ -76,7 +78,7 @@ const Login = () => {
             Password
           </label>
           <input
-            className="font-poppins text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray"
+            className="font-poppins text-sm text-black flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray"
             type="password"
             name="password"
             placeholder="Type your password"
@@ -110,12 +112,13 @@ const Login = () => {
             <p className="font-poppins text-gray text-xs m-2">
               Don't have an account?
             </p>
-            <a
+            <p
               className="text-sm underline decoration-solid font-poppins"
-              href=""
             >
-              Sing up for free
-            </a>
+              <Link to={routesHelper.register}>
+                Sing up for free
+              </Link>
+            </p>
           </div>
         </form>
       </div>
