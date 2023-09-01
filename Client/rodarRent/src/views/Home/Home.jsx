@@ -1,5 +1,4 @@
-import Cars from '../../components/Cars/Cars'
-import ReservationSearch from '../../components/ReservationSearch/ReservationSearch'
+import Cars from '../../components/CarList/CarList'
 
 function Home() {
     return (
