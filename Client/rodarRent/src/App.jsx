@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import routesHelper from './helpers/routes';
 import Home from './views/Home/Home'
 import Nav from './components/Nav/Nav';
@@ -21,9 +21,12 @@ const toggleDarkMode = () =>{
   }
 }
 
+const location = useLocation()
+const renderNav = location.pathname === '/register' || location.pathname === '/login'
+
   return (
     <div>
-      <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      {renderNav ? null : <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode} /> }
       <Routes>
         <Route path={routesHelper.cars} element={<Home />} />
         <Route path={routesHelper.landing} element={<Landing />} />
