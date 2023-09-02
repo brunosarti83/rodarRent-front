@@ -2,7 +2,10 @@ import Cars from '../../components/CarList/CarList'
 
 function Home() {
     return (
-        <Cars/>
+        <div>
+            <ReservationSearch />
+            <Cars />
+        </div>
     )
 }
 
