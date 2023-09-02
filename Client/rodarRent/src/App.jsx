@@ -5,6 +5,7 @@ import Nav from './components/Nav/Nav';
 import Landing from './views/Landing/Landing';
 import Login from './views/Login/login';
 import Register from './views/Register/Register'
+import Detail from './views/Detail/Detail';
 import {useState} from 'react'
 
 function App() {
@@ -29,7 +30,8 @@ const toggleDarkMode = () =>{
         <Route path={routesHelper.landing} element={<Landing />} />
         <Route path={routesHelper.login} element={<Login />} />
         <Route path={routesHelper.register} element={<Register />} />
-      </Routes>
+        <Route path={routesHelper.detail} element={<Detail />} />
+    </Routes>
     </div>
   );
 }

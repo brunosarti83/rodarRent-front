@@ -5,7 +5,7 @@ const routesHelper = {
     register: '/register',
     aboutUs: '/aboutUs',
     contact: '/contact',
-    detail: "./detail"
+    detail: '/detail/:id'
 }
 
 export default routesHelper

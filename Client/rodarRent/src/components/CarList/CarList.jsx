@@ -14,8 +14,8 @@ const CarList = () => {
       const brandFilter = !filterOptions.brand || car.brand === filterOptions.brand;
       const modelFilter = !filterOptions.model || car.model === filterOptions.model;
       const transmissionFilter = filterOptions.transmissions.length === 0 || filterOptions.transmissions.includes(car.transmission);
-      const fuelTypeFilter = filterOptions.fuelTypes.length === 0 || filterOptions.fuelTypes.includes(car.fuelType);
-      const capacityFilter = filterOptions.capacities.length === 0 || filterOptions.capacities.includes(car.capacity);
+      const fuelTypeFilter = filterOptions.fuelTypes.length === 0 || filterOptions.fuelTypes.includes(car.fuel);
+      const capacityFilter = filterOptions.passengers.length === 0 || filterOptions.passengers.includes(car.capacity);
       const priceFilter = car.pricePerDay >= filterOptions.priceRange[0] && car.pricePerDay <= filterOptions.priceRange[1];
 
       return brandFilter && modelFilter && transmissionFilter && fuelTypeFilter && capacityFilter && priceFilter;
@@ -24,6 +24,7 @@ const CarList = () => {
     setFilteredCars(filteredResults);
     setCurrentPage(1);
   };
+
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -32,7 +33,6 @@ const CarList = () => {
   const endIndex = startIndex + carsPerPage;
   const carsToShow = filteredCars.slice(startIndex, endIndex);
 
- 
   return (
     <div className="flex">
       <div className="w-1/4 p-4" style={{ maxWidth: '295px', height: '827px' }}>
