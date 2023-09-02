@@ -3,7 +3,7 @@ import Cars from '../../components/CarList/CarList'
 function Home() {
     return (
         <div>
-            <ReservationSearch />
+            {/* <ReservationSearch /> */}
             <Cars />
         </div>
     )
