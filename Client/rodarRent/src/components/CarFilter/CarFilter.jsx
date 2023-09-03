@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CarFilter = ({ carData, onFilter }) => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedTransmissions, setSelectedTransmissions] = useState([]);
   const [selectedFuelTypes, setSelectedFuelTypes] = useState([]);
-  const [selectedPassengers, setSelectedPassengers] = useState([]); // Cambiado de 'selectedCapacities' a 'selectedPassengers'
-  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [selectedPassengers, setSelectedPassengers] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 300]);
 
   const uniqueBrands = Array.from(new Set(carData.map(car => car.brand)));
   const uniqueModels = Array.from(new Set(carData.map(car => car.model)));
   const uniqueTransmissions = Array.from(new Set(carData.map(car => car.transmission)));
   const uniqueFuelTypes = Array.from(new Set(carData.map(car => car.fuel)));
-  const uniquePassengers = Array.from(new Set(carData.map(car => car.passengers))); // Cambiado de 'capacities' a 'passengers'
+  const uniquePassengers = Array.from(new Set(carData.map(car => car.passengers)));
 
   const handleApplyFilter = () => {
     const filterOptions = {
@@ -20,11 +20,29 @@ const CarFilter = ({ carData, onFilter }) => {
       model: selectedModel,
       transmissions: selectedTransmissions,
       fuelTypes: selectedFuelTypes,
-      passengers: selectedPassengers, // Cambiado de 'capacities' a 'passengers'
+      passengers: selectedPassengers,
       priceRange: priceRange,
     };
     onFilter(filterOptions);
   };
+
+  const resetFilters = () => {
+    setSelectedBrand('');
+    setSelectedModel('');
+    setSelectedTransmissions([]);
+    setSelectedFuelTypes([]);
+    setSelectedPassengers([]);
+    setPriceRange([0, 300]);
+  };
+
+  useEffect(() => {
+    handleApplyFilter();
+  }, [selectedBrand,
+    selectedModel,
+    selectedTransmissions,
+    selectedFuelTypes,
+    selectedPassengers,
+    priceRange]);
 
   return (
     <div style={{ padding: '1rem', borderRight: '1px solid #e2e8f0' }}>
@@ -130,10 +148,10 @@ const CarFilter = ({ carData, onFilter }) => {
       </div>
       <div>
         <button
-          onClick={handleApplyFilter}
-          className="bg-blue-500 hover:bg-blue-700 font-semibold py-2 px-4 rounded"
+          onClick={resetFilters}
+          className="bg-gray-300 hover:bg-gray-400 font-semibold py-2 px-4 rounded"
         >
-          Apply Filter
+          Reset Filters
         </button>
       </div>
     </div>

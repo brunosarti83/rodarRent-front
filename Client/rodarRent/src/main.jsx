@@ -1,14 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import { Provider } from 'react-redux'
-import store from './redux/store.js'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App.jsx';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import 'aos/dist/aos.css'; // Importa los estilos CSS de AOS
 import AOS from 'aos';
-import './index.css'
+import './index.css';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk'; // Importa redux-thunk para manejar acciones asíncronas
+import rootReducer from './redux/rootReducer'; // Importa tu rootReducer
 
-AOS.init()
+AOS.init();
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -17,5 +21,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <App />
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

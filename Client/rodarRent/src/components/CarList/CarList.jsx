@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import CarCard from '../CarCard/CarCard';
 import CarFilter from '../CarFilter/CarFilter';
-import carData from '../../data';
 import Pagination from '../Pagination/Pagination';
+import { getVehicle } from '../../redux/actions';
 
-const CarList = () => {
-  const [filteredCars, setFilteredCars] = useState(carData);
+const CarList = ({ vehicles, getVehicle }) => {
+  useEffect(() => {
+    getVehicle();
+  }, [getVehicle]);
+
+  const [filteredCars, setFilteredCars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const carsPerPage = 6;
 
+  useEffect(() => {
+    setFilteredCars(vehicles); // Actualiza filteredCars cuando los vehículos de Redux cambian
+  }, [vehicles]);
+
   const handleFilter = (filterOptions) => {
-    const filteredResults = carData.filter(car => {
+    const filteredResults = vehicles.filter(car => {
       const brandFilter = !filterOptions.brand || car.brand === filterOptions.brand;
       const modelFilter = !filterOptions.model || car.model === filterOptions.model;
       const transmissionFilter = filterOptions.transmissions.length === 0 || filterOptions.transmissions.includes(car.transmission);
@@ -37,7 +46,7 @@ const CarList = () => {
     <div className="flex">
       <div className="w-1/4 p-4" style={{ maxWidth: '295px', height: '827px' }}>
         <h1 className="text-xl font-bold mb-4">Filter By</h1>
-        <CarFilter carData={carData} onFilter={handleFilter} />
+        <CarFilter carData={filteredCars} onFilter={handleFilter} />
       </div>
       <div className="flex flex-col items-end w-3/4 p-4 ml-auto" style={{ width: '1146px', height: '827px', overflowY: 'auto' }}>
         <div className="grid grid-cols-3 gap-4">
@@ -57,4 +66,16 @@ const CarList = () => {
   );
 };
 
-export default CarList;
+const mapStateToProps = (state) => {
+  return {
+    vehicles: state.vehicleReducer.vehicles, // Asegúrate de que la propiedad "vehicles" coincida con tu estado de Redux
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getVehicle: () => dispatch(getVehicle()), // Asegúrate de que la acción "getVehicle" esté definida en vehicleActions
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CarList);
