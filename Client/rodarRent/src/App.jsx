@@ -8,6 +8,8 @@ import Register from './views/Register/Register';
 import Detail from './views/Detail/Detail'
 import { useState } from 'react'
 import Booking from './views/Booking/Booking';
+import AboutUs from './views/AboutUs/AboutUs';
+import Contact from './views/Contact/Contact'
 
 function App() {
 
@@ -22,8 +24,7 @@ function App() {
       element.classList.remove('dark')
     }
   }
-
-
+  
   return (
     <div>
       <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
@@ -34,6 +35,8 @@ function App() {
         <Route path={routesHelper.register} element={<Register />} />
         <Route path={routesHelper.detail} element={<Detail/>}/>
         <Route path={routesHelper.booking} element={<Booking/>} />
+        <Route path={routesHelper.aboutUs} element={<AboutUs/>} />
+        <Route path={routesHelper.contact} element={<Contact/>} />
       </Routes>
     </div>
   );
