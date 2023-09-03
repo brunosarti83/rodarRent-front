@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CarFilter = ({ carData, onFilter }) => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedTransmissions, setSelectedTransmissions] = useState([]);
   const [selectedFuelTypes, setSelectedFuelTypes] = useState([]);
-  const [selectedCapacities, setSelectedCapacities] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 100]); 
+  const [selectedPassengers, setSelectedPassengers] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 300]);
 
   const uniqueBrands = Array.from(new Set(carData.map(car => car.brand)));
   const uniqueModels = Array.from(new Set(carData.map(car => car.model)));
   const uniqueTransmissions = Array.from(new Set(carData.map(car => car.transmission)));
-  const uniqueFuelTypes = Array.from(new Set(carData.map(car => car.fuelType)));
-  const uniqueCapacities = Array.from(new Set(carData.map(car => car.capacity)));
+  const uniqueFuelTypes = Array.from(new Set(carData.map(car => car.fuel)));
+  const uniquePassengers = Array.from(new Set(carData.map(car => car.passengers)));
 
   const handleApplyFilter = () => {
     const filterOptions = {
@@ -20,11 +20,29 @@ const CarFilter = ({ carData, onFilter }) => {
       model: selectedModel,
       transmissions: selectedTransmissions,
       fuelTypes: selectedFuelTypes,
-      capacities: selectedCapacities,
+      passengers: selectedPassengers,
       priceRange: priceRange,
     };
     onFilter(filterOptions);
   };
+
+  const resetFilters = () => {
+    setSelectedBrand('');
+    setSelectedModel('');
+    setSelectedTransmissions([]);
+    setSelectedFuelTypes([]);
+    setSelectedPassengers([]);
+    setPriceRange([0, 300]);
+  };
+
+  useEffect(() => {
+    handleApplyFilter();
+  }, [selectedBrand,
+    selectedModel,
+    selectedTransmissions,
+    selectedFuelTypes,
+    selectedPassengers,
+    priceRange]);
 
   return (
     <div style={{ padding: '1rem', borderRight: '1px solid #e2e8f0' }}>
@@ -39,11 +57,11 @@ const CarFilter = ({ carData, onFilter }) => {
               type="checkbox"
               value={transmission}
               checked={selectedTransmissions.includes(transmission)}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setSelectedTransmissions([...selectedTransmissions, transmission]);
+              onChange={() => {
+                if (selectedTransmissions.includes(transmission)) {
+                  setSelectedTransmissions(selectedTransmissions.filter((type) => type !== transmission));
                 } else {
-                  setSelectedTransmissions(selectedTransmissions.filter(t => t !== transmission));
+                  setSelectedTransmissions([...selectedTransmissions, transmission]);
                 }
               }}
             />
@@ -59,11 +77,11 @@ const CarFilter = ({ carData, onFilter }) => {
               type="checkbox"
               value={fuelType}
               checked={selectedFuelTypes.includes(fuelType)}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setSelectedFuelTypes([...selectedFuelTypes, fuelType]);
+              onChange={() => {
+                if (selectedFuelTypes.includes(fuelType)) {
+                  setSelectedFuelTypes(selectedFuelTypes.filter((type) => type !== fuelType));
                 } else {
-                  setSelectedFuelTypes(selectedFuelTypes.filter(t => t !== fuelType));
+                  setSelectedFuelTypes([...selectedFuelTypes, fuelType]);
                 }
               }}
             />
@@ -72,22 +90,22 @@ const CarFilter = ({ carData, onFilter }) => {
         ))}
       </div>
       <div style={{ marginBottom: '1rem' }}>
-        <h3 className="text-md font-semibold mb-2">Capacities</h3>
-        {uniqueCapacities.map((capacity) => (
-          <label key={capacity}>
+        <h3 className="text-md font-semibold mb-2">Passengers</h3>
+        {uniquePassengers.map((passengerCount) => (
+          <label key={passengerCount}>
             <input
               type="checkbox"
-              value={capacity}
-              checked={selectedCapacities.includes(capacity)}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setSelectedCapacities([...selectedCapacities, capacity]);
+              value={passengerCount}
+              checked={selectedPassengers.includes(passengerCount)}
+              onChange={() => {
+                if (selectedPassengers.includes(passengerCount)) {
+                  setSelectedPassengers(selectedPassengers.filter((count) => count !== passengerCount));
                 } else {
-                  setSelectedCapacities(selectedCapacities.filter(c => c !== capacity));
+                  setSelectedPassengers([...selectedPassengers, passengerCount]);
                 }
               }}
             />
-            {capacity}
+            {passengerCount}
           </label>
         ))}
       </div>
@@ -106,7 +124,16 @@ const CarFilter = ({ carData, onFilter }) => {
       </div>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Model</h3>
-        {/* ... (model filter JSX) */}
+        <select
+          className="border rounded p-2 w-full"
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)}
+        >
+          <option value="">All Models</option>
+          {uniqueModels.map((model) => (
+            <option key={model} value={model}>{model}</option>
+          ))}
+        </select>
       </div>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Price Per Day</h3>
@@ -114,17 +141,17 @@ const CarFilter = ({ carData, onFilter }) => {
           type="range"
           min={0}
           max={300}
-          value={priceRange[1]} 
+          value={priceRange[1]}
           onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
         />
         <span>${priceRange[0]} - ${priceRange[1]}</span>
       </div>
       <div>
-        <button 
-          onClick={handleApplyFilter}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+        <button
+          onClick={resetFilters}
+          className="bg-gray-300 hover:bg-gray-400 font-semibold py-2 px-4 rounded"
         >
-          Apply Filter
+          Reset Filters
         </button>
       </div>
     </div>
