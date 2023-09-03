@@ -6,19 +6,19 @@ const initialState = {
   error: null,
 };
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
+function reducer(state = initialState, {type,payload}) {
+  switch (type) {
     case GET_VEHICLE:
-      if (action.payload.error) {
+      if (payload.error) {
         return {
           ...state,
-          error: action.payload.error,
+          error:payload.error,
         };
       }
       return {
         ...state,
-        vehicles: action.payload,
-        aux: action.payload,
+        vehicles:payload,
+        aux:payload,
         error: null,
       };
     default:
