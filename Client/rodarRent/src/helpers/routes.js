@@ -5,7 +5,8 @@ const routesHelper = {
     register: '/register',
     aboutUs: '/aboutUs',
     contact: '/contact',
-    detail: '/detail/:id'
+    detail: "/cars/:id",
+    booking: '/booking'
 }
 
 export default routesHelper
