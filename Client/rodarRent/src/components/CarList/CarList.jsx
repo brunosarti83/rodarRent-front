@@ -1,13 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import CarCard from '../CarCard/CarCard';
+import Detail from '../../views/Detail/Detail';
 import CarFilter from '../CarFilter/CarFilter';
 import Pagination from '../Pagination/Pagination';
 import { getVehicle } from '../../redux/actions';
+import { Link } from 'react-router-dom';
+import Loader from '../Loader/Loader';
+
+const mapStateToProps = (state) => {
+  return {
+    vehicles: state.vehicleReducer.vehicles, 
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getVehicle: () => dispatch(getVehicle()), 
+  };
+};
+
 
 const CarList = ({ vehicles, getVehicle }) => {
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    getVehicle();
+    getVehicle().then(() => {
+      setLoading(false); 
+    });
   }, [getVehicle]);
 
   const [filteredCars, setFilteredCars] = useState([]);
@@ -15,7 +35,7 @@ const CarList = ({ vehicles, getVehicle }) => {
   const carsPerPage = 6;
 
   useEffect(() => {
-    setFilteredCars(vehicles); // Actualiza filteredCars cuando los vehículos de Redux cambian
+    setFilteredCars(vehicles);
   }, [vehicles]);
 
   const handleFilter = (filterOptions) => {
@@ -43,39 +63,36 @@ const CarList = ({ vehicles, getVehicle }) => {
   const carsToShow = filteredCars.slice(startIndex, endIndex);
 
   return (
-    <div className="flex">
-      <div className="w-1/4 p-4" style={{ maxWidth: '295px', height: '827px' }}>
-        <h1 className="text-xl font-bold mb-4">Filter By</h1>
-        <CarFilter carData={filteredCars} onFilter={handleFilter} />
-      </div>
-      <div className="flex flex-col items-end w-3/4 p-4 ml-auto" style={{ width: '1146px', height: '827px', overflowY: 'auto' }}>
-        <div className="grid grid-cols-3 gap-4">
-          {carsToShow.map((car) => (
-            <CarCard key={car.id} car={car} />
-          ))}
+    <div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="flex">
+          <div className="w-1/4 p-4" style={{ maxWidth: '295px', height: '827px' }}>
+            <h1 className="text-xl font-bold mb-4">Filter By</h1>
+            <CarFilter carData={filteredCars} onFilter={handleFilter} />
+          </div>
+          <div className="flex flex-col items-end w-3/4 p-4 ml-auto" style={{ width: '1146px', height: '827px', overflowY: 'auto' }}>
+            <div className="grid grid-cols-3 gap-4">
+              {carsToShow.map((car) => (
+                <Link to={`/car/${car.id}`} key={car.id}>
+                  <CarCard car={car} />
+                </Link>
+
+              ))}
+            </div>
+            <div className="w-full mt-4">
+              <Pagination
+                carList={filteredCars}
+                carsPerPage={carsPerPage}
+                onPageChange={onPageChange}
+              />
+            </div>
+          </div>
         </div>
-        <div className="w-full mt-4">
-          <Pagination 
-            carList={filteredCars} 
-            carsPerPage={carsPerPage}
-            onPageChange={onPageChange}
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
-};
-
-const mapStateToProps = (state) => {
-  return {
-    vehicles: state.vehicleReducer.vehicles, // Asegúrate de que la propiedad "vehicles" coincida con tu estado de Redux
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getVehicle: () => dispatch(getVehicle()), // Asegúrate de que la acción "getVehicle" esté definida en vehicleActions
-  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CarList);

@@ -12,8 +12,7 @@ import Contact from './views/Contact/Contact'
 import AboutUs from './views/AboutUs/AboutUs'
 
 function App() {
-
-const [darkMode,setDarkmode] = useState(true)
+  const [darkMode, setDarkmode] = useState(true)
 
   const toggleDarkMode = () => {
     const element = document.documentElement
@@ -24,7 +23,7 @@ const [darkMode,setDarkmode] = useState(true)
       element.classList.remove('dark')
     }
   }
-  
+
   return (
     <div>
       <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
@@ -33,10 +32,10 @@ const [darkMode,setDarkmode] = useState(true)
         <Route path={routesHelper.landing} element={<Landing />} />
         <Route path={routesHelper.login} element={<Login />} />
         <Route path={routesHelper.register} element={<Register />} />
-        <Route path={routesHelper.detail} element={<Detail/>}/>
-        <Route path={routesHelper.booking} element={<Booking/>} />
-        <Route path={routesHelper.aboutUs} element={<AboutUs/>} />
-        <Route path={routesHelper.contact} element={<Contact/>} />
+        <Route path={routesHelper.detail} element={<Detail />} />
+        <Route path={routesHelper.booking} element={<Booking />} />
+        <Route path={routesHelper.aboutUs} element={<AboutUs />} />
+        <Route path={routesHelper.contact} element={<Contact />} />
       </Routes>
     </div>
   );
