@@ -3,12 +3,9 @@ import routesHelper from '../../helpers/routes';
 
 const CarCard = ({ car }) => {
 
-
-  const {id, imageUrl, brand, model, transmission, fuelType, capacity, pricePerDay}= car
-
   return (
     <div className="border w-322 h-328 mt-77 ml-410 pl-2 pt-3 border-gray-400 rounded-lg">
-      <Link to={`/detail/${car.id}`}>
+      <Link to={`/cars/${car.id}`}>
         <div className="w-320 h-183 mt-145 ml-2">
           <img
             src={car.image}

@@ -1,38 +1,84 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import carData from '../../data';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link, useParams } from 'react-router-dom';
+import Loader from '../../components/Loader/Loader';
 
-function Detail() {
+export default function Detail({ saveState }) {
+  const [vehicle, setVehicle] = useState({
+    id: '',
+    brand: '',
+    model: '',
+    transmission: '',
+    fuel: '',
+    passengers: '',
+    price: '',
+    image: '',
+  });
+
   const { id } = useParams();
-  const car = carData.find(car => car.id === id);
-  const navigate = useNavigate();
 
-  const handleGoBack = () => {
-    navigate(-1); // Navegar hacia atrás en la pila de navegación
-  };
-
-  if (!car) {
-    return <div>Car not found</div>;
+  function getVehicleById(id) {
+    axios.get(`http://localhost:3001/vehicles/${id}`).then((vehicle) => {
+      setVehicle({
+        id: vehicle.data.id,
+        brand: vehicle.data.brand,
+        model: vehicle.data.model,
+        transmission: vehicle.data.transmission,
+        fuel: vehicle.data.fuel,
+        passengers: vehicle.data.passengers,
+        price: vehicle.data.pricePerDay,
+        image: vehicle.data.image,
+      });
+    });
   }
 
+  useEffect(() => {
+    getVehicleById(id);
+  }, [id]);
+
   return (
-    <div className="border p-4">
-      <button onClick={handleGoBack} className="text-blue-500 mb-2 block">
-        &#8592; Back
-      </button>
-      <img src={car.image} alt={`${car.brand} ${car.model}`} className="mb-2" />
-      <h2 className="text-lg font-semibold">{`${car.brand} ${car.model}`}</h2>
-      <p className="text-sm">Transmission: {car.transmission}</p>
-      <p className="text-sm">Fuel Type: {car.fuel}</p>
-      <p className="text-sm">Capacity: {car.passengers}</p>
-      <p className="text-sm">Price per Day: {car.pricePerDay}</p>
-      
-      {/* Agrega características adicionales aquí si es necesario */}
-      {car.year && <p className="text-sm">Year: {car.year}</p>}
-      {car.type && <p className="text-sm">Type: {car.type}</p>}
-      {car.passengers && <p className="text-sm">Passengers: {car.passengers}</p>}
-      {car.availability && <p className="text-sm">Availability: Available</p>}
+    <div className="bg-gray-100 min-h-screen flex flex-col">
+      {(!vehicle.model && <Loader />) || (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="max-w-screen-lg mx-auto bg-white p-4 rounded shadow-lg">
+            <Link
+              to="/cars"
+              className="text-blue-500 hover:text-blue-700 mb-4"
+              onClick={() => {
+                saveState();
+              }}
+            >
+              Back
+            </Link>
+            <div className="flex">
+              <div className="w-1/2">
+                <img src={vehicle.image} alt={vehicle.model} className="w-full h-auto" />
+              </div>
+              <div className="w-1/2 p-4">
+                <h2 className="text-4xl font-semibold mb-2">
+                  {vehicle.brand} {vehicle.model}
+                </h2>
+                <p className="text-lg text-gray-700 mb-4">
+                  {vehicle.transmission} | {vehicle.fuel} | {vehicle.passengers} Passengers
+                </p>
+                <p className="text-2xl font-semibold mb-4">
+                  Price per Day: ${vehicle.price}
+                </p>
+                <div className="mb-4">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+                    onClick={() => {
+                      console.log("Reserve button clicked");
+                    }}
+                  >
+                    Reserve
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-export default Detail;
