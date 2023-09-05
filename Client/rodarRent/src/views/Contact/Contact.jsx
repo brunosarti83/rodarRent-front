@@ -13,27 +13,27 @@ const Contact = () => {
                         <div className="w-full flex justify-between">
                             <div className="flex w-2/5 flex-col" >
                                 <label htmlFor="name">Your Name:</label>
-                                <input className=" p-1 text-black rounded-lg mt-2 border drop-shadow-md" type="text" name="name" id="" />
+                                <input className=" p-1 dark:bg-slate-950 rounded-lg mt-2 border drop-shadow-md" type="text" name="name" id="" />
                             </div>
                             <div className="flex w-2/5 flex-col" >
                                 <label htmlFor="email">E-mail:</label>
-                                <input className=" p-1 text-black rounded-lg mt-2 border drop-shadow-md" type="email" name="email" id="" />
+                                <input className=" p-1 dark:bg-slate-950 rounded-lg mt-2 border drop-shadow-md" type="email" name="email" id="" />
                             </div>
                         </div>
                         <div className="w-full flex justify-between mt-3" >
                             <div className="flex w-2/5 flex-col" >
                                 <label htmlFor="phone">Phone:</label>
-                                <input className=" p-1 text-black rounded-lg mt-2 border drop-shadow-md" type="text" name="phone" id="" />
+                                <input className=" p-1 dark:bg-slate-950 rounded-lg mt-2 border drop-shadow-md" type="text" name="phone" id="" />
                             </div>
                             <div className="flex w-2/5 flex-col" >
                                 <label htmlFor="city">City</label>
-                                <input className=" p-1 text-black rounded-lg mt-2 border drop-shadow-md" type="text" name="phone" />
+                                <input className=" p-1 dark:bg-slate-950 rounded-lg mt-2 border drop-shadow-md" type="text" name="phone" />
                             </div>
                         </div>
                         <div className="w-full flex mt-3">
                             <div className="flex-col w-full">
                                 <label htmlFor="message">Message</label>
-                                <textarea className=" p-1 text-black w-full rounded-lg mt-2 border drop-shadow-md resize-none" name="message" id="" cols="30" rows="10"></textarea>
+                                <textarea className=" p-1 dark:bg-slate-950 w-full rounded-lg mt-2 border drop-shadow-md resize-none" name="message" id="" cols="30" rows="10"></textarea>
                             </div>
                         </div>
                     </div>
