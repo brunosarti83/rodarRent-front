@@ -25,19 +25,21 @@ const ReservationSearch = () => {
     dispatch(getAvaiability(search))
   }
 
+  const disableButton = (!search.pickUp || !search.dropOff) || (new Date(search.dropOff) < new Date(search.pickUp))
+
   return (
     <div className=" h-18 w-full p-3 flex items-center justify-between font-poppins" >
-      <div className="flex h-full w-2/3 " >
+      <div className="flex h-full w-2/3 ml-10" >
         <form className="flex w-full h-full items-center" action="">
           <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-32" >
             <label className="text-xs mb-2" >Pick up Date</label>
-            <input onChange={handleChange} className="text-xs" type="date" name="pickUp" id="" />
+            <input onChange={handleChange} className="text-xs" type="date" name="pickUp" id=""/>
           </div>
           <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-32" >
             <label className=" text-xs mb-2" >Drop off Date</label>
-            <input onChange={handleChange} className="text-xs" type="date" name="dropOff" id="" />
+            <input onChange={handleChange} className="text-xs" type="date" name="dropOff" id=""/>
           </div>
-          <button onClick={handleSubmit} className="bg-blue text-white h-12 px-10 rounded-lg text-md" >Search</button>
+          <button onClick={handleSubmit} disabled={disableButton} className="bg-blue text-white h-12 px-10 rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed" >Search</button>
         </form>
       </div>
       <div className="flex w-1/3 justify-evenly">
