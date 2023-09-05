@@ -8,7 +8,7 @@ export function getVehicle() {
       .then((response) => {
         dispatch({
           type: GET_VEHICLE,
-          payload: response.data,
+          payload: response.data.results,
         });
       })
       .catch((error) => {
@@ -37,7 +37,6 @@ export function getVehicleById() {
       });
   };
 }
-
 export function getAvaiability(search){
   const {pickUp, dropOff} = search
   console.log(search)

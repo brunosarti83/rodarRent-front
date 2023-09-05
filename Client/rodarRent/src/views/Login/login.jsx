@@ -3,10 +3,11 @@ import validate from "./validateLogin";
 import formImage from '../../assets/img/loginRegister/login.png'
 import { Link } from "react-router-dom";
 import routesHelper from "../../helpers/routes";
-//import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  //const history = useHistory();
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const user = {
@@ -31,17 +32,34 @@ const Login = () => {
     setErrors(validate({ ...loginData, [property]: value }));
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    if (
-      loginData.email === user.email &&
-      loginData.password === user.password
-    ) {
-      alert("Welcome!!");
-      setIsLoggedIn(true);
-      //history.push("/home");
-    } else {
-      alert("There's been a problem!!");
+    try {
+      // Fetch customer data from your API or database
+      const response = await axios.get('http://localhost:3001/customers');
+      const customers = response.data.data; // Assuming your API returns an array of customers
+      
+      // Find a customer with matching email and password
+      const matchingCustomer = customers.find((customer) => {
+        return (
+          customer.email === loginData.email && customer.password === loginData.password
+        );
+      });
+  
+      if (matchingCustomer) {
+        // Successful login, set isLoggedIn to true or navigate to a new page
+        setIsLoggedIn(true);
+        alert('Login successful');
+        navigate("/cars")
+        // You can navigate to a new page or update the UI as needed
+      } else {
+        // Invalid credentials, display an error message
+        alert('Invalid login credentials');
+        // You can set an error state to display an error message to the user
+      }
+    } catch (error) {
+      // Handle API request errors or other errors
+      console.error('Error during login:', error);
     }
   };
 
