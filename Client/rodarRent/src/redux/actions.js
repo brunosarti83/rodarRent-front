@@ -8,7 +8,7 @@ export function getVehicle() {
       .then((response) => {
         dispatch({
           type: GET_VEHICLE,
-          payload: response.data,
+          payload: response.data.results,
         });
       })
       .catch((error) => {
