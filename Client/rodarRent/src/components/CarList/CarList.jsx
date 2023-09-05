@@ -43,9 +43,9 @@ const CarList = ({ vehicles, getVehicle }) => {
       const modelFilter = !filterOptions.model || car.model === filterOptions.model;
       const transmissionFilter = filterOptions.transmissions.length === 0 || filterOptions.transmissions.includes(car.transmission);
       const fuelTypeFilter = filterOptions.fuelTypes.length === 0 || filterOptions.fuelTypes.includes(car.fuel);
-      const capacityFilter = filterOptions.passengers.length === 0 || filterOptions.passengers.includes(car.capacity);
+      const capacityFilter = filterOptions.passengers.length === 0 || filterOptions.passengers.includes(car.passengers);
       const priceFilter = car.pricePerDay >= filterOptions.priceRange[0] && car.pricePerDay <= filterOptions.priceRange[1];
-
+      console.log(car.passengers)
       return brandFilter && modelFilter && transmissionFilter && fuelTypeFilter && capacityFilter && priceFilter;
     });
 
