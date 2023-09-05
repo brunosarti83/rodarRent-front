@@ -37,7 +37,6 @@ export function getVehicleById() {
       });
   };
 }
-
 export function getAvaiability(search){
   const {pickUp, dropOff} = search
   return async function(dispatch){
