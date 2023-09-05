@@ -1,31 +1,59 @@
 import { Link } from 'react-router-dom';
 import routesHelper from '../../helpers/routes';
+import { GiGearStick, GiGasPump } from "react-icons/gi";
+import { FaUserGroup } from "react-icons/fa6"
 
 const CarCard = ({ car }) => {
 
   return (
-    <div className="border w-322 h-328 mt-77 ml-410 pl-2 pt-3 border-gray-400 rounded-lg">
+    <div className=" bg-white border border-gray-100 w-card h-card p-4 drop-shadow-md  rounded-xl font-poppins dark:bg-slate-950 dark:text-gray-100  transition duration-300">
       <Link to={`/cars/${car.id}`}>
-        <div className="w-320 h-183 mt-145 ml-2">
+        <div className="flex justify-center w-full h-36 ml-2">
           <img
             src={car.image}
             alt={`${car.brand} ${car.model}`}
-            className="mb-2 w-278 h-142"
+            className="w-2/3"
           />
-          <h2 className="text-lg font-semibold">{`${car.brand} ${car.model}`}</h2>
-          <p className="text-sm">Year: {car.year}</p>
-          <p className="text-sm">Transmission: {car.transmission}</p>
-          <p className="text-sm">Fuel Type: {car.fuel}</p>
-          <p className="text-sm">Capacity: {car.passengers}</p>
-          <p className="text-sm">Price per Day: {car.pricePerDay}</p>
-          <p className="text-sm">Availability: {car.availability ? 'Available' : 'Not Available'}</p>
+        </div>
+        <div className='' >
+          <h2 className="text-xl font-bold">{`${car.brand} ${car.model}`}</h2>
+          <div>
+            <h4 className='text-md text-gray-500 font-light' >Features</h4>
+            <div className='flex mt-2 ' >
+              <div>
+                <div className='flex items-center' >
+                  <FaUserGroup className=' text-gray-400 mr-2' size='25px' />
+                  <p className='text-lg' >{car.passengers}</p>
+                </div>
+                <div className='flex items-center' >
+                  <GiGasPump className=' text-gray-400 mr-2' size='25px' />
+                  <p className='text-lg' >{car.fuel}</p>
+                </div>
+              </div>
+              <div>
+                <div className='flex items-center'>
+                  <GiGearStick className=' text-gray-400 mr-2' size='25px' />
+                  <p className='text-lg' >{car.transmission}</p>
+                </div>
+                {/* <p className="text-sm">Year:</p> */}
+                {/* <p className="text-sm">Availability: {car.availability ? 'Available' : 'Not Available'}</p> */}
+              </div>
+            </div>
+          </div>
         </div>
       </Link>
-      <button className="mt-2 inline-block text-blue-500 hover:underline">
-        <Link to={routesHelper.booking}>Reserve Deal</Link>
-      </button>
+      <hr className=' mt-1 mb-2 w-2/3 mx-auto' />
+      <div className='flex items-center justify-between' >
+        <p className="text-lg"><span className='font-bold' >{`$${car.pricePerDay}`}</span> per day</p>
+        <button className=" text-white bg-blue py-1 px-4 rounded-xl">
+          <Link to={routesHelper.booking}>Reserve Deal</Link>
+        </button>
+      </div>
     </div>
   );
 };
+
+
+
 
 export default CarCard;
