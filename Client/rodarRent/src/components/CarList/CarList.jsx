@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import CarCard from '../CarCard/CarCard';
-import Detail from '../../views/Detail/Detail';
 import CarFilter from '../CarFilter/CarFilter';
 import Pagination from '../Pagination/Pagination';
 import { getVehicle } from '../../redux/actions';
