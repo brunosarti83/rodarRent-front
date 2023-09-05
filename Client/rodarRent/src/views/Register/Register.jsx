@@ -60,15 +60,17 @@ function Register() {
   password: userData["password"],}
 
   
-  const handleSubmit = async () => {
-      //console.log(data);
-    try {
-        const response = await axios.post('http://localhost:3001/customers', data)
-        alert("Access success")
-        navigate("/login")
-    } catch (error) {
-        alert(error);
-    }
+  const handleSubmit = (event) => {
+    //console.log(data);
+    event.preventDefault()  
+    axios.post('http://localhost:3001/customers', data)
+    .then(response => {
+      alert("Access success")
+      navigate("/login")
+    })
+    .catch ((error) => {
+      alert('Error:' + error.message)
+    })
   };
 
   return (
