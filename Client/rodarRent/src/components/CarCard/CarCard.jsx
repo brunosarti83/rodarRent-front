@@ -6,7 +6,7 @@ import { FaUserGroup } from "react-icons/fa6"
 const CarCard = ({ car }) => {
 
   return (
-    <div className=" bg-white border border-gray-100 w-card h-card p-4 drop-shadow-md  rounded-xl font-poppins dark:bg-slate-950 dark:border-none dark:text-gray-100  transition duration-300">
+    <div className=" bg-white border border-gray-100 w-card h-card p-4 drop-shadow-md  rounded-xl font-poppins dark:bg-slate-950 dark:text-gray-100  transition duration-300">
       <Link to={`/cars/${car.id}`}>
         <div className="flex justify-center w-full h-36 ml-2">
           <img

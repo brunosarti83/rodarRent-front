@@ -59,7 +59,7 @@ function Register() {
                         Name
                     </label>
                     <input
-                        className="font-poppins text-sm flex justify-start items-center p-1 text-black rounded-lg drop-shadow-md border border-gray "
+                        className="font-poppins text-sm flex justify-start items-center p-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 "
                         type="text"
                         name="name"
                         value={userData.name}
@@ -75,7 +75,7 @@ function Register() {
                         Last Name
                     </label>
                     <input
-                        className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                        className="font-poppins text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950"
                         type="text"
                         name="lastName"
                         value={userData.lastName}
@@ -88,7 +88,7 @@ function Register() {
                         E-mail
                     </label>
                     <input
-                        className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                        className="font-poppins  text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950"
                         type="text"
                         name="email"
                         value={userData.email}
@@ -106,7 +106,7 @@ function Register() {
                                 Country
                             </label>
                             <input
-                                className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                                className="font-poppins text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950"
                                 type="text"
                                 name="country"
                                 value={userData.country}
@@ -121,7 +121,7 @@ function Register() {
                                 City
                             </label>
                             <input
-                                className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                                className="font-poppins text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950"
                                 type="text"
                                 name="city"
                                 value={userData.city}
@@ -141,7 +141,7 @@ function Register() {
                                 Address
                             </label>
                             <input
-                                className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                                className="font-poppins text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950"
                                 type="text"
                                 name="address"
                                 value={userData.address}
@@ -159,7 +159,7 @@ function Register() {
                                 Postal Code
                             </label>
                             <input
-                                className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                                className="font-poppins text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 "
                                 type="text"
                                 name="postalCode"
                                 value={userData.postalCode}
@@ -177,7 +177,7 @@ function Register() {
                         Password
                     </label>
                     <input
-                        className="font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                        className="font-poppins text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 "
                         type="password"
                         name="password"
                         value={userData.password}
@@ -193,7 +193,7 @@ function Register() {
                         Repeat Password
                     </label>
                     <input
-                        className="font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                        className="font-poppins text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950"
                         type="password"
                         name="repeatPass"
                         value={userData.repeatPass}
@@ -209,7 +209,7 @@ function Register() {
                         >
                             Sing Up
                         </button>
-                        <button className="font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray">
+                        <button className="font-poppins bg-white dark:bg-slate-950 cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray">
                             <img
                                 className="relative w-6 m-1"
                                 src="../../src/assets/img/google_logo.png"

@@ -40,7 +40,6 @@ export function getVehicleById() {
 
 export function getAvaiability(search){
   const {pickUp, dropOff} = search
-  console.log(search)
   return async function(dispatch){
       try {
         const response = await axios.get(`http://localhost:3001/available?startDate=${pickUp}&finishDate=${dropOff}`)

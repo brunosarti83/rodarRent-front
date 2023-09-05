@@ -63,84 +63,93 @@ const CarFilter = ({ carData, onFilter }) => {
   }, [selectedBrand, selectedModel, selectedTransmissions, selectedFuelTypes, selectedPassengers, priceRange]);
 
   return (
-    <div className='dark:bg-slate-950 dark:text-gray-100' style={{ padding: '1rem', borderRight: '1px solid #e2e8f0' }}>
+    <div className='dark:bg-slate-900 dark:text-gray-100' style={{ padding: '1rem', borderRight: '1px solid #e2e8f0' }}>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Transmissions</h3>
         <hr />
-        <div className='flex flex-col justify-center' >
-        {uniqueTransmissions.map((transmission) => (
-          <label key={transmission}>
-            <input
-              className=' mr-1'
-              type="checkbox"
-              value={transmission}
-              checked={selectedTransmissions.includes(transmission)}
-              onChange={() => {
-                const updatedSelectedTransmissions = [...selectedTransmissions];
-                if (selectedTransmissions.includes(transmission)) {
-                  updatedSelectedTransmissions.splice(updatedSelectedTransmissions.indexOf(transmission), 1);
-                } else {
-                  updatedSelectedTransmissions.push(transmission);
-                }
-                setSelectedTransmissions(updatedSelectedTransmissions);
-                saveState();
-              }}
-            />
-            {transmission}
-          </label>
-        ))}
+        <div className='flex flex-col justify-center mt-2' >
+          {uniqueTransmissions.map((transmission) => (
+            <label className='text-lg' key={transmission}>
+              <input
+                className='mr-2 peer  h-5 w-5 rounded-sm drop-shadow-md bg-white checked:bg-blue checked:border-none'
+                type="checkbox"
+                value={transmission}
+                checked={selectedTransmissions.includes(transmission)}
+                onChange={() => {
+                  const updatedSelectedTransmissions = [...selectedTransmissions];
+                  if (selectedTransmissions.includes(transmission)) {
+                    updatedSelectedTransmissions.splice(updatedSelectedTransmissions.indexOf(transmission), 1);
+                  } else {
+                    updatedSelectedTransmissions.push(transmission);
+                  }
+                  setSelectedTransmissions(updatedSelectedTransmissions);
+                  saveState();
+                }}
+              />
+              {transmission}
+            </label>
+          ))}
         </div>
       </div>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Fuel Types</h3>
-        {uniqueFuelTypes.map((fuelType) => (
-          <label key={fuelType}>
-            <input
-              type="checkbox"
-              value={fuelType}
-              checked={selectedFuelTypes.includes(fuelType)}
-              onChange={() => {
-                const updatedSelectedFuelTypes = [...selectedFuelTypes];
-                if (selectedFuelTypes.includes(fuelType)) {
-                  updatedSelectedFuelTypes.splice(updatedSelectedFuelTypes.indexOf(fuelType), 1);
-                } else {
-                  updatedSelectedFuelTypes.push(fuelType);
-                }
-                setSelectedFuelTypes(updatedSelectedFuelTypes);
-                saveState();
-              }}
-            />
-            {fuelType}
-          </label>
-        ))}
+        <hr />
+        <div className='flex flex-col justify-center mt-2' >
+          {uniqueFuelTypes.map((fuelType) => (
+            <label className='text-lg' key={fuelType}>
+              <input
+                type="checkbox"
+                className='mr-2 peer h-5 w-5 rounded-sm drop-shadow-md bg-white checked:bg-blue checked:border-none'
+                value={fuelType}
+                checked={selectedFuelTypes.includes(fuelType)}
+                onChange={() => {
+                  const updatedSelectedFuelTypes = [...selectedFuelTypes];
+                  if (selectedFuelTypes.includes(fuelType)) {
+                    updatedSelectedFuelTypes.splice(updatedSelectedFuelTypes.indexOf(fuelType), 1);
+                  } else {
+                    updatedSelectedFuelTypes.push(fuelType);
+                  }
+                  setSelectedFuelTypes(updatedSelectedFuelTypes);
+                  saveState();
+                }}
+              />
+              {fuelType}
+            </label>
+          ))}
+        </div>
       </div>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Passengers</h3>
-        {uniquePassengers.map((passengerCount) => (
-          <label key={passengerCount}>
-            <input
-              type="checkbox"
-              value={passengerCount}
-              checked={selectedPassengers.has(passengerCount)}
-              onChange={() => {
-                const updatedSelectedPassengers = new Set(selectedPassengers);
-                if (selectedPassengers.has(passengerCount)) {
-                  updatedSelectedPassengers.delete(passengerCount);
-                } else {
-                  updatedSelectedPassengers.add(passengerCount);
-                }
-                setSelectedPassengers(updatedSelectedPassengers);
-                saveState();
-              }}
-            />
-            {passengerCount}
-          </label>
-        ))}
+        <hr />
+        <div className='flex mt-2' >
+          {uniquePassengers.map((passengerCount) => (
+            <label key={passengerCount}>
+              <input
+                type="checkbox"
+                value={passengerCount}
+                className='mr-2'
+                checked={selectedPassengers.has(passengerCount)}
+                onChange={() => {
+                  const updatedSelectedPassengers = new Set(selectedPassengers);
+                  if (selectedPassengers.has(passengerCount)) {
+                    updatedSelectedPassengers.delete(passengerCount);
+                  } else {
+                    updatedSelectedPassengers.add(passengerCount);
+                  }
+                  setSelectedPassengers(updatedSelectedPassengers);
+                  saveState();
+                }}
+              />
+              {passengerCount}
+            </label>
+          ))}
+        </div>
       </div>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Brand</h3>
+        <hr />
         <select
-          className="border rounded p-2 w-full"
+          className="border mt-3 rounded p-2 w-full dark:bg-slate-950"
           value={selectedBrand}
           onChange={(e) => setSelectedBrand(e.target.value)}
         >
@@ -153,7 +162,7 @@ const CarFilter = ({ carData, onFilter }) => {
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Model</h3>
         <select
-          className="border rounded p-2 w-full"
+          className="border rounded p-2 w-full dark:bg-slate-950"
           value={selectedModel}
           onChange={(e) => setSelectedModel(e.target.value)}
         >
@@ -165,7 +174,9 @@ const CarFilter = ({ carData, onFilter }) => {
       </div>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Price Per Day</h3>
+        <hr />
         <input
+          className='mt-3'
           type="range"
           min={130}
           max={300}
@@ -180,7 +191,7 @@ const CarFilter = ({ carData, onFilter }) => {
             resetFilters();
             restorePreviousState();
           }}
-          className="bg-gray-300 hover:bg-gray-400 font-semibold py-2 px-4 rounded"
+          className="bg-blue text-white font-semibold py-2 px-4 rounded"
         >
           Reset Filters
         </button>
