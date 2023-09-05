@@ -8,7 +8,7 @@ export function getVehicle() {
       .then((response) => {
         dispatch({
           type: GET_VEHICLE,
-          payload: response.data,
+          payload: response.data.results,
         });
       })
       .catch((error) => {
@@ -46,7 +46,7 @@ export function getAvaiability(search){
         const response = await axios.get(`http://localhost:3001/available?startDate=${pickUp}&finishDate=${dropOff}`)
         dispatch({
           type: GET_VEHICLE,
-          payload: response.data
+          payload: response.data.results
         })
       } catch (error) {
         alert(error)
