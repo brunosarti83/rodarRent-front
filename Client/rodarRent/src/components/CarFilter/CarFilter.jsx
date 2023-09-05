@@ -63,15 +63,15 @@ const CarFilter = ({ carData, onFilter }) => {
   }, [selectedBrand, selectedModel, selectedTransmissions, selectedFuelTypes, selectedPassengers, priceRange]);
 
   return (
-    <div style={{ padding: '1rem', borderRight: '1px solid #e2e8f0' }}>
-      <div style={{ marginBottom: '1rem' }}>
-        <h2 className="text-lg font-semibold mb-2">Filter By</h2>
-      </div>
+    <div className='dark:bg-slate-950 dark:text-gray-100' style={{ padding: '1rem', borderRight: '1px solid #e2e8f0' }}>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Transmissions</h3>
+        <hr />
+        <div className='flex flex-col justify-center' >
         {uniqueTransmissions.map((transmission) => (
           <label key={transmission}>
             <input
+              className=' mr-1'
               type="checkbox"
               value={transmission}
               checked={selectedTransmissions.includes(transmission)}
@@ -89,6 +89,7 @@ const CarFilter = ({ carData, onFilter }) => {
             {transmission}
           </label>
         ))}
+        </div>
       </div>
       <div style={{ marginBottom: '1rem' }}>
         <h3 className="text-md font-semibold mb-2">Fuel Types</h3>
