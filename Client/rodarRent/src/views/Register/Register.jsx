@@ -47,28 +47,30 @@ function Register() {
   };
 
   const data = {
-  name: userData["name"],
-  lastName: userData["lastName"],
-  personalId: userData["personalId"],
-  birthDate: userData["birthDate"],
-  address: userData["address"],
-  city: userData["city"],
-  country: userData["country"],
-  zipCode: userData["zipCode"],
-  phoneNumber: userData["phoneNumber"],
-  email: userData["email"],
-  password: userData["password"],}
+    name: userData["name"],
+    lastName: userData["lastName"],
+    personalId: userData["personalId"],
+    birthDate: userData["birthDate"],
+    address: userData["address"],
+    city: userData["city"],
+    country: userData["country"],
+    zipCode: userData["zipCode"],
+    phoneNumber: userData["phoneNumber"],
+    email: userData["email"],
+    password: userData["password"],
+  }
 
-  
-  const handleSubmit = async () => {
-      //console.log(data);
-    try {
-        const response = await axios.post('http://localhost:3001/customers', data)
-        alert("Access success")
-        navigate("/login")
-    } catch (error) {
-        alert(error);
-    }
+  const handleSubmit = (event) => {
+    console.log(data)
+    event.preventDefault()
+    axios.post('http://localhost:3001/customers', data)
+    .then(response => {
+          alert("Access success");
+          navigate(routesHelper.login);       
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -145,27 +147,27 @@ function Register() {
             {errors.email}
           </span>
           <label
-                className="font-poppins text-sm flex m-1 justify-start"
-                htmlFor="phoneNumber"
-              >
-                Phone Number
-              </label>
-              <input
-                className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
-                type="text"
-                name="phoneNumber"
-                value={userData.phoneNumber}
-                onChange={handleChange}
-              />
-              <span
-                className={
-                  errors.phoneNumber
-                    ? "font-poppins text-xs flex m-1 justify-start text-red"
-                    : null
-                }
-              >
-                {errors.phoneNumber}
-              </span>
+            className="font-poppins text-sm flex m-1 justify-start"
+            htmlFor="phoneNumber"
+          >
+            Phone Number
+          </label>
+          <input
+            className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+            type="text"
+            name="phoneNumber"
+            value={userData.phoneNumber}
+            onChange={handleChange}
+          />
+          <span
+            className={
+              errors.phoneNumber
+                ? "font-poppins text-xs flex m-1 justify-start text-red"
+                : null
+            }
+          >
+            {errors.phoneNumber}
+          </span>
           <div className="flex">
             <div>
               <label
@@ -365,7 +367,7 @@ function Register() {
               className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
               onClick={handleSubmit}
             >
-              Sing Up
+              Sign Up
             </button>
             <button className="font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray">
               <img

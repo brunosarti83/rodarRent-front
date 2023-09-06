@@ -111,7 +111,7 @@ const Login = () => {
               className="font-poppins  bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
               onClick={handleLogin}
             >
-              Sing In
+              Sign In
             </button>
             <a
               className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
