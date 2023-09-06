@@ -1,33 +1,53 @@
-const validate = (data) => {
+const validateRegister = (data) => {
   const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const regexPass =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
   const errors = {};
   if (!data.name) {
-    errors.name = "Name is required";
+    errors.name = "(*)";
   }
   if (!data.lastName) {
-    errors.lastName = "Last name is required";
+    errors.lastName = "(*)";
   }
   if (!data.email) {
-    errors.email = "Email is required";
-  }
-  if (!regexEmail.test(data.email)) {
+    errors.email = "(*)";
+  } else if (!regexEmail.test(data.email)) {
     //FORMATO REGULAR PARA VER SI CUMPLE CON EL FORMATO EMAIL
-    errors.email = "It must be an email";
+    errors.emailMsj = "It must be an email";
+  }
+  if (!data.phoneNumber) {
+    errors.phoneNumber = "(*)";
+  }
+  if (!data.personalId) {
+    errors.personalId = "(*)";
+  }
+  if (!data.birthDate) {
+    errors.birthDate = "(*)";
+  }
+  if (!data.country) {
+    errors.country = "(*)";
+  }
+  if (!data.city) {
+    errors.city = "(*)";
+  }
+  if (!data.address) {
+    errors.address = "(*)";
+  }
+  if (!data.zipCode) {
+    errors.zipCode = "(*)";
   }
   if (!data.password) {
-    errors.password = "Password is required";
+    errors.password = "(*)";
   }
-  if (!regexPass.test(data.password)) {
-    errors.password = "The password must have at least 6 characters, an uppercase letter, a lowercase letter and a number";
+  else if (!regexPass.test(data.password)) {
+    errors.passwordMsj = "The password must have at least 6 characters, an uppercase letter, a lowercase letter and a number";
   }
   if (!data.repeatPass) {
-    errors.repeatPass = "Both password are required and must be the same";
+    errors.repeatPass = "(*)";
   }
-  if (data.password !== data.repeatPass) {
-    errors.repeatPass = "Both passwords must be the same";
+  else if (data.password !== data.repeatPass) {
+    errors.repeatPassMsj = "Both passwords must be the same";
   }
   return errors;
 };
 
-export default validate
+export default validateRegister
