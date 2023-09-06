@@ -6,10 +6,14 @@ import validateRegister from "./validateRegister";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
   const navigate = useNavigate();
-  const [btnState, setBtnState] = useState(true);
+  const [disabledSubmit, setDisabledSubmit] = useState(true);
+  const btnState = async (err) => {
+    if (Object.keys(err).length === 0) setDisabledSubmit(false);
+  };
   const [userData, setUserData] = useState({
     name: "",
     lastName: "",
@@ -41,7 +45,7 @@ function Register() {
     passwordMsj: "",
     repeatPass: "",
     repeatPassMsj: "",
-    requireMsj: "* (Require information)",
+    //requireMsj: "* (Require information)",
   });
 
   const handleChange = (event) => {
@@ -50,6 +54,7 @@ function Register() {
     validateRegister({ ...userData, [property]: value });
     setUserData({ ...userData, [property]: value });
     setErrors(validateRegister({ ...userData, [property]: value }));
+    btnState(validateRegister({ ...userData, [property]: value }))
   };
 
   const data = {
@@ -70,16 +75,14 @@ function Register() {
       //console.log(data);
     event.preventDefault()
     await axios.post('http://localhost:3001/customers', data).then(response=>{
-      toast("Access Success!");
+      toast.success('Registered user!', {position: "top-left"});
       navigate("/login")
     }).catch ((error) =>{
-        alert(error);
+      toast.error(error, {position: "top-left"});
     })
   };
 
   return (
-    <>
-    <ToastContainer />
     <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="sticky drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900">
         <form className="px-16 py-5 flex flex-col flex-wrap w-full rounded-xl justify-center">
@@ -431,9 +434,9 @@ function Register() {
           </div>
           <div className="flex flex-col mt-4 mb-4">
             <button
-              className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
+              className={disabledSubmit ? "font-poppins bg-blue cursor-not-allowed rounded-lg p-1 m-2 text-white":"font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"}
               onClick={handleSubmit}
-              disabled={btnState}
+              disabled={disabledSubmit}
             >
               Sign Up
             </button>
@@ -466,8 +469,19 @@ function Register() {
           <img className="w-max " src={formImage} alt="side-login-car-image" />
         </div>
       </div>
+      <ToastContainer
+      position="top-left"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+      />
     </div>
-    </>
   );
 }
 

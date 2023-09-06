@@ -6,9 +6,14 @@ import routesHelper from "../../helpers/routes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [disabledSubmit, setDisabledSubmit] = useState(true);
+  const btnState = async (err) => {
+    if (Object.keys(err).length === 0) setDisabledSubmit(false);
+  };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const user = {
@@ -31,6 +36,7 @@ const Login = () => {
     validate({ ...loginData, [property]: value });
     setLoginData({ ...loginData, [property]: value });
     setErrors(validate({ ...loginData, [property]: value }));
+    btnState(validate({ ...loginData, [property]: value }))
   };
 
   const handleLogin = async (event) => {
@@ -50,12 +56,12 @@ const Login = () => {
       if (matchingCustomer) {
         // Successful login, set isLoggedIn to true or navigate to a new page
         setIsLoggedIn(true);
-        toast('`Welcome! ');
+        toast('Welcome!'+ loginData.email, {position: "top-left"});
         navigate("/cars")
         // You can navigate to a new page or update the UI as needed
       } else {
         // Invalid credentials, display an error message
-        alert('Invalid login credentials');
+        toast.error('Invalid login credentials', {position: "top-left"});
         // You can set an error state to display an error message to the user
       }
     } catch (error) {
@@ -109,8 +115,9 @@ const Login = () => {
           </span>
           <div className="flex flex-col mt-4 mb-4">
             <button
-              className="font-poppins  bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+              className={disabledSubmit ? "font-poppins bg-blue cursor-not-allowed rounded-lg p-2 m-2 text-white":"font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"}
               onClick={handleLogin}
+              disabled={disabledSubmit}
             >
               Sign In
             </button>
@@ -156,7 +163,7 @@ const Login = () => {
         </div>
       </div>
       <ToastContainer
-        position="top-right"
+        position="top-left"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
