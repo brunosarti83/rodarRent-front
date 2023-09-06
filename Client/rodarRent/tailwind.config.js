@@ -26,6 +26,7 @@ export default {
       },
       colors:{
         'blue':'#163C85',
+        'red':'#C70039'
       }
     },
     fontFamily:{
