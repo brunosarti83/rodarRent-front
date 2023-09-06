@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import routesHelper from "../../helpers/routes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const Login = () => {
       if (matchingCustomer) {
         // Successful login, set isLoggedIn to true or navigate to a new page
         setIsLoggedIn(true);
-        alert('Login successful');
+        toast('`Welcome! ');
         navigate("/cars")
         // You can navigate to a new page or update the UI as needed
       } else {
@@ -111,7 +112,7 @@ const Login = () => {
               className="font-poppins  bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
               onClick={handleLogin}
             >
-              Sing In
+              Sign In
             </button>
             <a
               className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:text-black transition duration-300 ease-in-out hover:drop-shadow-none "
@@ -122,11 +123,12 @@ const Login = () => {
                 src="../../src/assets/img/google_logo.png"
                 alt="Google img"
               ></img>
-              Sing in with google
+              Sign in with google
             </a>
           </div>
           <hr className="ml-8 mr-8 text-gray" />
-          <div className="flex justify-center items-center m-5">
+          <div className="flex flex-col justify-center items-center m-5">
+          <div className="flex justify-center items-center m-4">
             <p className="font-poppins text-gray text-xs m-2">
               Don't have an account?
             </p>
@@ -134,9 +136,13 @@ const Login = () => {
               className="text-sm underline decoration-solid font-poppins"
             >
               <Link to={routesHelper.register}>
-                Sing up for free
+                Sign up for free
               </Link>
             </p>
+          </div>
+            <a className="font-poppins text-gray text-xs" href="#">
+              Forgot your password?
+            </a>
           </div>
         </form>
       </div>
@@ -149,6 +155,18 @@ const Login = () => {
           <img className="w-max " src={formImage} alt="side-login-car-image" />
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        />
     </div>
   );
 };
