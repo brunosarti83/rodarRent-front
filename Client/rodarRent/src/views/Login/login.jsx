@@ -72,7 +72,7 @@ const Login = () => {
 
   return (
     <div className="w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
-      <div className="drop-shadow-md bg-white rounded-l-3xl h-form  dark:bg-slate-900">
+      <div className="drop-shadow-md border bg-white rounded-l-3xl h-form  dark:bg-slate-900">
         <form className="px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
           <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? user.email : ''}</h1>
           <h6 className="font-poppins pb-6 text-gray">
@@ -86,7 +86,7 @@ const Login = () => {
             E-mail
           </label>
           <input
-            className="font-poppins text-black text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray"
+            className="font-poppins text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950"
             type="text"
             name="email"
             placeholder="Type your e-mail"
@@ -103,7 +103,7 @@ const Login = () => {
             Password
           </label>
           <input
-            className="font-poppins text-sm text-black flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray"
+            className="font-poppins text-sm flex justify-start items-center p-2 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950"
             type="password"
             name="password"
             placeholder="Type your password"
@@ -122,7 +122,7 @@ const Login = () => {
               Sign In
             </button>
             <a
-              className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:text-black transition duration-300 ease-in-out hover:drop-shadow-none "
+              className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
               href="#"
             >
               <img
