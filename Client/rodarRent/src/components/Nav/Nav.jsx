@@ -13,7 +13,7 @@ function Nav(props) {
 
 
     return (
-        <header className="flex px-16 py-2 justify-between font-poppins bg-white dark:bg-slate-900 dark:text-gray-100 duration-300" >
+        <header className="flex px-16 py-2 justify-between font-poppins bg-white dark:bg-slate-900 dark:text-gray-100 transition duration-300" >
             <div className="flex items-center" >
                 <GiCarKey size='50px' />
                 <h2 className=" ml-4 text-2xl">

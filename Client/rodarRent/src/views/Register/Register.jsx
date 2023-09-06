@@ -53,33 +53,43 @@ function Register() {
   };
 
   const data = {
-  name: userData["name"],
-  lastName: userData["lastName"],
-  personalId: userData["personalId"],
-  birthDate: userData["birthDate"],
-  address: userData["address"],
-  city: userData["city"],
-  country: userData["country"],
-  zipCode: userData["zipCode"],
-  phoneNumber: userData["phoneNumber"],
-  email: userData["email"],
-  password: userData["password"],}
-
+    name: userData["name"],
+    lastName: userData["lastName"],
+    personalId: userData["personalId"],
+    birthDate: userData["birthDate"],
+    address: userData["address"],
+    city: userData["city"],
+    country: userData["country"],
+    zipCode: userData["zipCode"],
+    phoneNumber: userData["phoneNumber"],
+    email: userData["email"],
+    password: userData["password"],
+  };
   
   const handleSubmit = async (event) => {
       //console.log(data);
     event.preventDefault()
     await axios.post('http://localhost:3001/customers', data).then(response=>{
-      toast("Access Success!");
+      alert("Access Success!");
       navigate("/login")
     }).catch ((error) =>{
         alert(error);
     })
+  const handleSubmit = (event) => {
+    console.log(data)
+    event.preventDefault()
+    axios.post('http://localhost:3001/customers', data)
+    .then(response => {
+          alert("Access success");
+          navigate(routesHelper.login);       
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
     <>
-    <ToastContainer />
     <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="sticky drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900">
         <form className="px-16 py-5 flex flex-col flex-wrap w-full rounded-xl justify-center">
@@ -195,6 +205,27 @@ function Register() {
               </div>
               </div>
               </div>
+            className="font-poppins text-sm flex m-1 justify-start"
+            htmlFor="phoneNumber"
+          >
+            Phone Number
+          </label>
+          <input
+            className="font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+            type="text"
+            name="phoneNumber"
+            value={userData.phoneNumber}
+            onChange={handleChange}
+          />
+          <span
+            className={
+              errors.phoneNumber
+                ? "font-poppins text-xs flex m-1 justify-start text-red"
+                : null
+            }
+          >
+            {errors.phoneNumber}
+          </span>
           <div className="flex">
           <div className="w-2/4">
               <label

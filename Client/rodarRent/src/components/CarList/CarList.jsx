@@ -43,9 +43,9 @@ const CarList = ({ vehicles, getVehicle }) => {
       const modelFilter = !filterOptions.model || car.model === filterOptions.model;
       const transmissionFilter = filterOptions.transmissions.length === 0 || filterOptions.transmissions.includes(car.transmission);
       const fuelTypeFilter = filterOptions.fuelTypes.length === 0 || filterOptions.fuelTypes.includes(car.fuel);
-      const capacityFilter = filterOptions.passengers.length === 0 || filterOptions.passengers.includes(car.capacity);
+      const capacityFilter = filterOptions.passengers.length === 0 || filterOptions.passengers.includes(car.passengers);
       const priceFilter = car.pricePerDay >= filterOptions.priceRange[0] && car.pricePerDay <= filterOptions.priceRange[1];
-
+      console.log(car.passengers)
       return brandFilter && modelFilter && transmissionFilter && fuelTypeFilter && capacityFilter && priceFilter;
     });
 
@@ -66,13 +66,13 @@ const CarList = ({ vehicles, getVehicle }) => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex">
-          <div className="w-1/4 p-4" style={{ maxWidth: '295px', height: '827px' }}>
+        <div className="flex w-full justify-between dark:bg-slate-900 dark:text-gray-100 transition duration-300 ">
+          <div className="w-1/4 p-4 dark:bg-slate-900" style={{ height: '827px' }}>
             <h1 className="text-xl font-bold mb-4">Filter By</h1>
             <CarFilter carData={filteredCars} onFilter={handleFilter} />
           </div>
-          <div className="flex flex-col items-end w-3/4 p-4 ml-auto" style={{ width: '1146px', height: '827px', overflowY: 'auto' }}>
-            <div className="grid grid-cols-3 gap-4">
+          <div className=" w-3/4 flex flex-col p-7">
+            <div className="w-full flex flex-wrap justify-between gap-y-4">
               {carsToShow.map((car) => (
                 <Link to={`/car/${car.id}`} key={car.id}>
                   <CarCard car={car} />

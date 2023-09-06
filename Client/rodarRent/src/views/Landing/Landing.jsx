@@ -37,7 +37,6 @@ function Landing() {
                         <h1>Premium</h1>
                         <h1>Car Rental</h1>
                         <h1>In Argentina</h1>
-                        <volkswagen/>
                     </div>
                     <p>We offer professional car rental  in our range of high-end vehicles.</p>
                 </div>

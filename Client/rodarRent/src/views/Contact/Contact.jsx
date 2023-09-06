@@ -1,44 +1,67 @@
+import { useRef, useState } from "react";
 import { BiPhone, BiLocationPlus, BiMailSend } from "react-icons/bi";
 import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
 
 const Contact = () => {
+
+    const formRef = useRef(null)
+
+    const [dataContact, setDataContact] = useState({
+        name: "",
+        email: "",
+        phone:"",
+        message : ""
+    })
+
+    const handleChange = (event) =>{
+        const property = event.target.name
+        const value = event.target.value
+        setDataContact({...dataContact,[property]:value})
+    }
+
+    const handleSubmit = (event) =>{
+        event.preventDefault()
+        formRef.current.reset()
+        alert('Message send!')
+    }
+
     return (
         <div className="2xl:h-noNavDesktop lg:h-noNavLaptop px-20 py-10 transiotion duration-300 dark:bg-slate-900 dark:text-gray-100" >
             <h1 className=" text-4xl font-normal" >Get in Touch!</h1>
             <div className="flex border drop-shadow-md bg-white rounded-lg w-2/3 mx-auto mt-14 transition duration-300 dark:bg-slate-900 dark:text-gray-100" >
-                <form className="basis-3/4 p-5 relative" action="">
+                <form ref={formRef} className="basis-3/4 p-5 relative" action="">
                     <h2 className="text-2xl font-medium" >Send us a message</h2>
                     <div className=" mt-4" >
                         <div className="w-full flex justify-between">
                             <div className="flex w-2/5 flex-col" >
                                 <label htmlFor="name">Your Name:</label>
-                                <input className=" p-1 text-black rounded-lg mt-2 border drop-shadow-md" type="text" name="name" id="" />
+                                <input onChange={handleChange} className=" p-1 dark:bg-slate-950 rounded-lg mt-2 border drop-shadow-md" type="text" name="name" id="" />
                             </div>
                             <div className="flex w-2/5 flex-col" >
                                 <label htmlFor="email">E-mail:</label>
-                                <input className=" p-1 text-black rounded-lg mt-2 border drop-shadow-md" type="email" name="email" id="" />
+                                <input onChange={handleChange} className=" p-1 dark:bg-slate-950 rounded-lg mt-2 border drop-shadow-md" type="email" name="email" id="" />
                             </div>
                         </div>
                         <div className="w-full flex justify-between mt-3" >
                             <div className="flex w-2/5 flex-col" >
                                 <label htmlFor="phone">Phone:</label>
-                                <input className=" p-1 text-black rounded-lg mt-2 border drop-shadow-md" type="text" name="phone" id="" />
+                                <input onChange={handleChange} className=" p-1 dark:bg-slate-950 rounded-lg mt-2 border drop-shadow-md" type="text" name="phone" id="" />
                             </div>
                             <div className="flex w-2/5 flex-col" >
                                 <label htmlFor="city">City</label>
-                                <input className=" p-1 text-black rounded-lg mt-2 border drop-shadow-md" type="text" name="phone" />
+                                <input onChange={handleChange} className=" p-1 dark:bg-slate-950 rounded-lg mt-2 border drop-shadow-md" type="text" name="phone" />
                             </div>
                         </div>
                         <div className="w-full flex mt-3">
                             <div className="flex-col w-full">
                                 <label htmlFor="message">Message</label>
-                                <textarea className=" p-1 text-black w-full rounded-lg mt-2 border drop-shadow-md resize-none" name="message" id="" cols="30" rows="10"></textarea>
+                                <textarea onChange={handleChange} className=" p-1 dark:bg-slate-950 w-full rounded-lg mt-2 border drop-shadow-md resize-none" name="message" id="" cols="30" rows="10"></textarea>
                             </div>
                         </div>
                     </div>
                     <div className="flex justify-end mt-3" >
-                        <button className=" bg-blue px-8 drop-shadow-md text-gray-100 rounded-xl transition duration-300 hover:drop-shadow-none" >
+                        <button onClick={handleSubmit} className=" bg-blue px-8 drop-shadow-md text-gray-100 rounded-xl transition duration-300 hover:drop-shadow-none" >
                             Send
                         </button>
                     </div>
