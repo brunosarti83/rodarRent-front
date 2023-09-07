@@ -52,12 +52,14 @@ const Login = () => {
           customer.email === loginData.email && customer.password === loginData.password
         );
       });
-  
+  console.log(customers);
       if (matchingCustomer) {
         // Successful login, set isLoggedIn to true or navigate to a new page
         setIsLoggedIn(true);
-        toast('Welcome!'+ loginData.email, {position: "top-left"});
-        navigate("/cars")
+        toast.success('Welcome!, '+loginData.email, {position: "top-left"});//Mensaje al inicio en vista de usuario
+        setTimeout(() => {
+          navigate("/cars")
+        }, "4000");
         // You can navigate to a new page or update the UI as needed
       } else {
         // Invalid credentials, display an error message
@@ -164,7 +166,7 @@ const Login = () => {
       </div>
       <ToastContainer
         position="top-left"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

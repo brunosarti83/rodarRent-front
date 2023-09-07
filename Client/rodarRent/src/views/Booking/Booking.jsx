@@ -18,7 +18,7 @@ const handleChange = ()=>{
 }
 const handleSubmit = (event)=>{
     event.preventDefault()
-    toast("Change input");
+    toast.success("Deal!");
 
 }
   return (
@@ -110,7 +110,7 @@ const handleSubmit = (event)=>{
             <img className="relative h-full m-1" src={mercadoPagoImg} alt="Mercado Pago Image" />
           </div>
           <div className="flex justify-end">
-            <button className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white" onClick={handleSubmit}>Reserve Deal</button>
+            <button className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white" onClick={handleSubmit}>Reserve Deal</button>
           </div>
         </div>
       </form>
