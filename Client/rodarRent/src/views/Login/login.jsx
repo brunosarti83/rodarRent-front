@@ -16,11 +16,6 @@ const Login = () => {
   };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const user = {
-    email: "admin@gmail.com",
-    password: "Admin1",
-  };
-
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -42,31 +37,19 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      // Fetch customer data from your API or database
-      const response = await axios.get('http://localhost:3001/customers');
-      const customers = response.data.data; // Assuming your API returns an array of customers
+      const response = await axios.post('http://localhost:3001/customers/login',loginData);
       
-      // Find a customer with matching email and password
-      const matchingCustomer = customers.find((customer) => {
-        return (
-          customer.email === loginData.email && customer.password === loginData.password
-        );
-      });
-  
-      if (matchingCustomer) {
-        // Successful login, set isLoggedIn to true or navigate to a new page
+      if (response.status===200) {
         setIsLoggedIn(true);
-        toast('Welcome!'+ loginData.email, {position: "top-left"});
-        navigate("/cars")
-        // You can navigate to a new page or update the UI as needed
+        toast.success('Welcome!, '+loginData.email, {position: "top-left"});//Mensaje al inicio en vista de usuario
+        setTimeout(() => {
+          navigate("/cars")
+        }, "4000");
       } else {
-        // Invalid credentials, display an error message
         toast.error('Invalid login credentials', {position: "top-left"});
-        // You can set an error state to display an error message to the user
       }
     } catch (error) {
-      // Handle API request errors or other errors
-      console.error('Error during login:', error);
+      toast.error('Error during login:', error);
     }
   };
 
@@ -74,7 +57,7 @@ const Login = () => {
     <div className="w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md border bg-white rounded-l-3xl h-form  dark:bg-slate-900">
         <form className="px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
-          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? user.email : ''}</h1>
+          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? loginData.email : ''}</h1>
           <h6 className="font-poppins pb-6 text-gray">
             Please enter your details
           </h6>
@@ -164,7 +147,7 @@ const Login = () => {
       </div>
       <ToastContainer
         position="top-left"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
