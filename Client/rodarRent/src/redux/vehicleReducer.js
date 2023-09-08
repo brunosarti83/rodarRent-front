@@ -10,7 +10,7 @@ const initialState = {
   error: null,
 };
 
-function reducer(state = initialState, {type,payload}) {
+function vehicleReducer(state = initialState, {type,payload}) {
   switch (type) {
     case GET_VEHICLE:
       if (payload.error) {
@@ -41,4 +41,4 @@ function reducer(state = initialState, {type,payload}) {
   }
 }
 
-export default reducer;
+export default vehicleReducer;

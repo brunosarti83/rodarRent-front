@@ -5,6 +5,9 @@ const routesHelper = {
     register: '/register',
     aboutUs: '/aboutUs',
     contact: '/contact',
+    dashboardCustomer: '/customer/:id',
+    allCustomers: '/allCustomers',
+    allBookings: '/allBookings',
     detail: "/cars/:id",
     booking: '/booking',
     admin: '/admin'

@@ -2,14 +2,6 @@ import { useEffect } from "react";
 import './style.css';
 
 const Loader = () => {
-    useEffect(() => {
-        const redirectTimeout = setTimeout(() => {
-
-            window.location.href = "/home/notfound";
-        }, 5000);
-
-        return () => clearTimeout(redirectTimeout);
-    }, []);
 
     return (
         <div className="loader">

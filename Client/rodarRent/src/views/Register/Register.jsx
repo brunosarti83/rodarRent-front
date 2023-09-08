@@ -74,11 +74,13 @@ function Register() {
   const handleSubmit = async (event) => {
       //console.log(data);
     event.preventDefault()
+    
     axios.post('http://localhost:3001/customers', data).then((response) =>{
       toast.success('Registered user!', {position: "top-left"});
       setTimeout(() => {
         navigate("/login")
       }, "4000");
+
     }).catch ((error) =>{
       toast.error(error, {position: "top-left"});
     })
