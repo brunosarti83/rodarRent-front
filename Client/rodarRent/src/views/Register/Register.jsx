@@ -74,7 +74,7 @@ function Register() {
   const handleSubmit = async (event) => {
       //console.log(data);
     event.preventDefault()
-    await axios.post('http://localhost:3001/customers', data).then(response=>{
+    axios.post('http://localhost:3001/customers', data).then((response) =>{
       toast.success('Registered user!', {position: "top-left"});
       setTimeout(() => {
         navigate("/login")
