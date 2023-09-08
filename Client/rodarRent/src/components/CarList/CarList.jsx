@@ -51,11 +51,9 @@ const CarList = () => {
               ))}
             </div>
             <div className="w-full mt-4">
-              {/* <Pagination
-                carList={filteredCars}
-                carsPerPage={carsPerPage}
-                onPageChange={onPageChange}
-              /> */}
+              <Pagination
+                response={vehicles}
+              />
             </div>
           </div>
         </div>

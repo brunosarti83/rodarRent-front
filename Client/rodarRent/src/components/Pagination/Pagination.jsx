@@ -1,8 +1,8 @@
 import{ useState } from 'react';
 
 const Pagination = ({ carList, carsPerPage, onPageChange }) => {
+  
   const [currentPage, setCurrentPage] = useState(1);
-
   const totalPages = Math.ceil(carList.length / carsPerPage);
 
   const handleClick = (pageNumber) => {
