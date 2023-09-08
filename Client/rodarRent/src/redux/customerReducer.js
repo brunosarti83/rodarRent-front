@@ -1,24 +1,24 @@
-import { GET_VEHICLE } from "./constants";
+import { GET_CUSTOMERS } from "./constants";
 
 const initialState = {
-  vehicles: [],
+  customers: [],
   aux: [],
   error: null,
 };
 
-function vehicleReducer(state = initialState, {type,payload}) {
+function customerReducer(state = initialState, { type, payload }) {
   switch (type) {
-    case GET_VEHICLE:
+    case GET_CUSTOMERS:
       if (payload.error) {
         return {
           ...state,
-          error:payload.error,
+          error: payload.error,
         };
       }
       return {
         ...state,
-        vehicles:payload,
-        aux:payload,
+        customers: payload,
+        aux: payload,
         error: null,
       };
     default:
@@ -26,4 +26,4 @@ function vehicleReducer(state = initialState, {type,payload}) {
   }
 }
 
-export default vehicleReducer;
+export default customerReducer;

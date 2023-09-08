@@ -5,8 +5,11 @@ const routesHelper = {
     register: '/register',
     aboutUs: '/aboutUs',
     contact: '/contact',
-    detail: "/cars/:id",
-    booking: '/booking'
+    detail: '/cars/:id',
+    booking: '/booking',
+    dashboardCustomer: '/customer/:id',
+    allCustomers: '/allCustomers',
+    allBookings: '/allBookings',
 }
 
 export default routesHelper

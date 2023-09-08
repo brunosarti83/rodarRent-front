@@ -1,14 +1,14 @@
-import { GET_VEHICLE } from "./constants";
+import { GET_ALLBOOKINGS } from "./constants";
 
 const initialState = {
-  vehicles: [],
+  bookings: [],
   aux: [],
   error: null,
 };
 
-function vehicleReducer(state = initialState, {type,payload}) {
+function bookingReducer(state = initialState, {type,payload}) {
   switch (type) {
-    case GET_VEHICLE:
+    case GET_ALLBOOKINGS:
       if (payload.error) {
         return {
           ...state,
@@ -17,7 +17,7 @@ function vehicleReducer(state = initialState, {type,payload}) {
       }
       return {
         ...state,
-        vehicles:payload,
+        bookings:payload,
         aux:payload,
         error: null,
       };
@@ -26,4 +26,4 @@ function vehicleReducer(state = initialState, {type,payload}) {
   }
 }
 
-export default vehicleReducer;
+export default bookingReducer;
