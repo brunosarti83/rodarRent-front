@@ -74,9 +74,13 @@ function Register() {
   const handleSubmit = async (event) => {
       //console.log(data);
     event.preventDefault()
-    await axios.post('http://localhost:3001/customers', data).then(response=>{
+    
+    axios.post('http://localhost:3001/customers', data).then((response) =>{
       toast.success('Registered user!', {position: "top-left"});
-      navigate("/login")
+      setTimeout(() => {
+        navigate("/login")
+      }, "4000");
+
     }).catch ((error) =>{
       toast.error(error, {position: "top-left"});
     })
@@ -471,7 +475,7 @@ function Register() {
       </div>
       <ToastContainer
       position="top-left"
-      autoClose={5000}
+      autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick

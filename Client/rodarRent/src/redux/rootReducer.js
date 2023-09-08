@@ -7,6 +7,8 @@ const rootReducer = combineReducers({
     vehicleReducer,
     customerReducer, 
     bookingReducer,
+    veh: vehicleReducer, 
+
 });
 
 export default rootReducer;

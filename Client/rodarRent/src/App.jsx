@@ -13,6 +13,8 @@ import AboutUs from './views/AboutUs/AboutUs'
 import CustomerList from './components/CustomerList/CustomerList';
 import CustomerDetail from './components/CustomerDetail/CustomerDetail';
 import BookingList from './components/BookingList/BookingList';
+import Admin from './views/Admin/Admin';
+
 
 function App() {
   const [darkMode, setDarkmode] = useState(true)
@@ -42,8 +44,7 @@ function App() {
         <Route path={routesHelper.allCustomers} element = {<CustomerList/>}/>
         <Route path={routesHelper.dashboardCustomer} element = {<CustomerDetail/>}/>
         <Route path={routesHelper.allBookings} element = {<BookingList/>}/>
-        
-        
+        <Route path={routesHelper.admin} element={<Admin/>} />
       </Routes>
     </div>
   );
