@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader';
@@ -37,24 +37,24 @@ export default function Detail({ saveState }) {
   }, [id]);
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col">
+    <div className="bg-gray-100 w-full h-noNavDesktop flex flex-col">
       {(!vehicle.model && <Loader />) || (
-        <div className="flex-1 flex items-center justify-center">
-          <div className="max-w-screen-lg mx-auto bg-white p-4 rounded shadow-lg">
+        <div className="w-full flex ">
+          <div className="w-full h-full flex relative items-end">
             <Link
               to="/cars"
-              className="text-blue-500 hover:text-blue-700 mb-4"
+              className="text-blue-500 absolute hover:text-blue-700 mb-4"
               onClick={() => {
                 saveState();
               }}
             >
               Back
             </Link>
+            <div className="w-1/3">
+              <img src={vehicle.image} alt={vehicle.model} className="w-full h-auto" />
+            </div>
             <div className="flex">
-              <div className="w-1/2">
-                <img src={vehicle.image} alt={vehicle.model} className="w-full h-auto" />
-              </div>
-              <div className="w-1/2 p-4">
+              <div className="p-4">
                 <h2 className="text-4xl font-semibold mb-2">
                   {vehicle.brand} {vehicle.model}
                 </h2>
