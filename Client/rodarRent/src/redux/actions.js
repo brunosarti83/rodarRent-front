@@ -1,14 +1,17 @@
 import axios from "axios";
-import { GET_VEHICLE } from "./constants";
+import { GET_VEHICLE, SET_FILTERS } from "./constants";
+import queryMaker from "../helpers/queryMaker";
+import { setSessionStorage } from "../helpers/storage";
 
-export function getVehicle() {
+export function getVehicle(filterObject) {
+  const queryString = queryMaker(filterObject)
   return function (dispatch) {
     return axios
-      .get("http://localhost:3001/vehicles/")
+      .get("http://localhost:3001/vehicles/" + queryString)
       .then((response) => {
         dispatch({
           type: GET_VEHICLE,
-          payload: response.data.results,
+          payload: response.data,
         });
       })
       .catch((error) => {
@@ -37,17 +40,31 @@ export function getVehicleById() {
       });
   };
 }
-export function getAvaiability(search){
-  const {pickUp, dropOff} = search
+export function getAvailability(queryObject){
+  const queryString = queryMaker(queryObject)
   return async function(dispatch){
       try {
-        const response = await axios.get(`http://localhost:3001/available?startDate=${pickUp}&finishDate=${dropOff}`)
+        const response = await axios.get(`http://localhost:3001/available/`+ queryString)
         dispatch({
           type: GET_VEHICLE,
-          payload: response.data.results
+          payload: response.data
         })
       } catch (error) {
         alert(error)
       }
+  }
+}
+export function setFilters(filterObject){
+  try {
+    setSessionStorage('filterObject', filterObject)
+    return {
+      type: SET_FILTERS,
+      payload: filterObject
+    }
+  } catch (error) {
+    return {
+      type: SET_FILTERS,
+      payload: { error: error.message }
+    }
   }
 }
