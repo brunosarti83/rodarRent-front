@@ -3,33 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFilters } from "../../redux/actions";
 
 const CarFilter = () => {
-  // estos seteos originales podrían venir todos en blanco menos range y no importaría ??
-  // const [selectedBrand, setSelectedBrand] = useState("");
-  // const [selectedModel, setSelectedModel] = useState("");
-  // const [selectedTransmissions, setSelectedTransmissions] = useState([]);
-  // const [selectedFuelTypes, setSelectedFuelTypes] = useState([]);
-  // const [selectedPassengers, setSelectedPassengers] = useState(new Set());
-  // const [priceRange, setPriceRange] = useState([130, 300]);
-  //const [previousState, setPreviousState] = useState(null);
-  ///////////////
+  
   const dispatch = useDispatch();
   const filterObject = useSelector((state) => state.veh.filterObject);
   const availableFilterOptions = useSelector(
     (state) => state.veh.vehicles.availableFilterOptions
   );
-  const [filters, setFilters] = useState({
+  const [localFilters, setLocalFilters] = useState({
     ...filterObject,
     brand: filterObject.brand || "",
     model: filterObject.model || "",
     transmission: filterObject.transmission || "",
     fuel: filterObject.fuel || '',
-    passengers: filterObject.passengers || '',
-    priceRange: [130, 300],
+    passengers: Number(filterObject.passengers) || "",
+    pricePerDayMax: filterObject.pricePerDayMax || 300,
   });
-
-  const handleApplyFilter = () => {
-    dispatch(setFilters(filters));
-  };
 
   const resetFilters = () => {
     dispatch(
@@ -37,17 +25,19 @@ const CarFilter = () => {
         ...filterObject,
         brand: "",
         model: "",
-        transmissions: [],
-        fuelTypes: [],
-        passengers: [],
-        priceRange: [130, 300],
+        transmissions: '',
+        fuelTypes: '',
+        passengers: "",
+        pricePerDayMax: 300,
       })
     );
   };
 
   const onChangeFilter = (e) => {
     const filter = e.target.name;
-    
+    const value = (filterObject[filter] !== e.target.value) ? e.target.value : '';
+    setLocalFilters({...localFilters, [filter]: value})
+    dispatch(setFilters({...filterObject, [filter]: value}))
   } 
 
   return (
@@ -64,12 +54,10 @@ const CarFilter = () => {
               <input
                 className="mr-2 peer  h-5 w-5 rounded-sm drop-shadow-md bg-white checked:bg-blue checked:border-none"
                 type="checkbox"
+                name="transmission"
                 value={transmission}
-                checked={filters.transmission === transmission}
-                onChange={() => {
-                  
-                  }
-                }}
+                checked={localFilters.transmission === transmission}
+                onChange= {onChangeFilter}
               />
               {transmission}
             </label>
@@ -80,28 +68,17 @@ const CarFilter = () => {
         <h3 className="text-md font-semibold mb-2">Fuel Types</h3>
         <hr />
         <div className="flex flex-col justify-center mt-2">
-          {uniqueFuelTypes.map((fuelType) => (
-            <label className="text-lg" key={fuelType}>
+          {availableFilterOptions.fuelTypes.map((fuel) => (
+            <label className="text-lg" key={fuel}>
               <input
                 type="checkbox"
                 className="mr-2 peer h-5 w-5 rounded-sm drop-shadow-md bg-white checked:bg-blue checked:border-none"
-                value={fuelType}
-                checked={selectedFuelTypes.includes(fuelType)}
-                onChange={() => {
-                  const updatedSelectedFuelTypes = [...selectedFuelTypes];
-                  if (selectedFuelTypes.includes(fuelType)) {
-                    updatedSelectedFuelTypes.splice(
-                      updatedSelectedFuelTypes.indexOf(fuelType),
-                      1
-                    );
-                  } else {
-                    updatedSelectedFuelTypes.push(fuelType);
-                  }
-                  setSelectedFuelTypes(updatedSelectedFuelTypes);
-                  saveState();
-                }}
+                name="fuel"
+                value={fuel}
+                checked={localFilters.fuel === fuel}
+                onChange={onChangeFilter}
               />
-              {fuelType}
+              {fuel}
             </label>
           ))}
         </div>
@@ -110,25 +87,17 @@ const CarFilter = () => {
         <h3 className="text-md font-semibold mb-2">Passengers</h3>
         <hr />
         <div className="flex mt-2">
-          {uniquePassengers.map((passengerCount) => (
-            <label key={passengerCount}>
+          {availableFilterOptions.passengers.map((passengers) => (
+            <label key={passengers}>
               <input
                 type="checkbox"
-                value={passengerCount}
+                name="passengers"
+                value={passengers}
                 className="mr-2"
-                checked={selectedPassengers.has(passengerCount)}
-                onChange={() => {
-                  const updatedSelectedPassengers = new Set(selectedPassengers);
-                  if (selectedPassengers.has(passengerCount)) {
-                    updatedSelectedPassengers.delete(passengerCount);
-                  } else {
-                    updatedSelectedPassengers.add(passengerCount);
-                  }
-                  setSelectedPassengers(updatedSelectedPassengers);
-                  saveState();
-                }}
+                checked={localFilters.passengers === passengers}
+                onChange={onChangeFilter}
               />
-              {passengerCount}
+              {passengers}
             </label>
           ))}
         </div>
@@ -138,11 +107,12 @@ const CarFilter = () => {
         <hr />
         <select
           className="border mt-3 rounded p-2 w-full dark:bg-slate-950"
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
+          name="brand"
+          value={filterObject.brand}
+          onChange={onChangeFilter}
         >
           <option value="">All Brands</option>
-          {uniqueBrands.map((brand) => (
+          {availableFilterOptions.brands.map((brand) => (
             <option key={brand} value={brand}>
               {brand}
             </option>
@@ -153,11 +123,12 @@ const CarFilter = () => {
         <h3 className="text-md font-semibold mb-2">Model</h3>
         <select
           className="border rounded p-2 w-full dark:bg-slate-950"
-          value={selectedModel}
-          onChange={(e) => setSelectedModel(e.target.value)}
+          name="model"
+          value={filterObject.model}
+          onChange={onChangeFilter}
         >
           <option value="">All Models</option>
-          {uniqueModels.map((model) => (
+          {availableFilterOptions.models.map((model) => (
             <option key={model} value={model}>
               {model}
             </option>
@@ -172,20 +143,18 @@ const CarFilter = () => {
           type="range"
           min={130}
           max={300}
-          value={priceRange[1]}
-          onChange={(e) =>
-            setPriceRange([priceRange[0], Number(e.target.value)])
-          }
+          name="pricePerDayMax"
+          value={localFilters.pricePerDayMax}
+          onChange={onChangeFilter}
         />
         <span>
-          ${priceRange[0]} - ${priceRange[1]}
+          ${130} - ${localFilters.pricePerDayMax}
         </span>
       </div>
       <div>
         <button
           onClick={() => {
             resetFilters();
-            restorePreviousState();
           }}
           className="bg-blue text-white font-semibold py-2 px-4 rounded"
         >
