@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 // Hooks & tools
 import { useState, useEffect } from "react";
-import { getAvailability } from "../../redux/actions";
-import { Link } from "react-router-dom";
+import { getAvailability, setFilters } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 // Components
 import CarCard from "../CarCard/CarCard";
@@ -16,17 +17,19 @@ const CarList = () => {
   const filterObject = useSelector((state) => state.veh.filterObject);
 
   useEffect(() => {
-    setLoading(true);
+    loading || setLoading(true); // revisar lo de loading || condicional si no es true
     dispatch(getAvailability(filterObject)).then(() => {
       setLoading(false);
     });
-  }, [dispatch, filterObject]);
+  }, [filterObject]);
 
   const onPageChange = (pageNumber) => {
-    // setFilterObject({
-    //   ...filterObject,
-    //   offset: (pageNumber - 1) * carsPerPage,
-    // });
+    dispatch(
+      setFilters({
+        ...filterObject,
+        offset: (pageNumber - 1) * filterObject.limit,
+      })
+    );
   };
 
   return (
@@ -45,17 +48,11 @@ const CarList = () => {
           <div className=" w-3/4 flex flex-col p-7">
             <div className="w-full flex flex-wrap justify-between gap-y-4">
               {vehicles.results.map((car) => (
-                <Link to={`/car/${car.id}`} key={car.id}>
-                  <CarCard car={car} />
-                </Link>
+                <CarCard car={car} key={car.id} />
               ))}
             </div>
             <div className="w-full mt-4">
-              {/* <Pagination
-                carList={filteredCars}
-                carsPerPage={carsPerPage}
-                onPageChange={onPageChange}
-              /> */}
+              <Pagination vehicles={vehicles} onPageChange={onPageChange} />
             </div>
           </div>
         </div>

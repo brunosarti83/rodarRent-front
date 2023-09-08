@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilters } from "../../redux/actions";
 
 const CarFilter = () => {
-  
   const dispatch = useDispatch();
   const filterObject = useSelector((state) => state.veh.filterObject);
   const availableFilterOptions = useSelector(
@@ -14,7 +13,7 @@ const CarFilter = () => {
     brand: filterObject.brand || "",
     model: filterObject.model || "",
     transmission: filterObject.transmission || "",
-    fuel: filterObject.fuel || '',
+    fuel: filterObject.fuel || "",
     passengers: Number(filterObject.passengers) || "",
     pricePerDayMax: filterObject.pricePerDayMax || 300,
   });
@@ -25,20 +24,21 @@ const CarFilter = () => {
         ...filterObject,
         brand: "",
         model: "",
-        transmissions: '',
-        fuelTypes: '',
+        transmission: "",
+        fuelTypes: "",
         passengers: "",
         pricePerDayMax: 300,
+        offset: 0,
       })
     );
   };
 
   const onChangeFilter = (e) => {
     const filter = e.target.name;
-    const value = (filterObject[filter] !== e.target.value) ? e.target.value : '';
-    setLocalFilters({...localFilters, [filter]: value})
-    dispatch(setFilters({...filterObject, [filter]: value}))
-  } 
+    const value = filterObject[filter] !== e.target.value ? e.target.value : "";
+    setLocalFilters({ ...localFilters, [filter]: value });
+    dispatch(setFilters({ ...filterObject, [filter]: value, offset: 0 }));
+  };
 
   return (
     <div
@@ -57,7 +57,7 @@ const CarFilter = () => {
                 name="transmission"
                 value={transmission}
                 checked={localFilters.transmission === transmission}
-                onChange= {onChangeFilter}
+                onChange={onChangeFilter}
               />
               {transmission}
             </label>
