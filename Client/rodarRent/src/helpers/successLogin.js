@@ -1,15 +1,11 @@
+import { setLocalStorage } from './storage';
+import { toast } from 'react-toastify';
 
-
-export const checkLogin = (response,loginData) => {
-if (response.status===200) {
-    setLocalStorage
-    toast.success('Welcome!, '+loginData.email, {position: "top-left"});//Mensaje al inicio en vista de usuario
-    setTimeout(() => {
-      navigate("/cars")
-    }, "4000");
-  } else {
-    toast.error('Invalid login credentials', {position: "top-left"});
-  }
-
-}
-
+export const successLogin = (customerData, navigate) => {
+  
+  //setLocalStorage('loginData', customerData);
+  setTimeout(() => {
+    navigate('/cars');
+  }, '4000');
+  toast.success('Welcome!, ' + customerData.given_name, { position: 'top-left' }); //Mensaje al inicio en vista de usuario
+};

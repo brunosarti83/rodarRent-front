@@ -14,7 +14,8 @@ const routesHelper = {
     allBookings: '/allBookings',
     detail: "/cars/:id",
     booking: '/booking',
-    admin: '/admin'
+    admin: '/admin',
+    googleAuthAux: '/googleAuthAux'
 }
 
 export default routesHelper

@@ -86,6 +86,11 @@ function Register() {
       });
   };
 
+  const handleGoogleReg = async (event) => {
+    event.preventDefault();
+    window.location.href = routesHelper.baseBackUrl+routesHelper.authGoogle
+  }
+
   return (
     <div className='max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center'>
       <div className='sticky drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900'>

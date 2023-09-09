@@ -8,6 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { successLogin } from '../../helpers/successLogin';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,13 +40,8 @@ const Login = () => {
     event.preventDefault();
     try {
       const response = await axios.post('http://localhost:3001/customers/login',loginData);
-      
       if (response.status===200) {
-        setIsLoggedIn(true);
-        toast.success('Welcome!, '+loginData.email, {position: "top-left"});//Mensaje al inicio en vista de usuario
-        setTimeout(() => {
-          navigate("/cars")
-        }, "4000");
+        successLogin(response.data,navigate)
       } else {
         toast.error('Invalid login credentials', {position: "top-left"});
       }
