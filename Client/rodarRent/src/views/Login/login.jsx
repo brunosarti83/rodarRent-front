@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import validate from "./validateLogin";
 import formImage from '../../assets/img/loginRegister/login.png'
@@ -42,32 +43,18 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      // Fetch customer data from your API or database
-      const response = await axios.get('http://localhost:3001/customers');
-      const customers = response.data.data; // Assuming your API returns an array of customers
+      const response = await axios.post('http://localhost:3001/customers/login',loginData);
       
-      // Find a customer with matching email and password
-      const matchingCustomer = customers.find((customer) => {
-        return (
-          customer.email === loginData.email && customer.password === loginData.password
-        );
-      });
-  console.log(customers);
-      if (matchingCustomer) {
-        // Successful login, set isLoggedIn to true or navigate to a new page
+      if (response.status===200) {
         setIsLoggedIn(true);
         toast.success('Welcome!, '+loginData.email, {position: "top-left"});//Mensaje al inicio en vista de usuario
         setTimeout(() => {
           navigate("/cars")
         }, "4000");
-        // You can navigate to a new page or update the UI as needed
       } else {
-        // Invalid credentials, display an error message
         toast.error('Invalid login credentials', {position: "top-left"});
-        // You can set an error state to display an error message to the user
       }
     } catch (error) {
-      // Handle API request errors or other errors
       console.error('Error during login:', error);
     }
   };
@@ -125,7 +112,7 @@ const Login = () => {
             </button>
             <a
               className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
-              href="#"
+              href={routesHelper.baseBackUrl+routesHelper.authGoogle}
             >
               <img
                 className="relative w-6 m-1"

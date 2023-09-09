@@ -36,6 +36,7 @@ function App() {
         <Route path={routesHelper.booking} element={<Booking />} />
         <Route path={routesHelper.aboutUs} element={<AboutUs />} />
         <Route path={routesHelper.contact} element={<Contact />} />
+        <Route path={routesHelper.contact} element={<Contact />} />
       </Routes>
     </div>
   );
