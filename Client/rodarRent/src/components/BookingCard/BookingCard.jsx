@@ -1,12 +1,12 @@
 import React from 'react';
 
-const BookingCard = ({ booking }) => {
+const BookingCard = ({ booking, formattedStartDate, formattedFinishDate }) => {
   return (
     <div>
       <div>
         <p><strong>ID:</strong> {booking.id}</p>
-        <p><strong>Start Date:</strong> {booking.startDate}</p>
-        <p><strong>Finish Date:</strong> {booking.finishDate}</p>
+        <p><strong>Start Date:</strong> {formattedStartDate}</p>
+        <p><strong>Finish Date:</strong> {formattedFinishDate}</p>
         <p><strong>Pick Up Location ID:</strong> {booking.pickUpLocationId}</p>
         <p><strong>Return Location ID:</strong> {booking.returnLocationId}</p>
         <p><strong>State Booking:</strong> {booking.stateBooking}</p>
@@ -21,3 +21,5 @@ const BookingCard = ({ booking }) => {
 };
 
 export default BookingCard;
+
+
