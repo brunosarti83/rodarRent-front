@@ -72,7 +72,6 @@ function Register() {
   };
 
   const handleSubmit = async (event) => {
-    //console.log(data);
     event.preventDefault();
     await axios
       .post('http://localhost:3001/customers', data)
@@ -85,10 +84,6 @@ function Register() {
       .catch((error) => {
         toast.error(error, { position: 'top-left' });
       });
-  };
-
-  const handleGoogleReg = () => {
-    navigate(routesHelper.registerGoogle);
   };
 
   return (

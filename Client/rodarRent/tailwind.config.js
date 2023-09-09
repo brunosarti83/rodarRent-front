@@ -17,7 +17,8 @@ export default {
         noNavDesktop:'93.1vh',
         noNavLaptop:'91.2vh',
         form:'738px',
-        card:'328px'
+        card:'328px',
+        chart:'450px'
       },
       width:{
         '100':'29rem',

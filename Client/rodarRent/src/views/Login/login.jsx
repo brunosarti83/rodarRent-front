@@ -17,11 +17,6 @@ const Login = () => {
   };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const user = {
-    email: "admin@gmail.com",
-    password: "Admin1",
-  };
-
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -56,6 +51,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Error during login:', error);
+      toast.error('Error during login:', error);
     }
   };
 
@@ -63,7 +59,7 @@ const Login = () => {
     <div className="w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md border bg-white rounded-l-3xl h-form  dark:bg-slate-900">
         <form className="px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
-          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? user.email : ''}</h1>
+          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? loginData.email : ''}</h1>
           <h6 className="font-poppins pb-6 text-gray">
             Please enter your details
           </h6>
