@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import { getCustomerDetailsUrl, updateCustomerInfoUrl } from '../../helpers/routes';
-import validateRegister from '../../views/Register/validateRegister'; // Importa la función de validación
+import validateRegister from '../../views/Register/validateRegister'; 
 
 const EditCustomer = () => {
   const { id } = useParams();
@@ -67,13 +67,12 @@ const EditCustomer = () => {
         body: JSON.stringify(editedFields),
       });
 
-      // Verifica si la solicitud fue exitosa (código de respuesta 200)
+
       if (response.ok) {
         const updatedData = await response.json();
         console.log('Datos actualizados:', updatedData);
   
       } else {
-        // Si la solicitud no fue exitosa, maneja el error aquí
         console.error('Error en la solicitud:', response.statusText);
       }
     } catch (error) {
@@ -85,7 +84,7 @@ const EditCustomer = () => {
     return <Loader />;
   }
 
-  const errors = validateRegister(editedFields); // Aplica las validaciones
+  const errors = validateRegister(editedFields);
 
   return (
     <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
@@ -227,7 +226,7 @@ const EditCustomer = () => {
             <button
               className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
               onClick={handleSaveAndBack}
-              disabled={Object.keys(errors).length > 0} // Deshabilita el botón si hay errores de validación
+              disabled={Object.keys(errors).length > 0}
             >
               Save
             </button>
