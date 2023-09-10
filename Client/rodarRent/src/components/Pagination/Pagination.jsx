@@ -12,8 +12,10 @@ const Pagination = ({ vehicles, onPageChange }) => {
         <li
           key={i}
           onClick={() => handleClick(i)}
-          className={`cursor-pointer ${
-            vehicles.currentPage === i ? "font-semibold" : "font-normal"
+          className={`cursor-pointer py-1 px-3 drop-shadow-lg border-none rounded-lg ${
+            vehicles.currentPage === i
+              ? "font-semibold text-white bg-blue drop-shadow-lg"
+              : "font-normal"
           }`}
         >
           {i}
@@ -26,7 +28,7 @@ const Pagination = ({ vehicles, onPageChange }) => {
   return (
     <div>
       <div className="flex justify-center space-x-2">
-        <ul className="flex space-x-2">{renderPageNumbers()}</ul>
+        <ul className="flex space-x-2 font-poppins">{renderPageNumbers()}</ul>
       </div>
     </div>
   );

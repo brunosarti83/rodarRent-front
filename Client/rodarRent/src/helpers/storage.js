@@ -1,5 +1,4 @@
-
-export function getSessionStorage (key) {
+export function getSessionStorage(key) { //se borra al cerrar pestaña
     try {
         const item = window.sessionStorage.getItem(key)
         if (item) {
@@ -11,18 +10,17 @@ export function getSessionStorage (key) {
     }
 }
 
-export function setSessionStorage (key, value) {
+export function setSessionStorage(key, value) {
     try {
         const stringValue = JSON.stringify(value)
-        window.sessionStorage.setItem(key,stringValue)
+        window.sessionStorage.setItem(key, stringValue)
         return value
     } catch (error) {
         console.error(error.message)
     }
 }
 
-
-export function getLocalStorage (key) {
+export function getLocalStorage(key) { //se borra al borrar historial de navegador
     try {
         const item = window.localStorage.getItem(key)
         if (item) {
@@ -34,12 +32,20 @@ export function getLocalStorage (key) {
     }
 }
 
-export function setlocalStorage (key, value) {
+export function setLocalStorage(key, value) {
     try {
         const stringValue = JSON.stringify(value)
-        window.localStorage.setItem(key,stringValue)
+        window.localStorage.setItem(key, stringValue)
         return value
     } catch (error) {
         console.error(error.message)
+    }
+}
+
+export function removeLocalStorage(key) {
+    try {
+        window.localStorage.removeItem(key);
+    } catch (error) {
+        console.error(error.message);
     }
 }

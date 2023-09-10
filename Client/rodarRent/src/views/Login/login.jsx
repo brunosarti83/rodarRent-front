@@ -1,20 +1,22 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import validate from "./validateLogin";
 import formImage from '../../assets/img/loginRegister/login.png'
 import { Link } from "react-router-dom";
 import routesHelper from "../../helpers/routes";
-import axios from "axios";
+import { ToastContainer} from 'react-toastify';
+import {useDispatch} from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import {logIn} from '../../redux/actions'
 import "react-toastify/dist/ReactToastify.css";
 
+
 const Login = () => {
-  const navigate = useNavigate();
+
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const btnState = async (err) => {
     if (Object.keys(err).length === 0) setDisabledSubmit(false);
   };
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -34,30 +36,19 @@ const Login = () => {
     btnState(validate({ ...loginData, [property]: value }))
   };
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
   const handleLogin = async (event) => {
     event.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3001/customers/login',loginData);
-      
-      if (response.status===200) {
-        setIsLoggedIn(true);
-        toast.success('Welcome!, '+loginData.email, {position: "top-left"});//Mensaje al inicio en vista de usuario
-        setTimeout(() => {
-          navigate("/cars")
-        }, "4000");
-      } else {
-        toast.error('Invalid login credentials', {position: "top-left"});
-      }
-    } catch (error) {
-      toast.error('Error during login:', error);
-    }
+    dispatch(logIn(loginData,navigate))
   };
 
   return (
     <div className="w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md border bg-white rounded-l-3xl h-form  dark:bg-slate-900">
         <form className="px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
-          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? loginData.email : ''}</h1>
+          <h1 className="font-poppins font-medium  text-4xl">Welcome back!</h1>
           <h6 className="font-poppins pb-6 text-gray">
             Please enter your details
           </h6>
@@ -106,7 +97,7 @@ const Login = () => {
             </button>
             <a
               className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
-              href="#"
+              href={routesHelper.baseBackUrl+routesHelper.authGoogle}
             >
               <img
                 className="relative w-6 m-1"
