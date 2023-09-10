@@ -2,7 +2,7 @@ import React from 'react';
 
 const WelcomeCustomer = ({ customer, onLogout }) => {
   return (
-    <div className="flex justify-between items-center w-full">
+    <div className="mt-4 flex justify-between mx-[3.5rem]">
       {customer && (
         <div className="flex items-center">
           <p className="text-3xl text-black font-bold">
@@ -13,7 +13,7 @@ const WelcomeCustomer = ({ customer, onLogout }) => {
       {customer && (
         <div>
           <button
-            className=" bg-blue basis-1/4 p-6 text-gray-100 rounded-r-lg" 
+            className=" bg-blue basis-2/4 p-8 text-gray-100 rounded-lg" 
             onClick={onLogout}
           >
             Log out

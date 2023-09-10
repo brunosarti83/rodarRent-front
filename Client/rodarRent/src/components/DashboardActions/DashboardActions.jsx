@@ -5,7 +5,7 @@ import DashboardActionsImg from "../../assets/img/dashboardClient.webp";
 
 const DashboardActions = ({ customerId }) => {
   return (
-    <div className="w-96 h-200 absolute top-128 right-32 rounded-t-lg p-4 flex flex-col items-center space-y-4 overflow-hidden">
+    <div className="w-96 h-200 absolute top-128 right-10 rounded-t-lg p-4 flex flex-col items-center space-y-4 overflow-hidden">
       <div className="w-full h-2/3">
         <img src={DashboardActionsImg} alt="Dashboard" className="w-full h-full object-cover rounded-t-lg" />
       </div>
