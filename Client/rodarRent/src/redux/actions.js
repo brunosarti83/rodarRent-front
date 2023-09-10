@@ -122,7 +122,7 @@ export function getAvailability(queryObject){
           payload: response.data
         })
       } catch (error) {
-        alert(error)
+        console.log(error)
       }
   }
 }

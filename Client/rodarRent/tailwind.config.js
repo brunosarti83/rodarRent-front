@@ -23,7 +23,9 @@ export default {
       width:{
         '100':'29rem',
         '120':'39rem',
-        card: '400px'
+        card: '400px',
+        '840': '840px',
+        '769': '769px'
       },
       colors:{
         'blue':'#163C85',
