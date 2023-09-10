@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import validate from "./validateLogin";
 import formImage from '../../assets/img/loginRegister/login.png'
@@ -5,15 +6,17 @@ import { Link } from "react-router-dom";
 import routesHelper from "../../helpers/routes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { successLogin } from '../../helpers/successLogin';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const user = {
-    email: "admin@gmail.com",
-    password: "Admin1",
+  const [disabledSubmit, setDisabledSubmit] = useState(true);
+  const btnState = async (err) => {
+    if (Object.keys(err).length === 0) setDisabledSubmit(false);
   };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -30,36 +33,21 @@ const Login = () => {
     validate({ ...loginData, [property]: value });
     setLoginData({ ...loginData, [property]: value });
     setErrors(validate({ ...loginData, [property]: value }));
+    btnState(validate({ ...loginData, [property]: value }))
   };
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      // Fetch customer data from your API or database
-      const response = await axios.get('http://localhost:3001/customers');
-      const customers = response.data.data; // Assuming your API returns an array of customers
-      
-      // Find a customer with matching email and password
-      const matchingCustomer = customers.find((customer) => {
-        return (
-          customer.email === loginData.email && customer.password === loginData.password
-        );
-      });
-  
-      if (matchingCustomer) {
-        // Successful login, set isLoggedIn to true or navigate to a new page
-        setIsLoggedIn(true);
-        alert('Login successful');
-        navigate("/cars")
-        // You can navigate to a new page or update the UI as needed
+      const response = await axios.post('http://localhost:3001/customers/login',loginData);
+      if (response.status===200) {
+        successLogin(response.data,navigate)
       } else {
-        // Invalid credentials, display an error message
-        alert('Invalid login credentials');
-        // You can set an error state to display an error message to the user
+        toast.error('Invalid login credentials', {position: "top-left"});
       }
     } catch (error) {
-      // Handle API request errors or other errors
       console.error('Error during login:', error);
+      toast.error('Error during login:', error);
     }
   };
 
@@ -67,7 +55,7 @@ const Login = () => {
     <div className="w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md border bg-white rounded-l-3xl h-form  dark:bg-slate-900">
         <form className="px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
-          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? user.email : ''}</h1>
+          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? loginData.email : ''}</h1>
           <h6 className="font-poppins pb-6 text-gray">
             Please enter your details
           </h6>
@@ -108,25 +96,27 @@ const Login = () => {
           </span>
           <div className="flex flex-col mt-4 mb-4">
             <button
-              className="font-poppins  bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+              className={disabledSubmit ? "font-poppins bg-blue cursor-not-allowed rounded-lg p-2 m-2 text-white":"font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"}
               onClick={handleLogin}
+              disabled={disabledSubmit}
             >
-              Sing In
+              Sign In
             </button>
             <a
               className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
-              href="#"
+              href={routesHelper.baseBackUrl+routesHelper.authGoogle}
             >
               <img
                 className="relative w-6 m-1"
                 src="../../src/assets/img/google_logo.png"
                 alt="Google img"
               ></img>
-              Sing in with google
+              Sign in with google
             </a>
           </div>
           <hr className="ml-8 mr-8 text-gray" />
-          <div className="flex justify-center items-center m-5">
+          <div className="flex flex-col justify-center items-center m-5">
+          <div className="flex justify-center items-center m-4">
             <p className="font-poppins text-gray text-xs m-2">
               Don't have an account?
             </p>
@@ -134,9 +124,13 @@ const Login = () => {
               className="text-sm underline decoration-solid font-poppins"
             >
               <Link to={routesHelper.register}>
-                Sing up for free
+                Sign up for free
               </Link>
             </p>
+          </div>
+            <a className="font-poppins text-gray text-xs" href="#">
+              Forgot your password?
+            </a>
           </div>
         </form>
       </div>
@@ -149,6 +143,18 @@ const Login = () => {
           <img className="w-max " src={formImage} alt="side-login-car-image" />
         </div>
       </div>
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        />
     </div>
   );
 };

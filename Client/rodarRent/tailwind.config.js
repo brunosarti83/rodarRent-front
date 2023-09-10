@@ -17,15 +17,19 @@ export default {
         noNavDesktop:'93.1vh',
         noNavLaptop:'91.2vh',
         form:'738px',
-        card:'328px'
+        card:'328px',
+        chart:'450px'
       },
       width:{
         '100':'29rem',
         '120':'39rem',
-        card: '400px'
+        card: '400px',
+        '840': '840px',
+        '769': '769px'
       },
       colors:{
         'blue':'#163C85',
+        'red':'#C70039'
       }
     },
     fontFamily:{
