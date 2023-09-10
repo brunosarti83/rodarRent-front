@@ -9,6 +9,7 @@ import CarCard from "../CarCard/CarCard";
 import CarFilter from "../CarFilter/CarFilter";
 import Pagination from "../Pagination/Pagination";
 import Loader from "../Loader/Loader";
+import OrderCars from "../OrderCars/OrderCars";
 
 const CarList = () => {
   const [loading, setLoading] = useState(true);
@@ -32,6 +33,16 @@ const CarList = () => {
     );
   };
 
+  const onChangeOrder = (orderBy, direction) => {
+    dispatch(
+      setFilters({
+        ...filterObject,
+        orderBy,
+        direction,
+      })
+    );
+  };
+
   return (
     <div>
       {loading ? (
@@ -46,7 +57,11 @@ const CarList = () => {
             <CarFilter />
           </div>
           <div className=" w-3/4 flex flex-col p-7">
-            <div className="w-full flex flex-wrap justify-between gap-y-4">
+            <OrderCars
+              filterObject={filterObject}
+              onChangeOrder={onChangeOrder}
+            />
+            <div className="w-full flex flex-wrap justify-around gap-y-4">
               {vehicles.results.map((car) => (
                 <CarCard car={car} key={car.id} />
               ))}

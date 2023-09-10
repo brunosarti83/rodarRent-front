@@ -86,7 +86,7 @@ const CarFilter = () => {
       <div style={{ marginBottom: "1rem" }}>
         <h3 className="text-md font-semibold mb-2">Passengers</h3>
         <hr />
-        <div className="flex mt-2">
+        <div className="flex gap-x-2 mt-2">
           {availableFilterOptions.passengers.map((passengers) => (
             <label key={passengers}>
               <input
@@ -111,7 +111,7 @@ const CarFilter = () => {
           value={filterObject.brand}
           onChange={onChangeFilter}
         >
-          <option value="">All Brands</option>
+          <option value="">Select a brand</option>
           {availableFilterOptions.brands.map((brand) => (
             <option key={brand} value={brand}>
               {brand}
@@ -127,7 +127,7 @@ const CarFilter = () => {
           value={filterObject.model}
           onChange={onChangeFilter}
         >
-          <option value="">All Models</option>
+          <option value="">Select a model</option>
           {availableFilterOptions.models.map((model) => (
             <option key={model} value={model}>
               {model}

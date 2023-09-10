@@ -6,7 +6,7 @@ const filterObject = getSessionStorage('filterObject')
 
 const initialState = {
   vehicles: [],
-  filterObject: filterObject || { limit: 6},
+  filterObject: filterObject || { limit: 6, orderBy: 'pricePerDay', direction: 'DESC' },
   error: null,
 };
 
