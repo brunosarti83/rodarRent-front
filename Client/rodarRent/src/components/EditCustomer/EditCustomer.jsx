@@ -8,6 +8,7 @@ const EditCustomer = () => {
   const [customer, setCustomer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+
   const [editedFields, setEditedFields] = useState({
     id: '',
     name: '',
@@ -41,6 +42,7 @@ const EditCustomer = () => {
   }, [id]);
 
   useEffect(() => {
+
     if (customer) {
       setEditedFields({
         ...customer,
@@ -49,28 +51,35 @@ const EditCustomer = () => {
   }, [customer]);
 
   const handleFieldChange = (e) => {
-    const { name, value, type, checked } = e.target;
 
-    const newValue = type === 'checkbox' ? checked : value;
-
+    const { name, value } = e.target;
     setEditedFields({
       ...editedFields,
-      [name]: newValue,
+      [name]: value,
     });
   };
 
 
-  const handleSave = async () => {
+  const handleSaveAndBack = async () => {
     try {
-      const response = await fetch(updateCustomerInfoUrl, {
+      const response = await fetch(updateCustomerInfoUrl(id), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({editedFields}),
+        body: JSON.stringify(editedFields),
       });
 
-
+      // Verifica si la solicitud fue exitosa (código de respuesta 200)
+      if (response.ok) {
+        const updatedData = await response.json();
+        console.log('Datos actualizados:', updatedData);
+        // Redirige de vuelta a los detalles del cliente
+        {`/customer/${id}`}
+      } else {
+        // Si la solicitud no fue exitosa, maneja el error aquí
+        console.error('Error en la solicitud:', response.statusText);
+      }
     } catch (error) {
       console.error('Error', error);
     }
@@ -85,7 +94,7 @@ const EditCustomer = () => {
       <h2>Edit Customer</h2>
       <form>
         <div>
-          <label htmlFor="id">Id:</label>
+          <label htmlFor="id">ID:</label>
           <input
             type="text"
             id="id"
@@ -214,9 +223,9 @@ const EditCustomer = () => {
             onChange={handleFieldChange}
           />
         </div>
-
-        <button type="button" onClick={handleSave}>
+        <button type="button" onClick={handleSaveAndBack}>
           Save
+          
         </button>
 
         <Link to={`/customer/${id}`}>Back to Details</Link>
