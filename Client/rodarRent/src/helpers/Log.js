@@ -1,8 +1,9 @@
-import { setLocalStorage } from './storage';
+import { setLocalStorage, removeLocalStorage } from './storage';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
 export const successLogin = (customerData, navigate) => {
+  setLocalStorage('isLoggedIn', true)
   setLocalStorage('loginData', customerData);
   let name = ''
   customerData.given_name? name = customerData.given_name:name = customerData.name
@@ -11,3 +12,12 @@ export const successLogin = (customerData, navigate) => {
     navigate('/cars');
   }, '4000');
 };
+
+export const logOutSession = (navigate) =>{
+  setLocalStorage('isLoggedIn', false)
+  removeLocalStorage('loginData')
+  toast.success('Logged Out Succesfuly',{position:'top-left'})
+  setTimeout(()=>{
+    navigate('/cars')
+  },'2000')
+}

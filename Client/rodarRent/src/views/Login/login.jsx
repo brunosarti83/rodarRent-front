@@ -4,19 +4,19 @@ import validate from "./validateLogin";
 import formImage from '../../assets/img/loginRegister/login.png'
 import { Link } from "react-router-dom";
 import routesHelper from "../../helpers/routes";
-import axios from "axios";
+import { ToastContainer} from 'react-toastify';
+import {useDispatch} from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import {logIn} from '../../redux/actions'
 import "react-toastify/dist/ReactToastify.css";
-import { successLogin } from '../../helpers/successLogin';
+
 
 const Login = () => {
-  const navigate = useNavigate();
+
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const btnState = async (err) => {
     if (Object.keys(err).length === 0) setDisabledSubmit(false);
   };
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -36,26 +36,19 @@ const Login = () => {
     btnState(validate({ ...loginData, [property]: value }))
   };
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
   const handleLogin = async (event) => {
     event.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3001/customers/login',loginData);
-      if (response.status===200) {
-        successLogin(response.data,navigate)
-      } else {
-        toast.error('Invalid login credentials', {position: "top-left"});
-      }
-    } catch (error) {
-      console.error('Error during login:', error);
-      toast.error('Error during login:', error);
-    }
+    dispatch(logIn(loginData,navigate))
   };
 
   return (
     <div className="w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md border bg-white rounded-l-3xl h-form  dark:bg-slate-900">
         <form className="px-16 py-28 flex flex-col flex-wrap w-full rounded-xl">
-          <h1 className="font-poppins font-medium  text-4xl">Welcome back!{isLoggedIn ? loginData.email : ''}</h1>
+          <h1 className="font-poppins font-medium  text-4xl">Welcome back!</h1>
           <h6 className="font-poppins pb-6 text-gray">
             Please enter your details
           </h6>
