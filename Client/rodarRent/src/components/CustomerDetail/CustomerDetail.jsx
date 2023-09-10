@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom'; // Importa Link
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams} from 'react-router-dom'; // Importa Link
 import Loader from '../Loader/Loader';
 import DashboardActions from '../DashboardActions/DashboardActions';
 import CustomerInfo from '../CustomerInfo/CustomerInfo';
 import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
 import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl } from '../../helpers/routes';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../redux/actions';
 
 const CustomerDetail = () => {
   const { id } = useParams();
   const [customer, setCustomer] = useState(null);
   const [customerBookings, setCustomerBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
@@ -50,7 +55,7 @@ const CustomerDetail = () => {
   }, [id]);
 
   const handleLogout = () => {
-    // Función para realizar el logout
+    dispatch(logOut(navigate))
   };
 
   if (isLoading) {

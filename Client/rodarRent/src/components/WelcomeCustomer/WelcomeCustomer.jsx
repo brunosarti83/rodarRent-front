@@ -1,4 +1,3 @@
-import React from 'react';
 
 const WelcomeCustomer = ({ customer, onLogout }) => {
   return (

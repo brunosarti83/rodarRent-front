@@ -1,7 +1,10 @@
 import axios from "axios";
-import { GET_VEHICLE, SET_FILTERS, GET_CUSTOMERBYID, GET_CUSTOMERS, GET_ALLBOOKINGS  } from "./constants";
+import { GET_VEHICLE, SET_FILTERS, GET_CUSTOMERBYID, GET_CUSTOMERS, GET_ALLBOOKINGS, LOGIN, LOGOUT  } from "./constants";
 import queryMaker from "../helpers/queryMaker";
-import { setSessionStorage } from "../helpers/storage";
+import { setSessionStorage, getLocalStorage } from "../helpers/storage";
+import { successLogin, logOutSession } from '../helpers/Log';
+import {toast} from 'react-toastify';
+
 
 export function getVehicle(filterObject) {
   const queryString = queryMaker(filterObject)
@@ -126,6 +129,7 @@ export function getAvailability(queryObject){
       }
   }
 }
+
 export function setFilters(filterObject){
   try {
     setSessionStorage('filterObject', filterObject)
@@ -138,5 +142,43 @@ export function setFilters(filterObject){
       type: SET_FILTERS,
       payload: { error: error.message }
     }
+  }
+}
+
+export const logIn = (loginData,navigate) => async (dispatch) =>{
+    try {
+      const response = await axios.post('http://localhost:3001/customers/login',loginData);
+      if (response.status===200) {
+        successLogin(response.data,navigate)
+        const loginData = getLocalStorage('loginData')
+        dispatch({
+          type:LOGIN,
+          payload: loginData
+        })
+      } else {
+        toast.error('Invalid login credentials', {position: "top-left"});
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      toast.error('Error during login:', error);
+    }
+}
+
+export const rememberLogin = () =>{
+  const loginData = getLocalStorage('loginData')
+  return {
+    type: LOGIN,
+    payload:loginData
+  };
+}
+
+export const logOut = (navigate) => async(dispatch) =>{
+  try {
+    dispatch({
+      type:LOGOUT
+    })
+    logOutSession(navigate)
+  } catch (error) {
+    alert('Error during Logout:', error)
   }
 }
