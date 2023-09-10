@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Importa Link
 import Loader from '../Loader/Loader';
 import DashboardActions from '../DashboardActions/DashboardActions';
 import CustomerInfo from '../CustomerInfo/CustomerInfo';
@@ -32,8 +32,8 @@ const CustomerDetail = () => {
     const fetchCustomerBookings = async () => {
       try {
         if (id) {
-          // const response = await fetch(getBookingsByIdCustomerUrl(id)); // Usamos el mismo id para las reservas
-          const response = await fetch('http://localhost:3001/bookings/');
+          const response = await fetch(getBookingsByIdCustomerUrl(id)); // Usamos el mismo id para las reservas
+          // const response = await fetch('http://localhost:3001/bookings/');
           const data = await response.json();
           setCustomerBookings(data.map((booking) => ({
             ...booking,
@@ -106,16 +106,16 @@ const CustomerDetail = () => {
           </div>
         </div>
 
-       
+
         <div className="w-1/3 p-4">
-          <div className="flex justify-end">
-            <DashboardActions />
-          </div>
-        </div>
+      <div className="flex justify-end">
+        {/* Pasa id como prop a DashboardActions */}
+        <DashboardActions customerId={id} />
+      </div>
+    </div>
       </div>
     </div>
   );
 
 };
-
 export default CustomerDetail;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import DashboardActionsImg from "../../assets/img/dashboardClient.webp";
 
-const DashboardActions = () => {
+const DashboardActions = ({ customerId }) => {
   return (
     <div className="w-96 h-200 absolute top-128 right-32 rounded-t-lg p-4 flex flex-col items-center space-y-4 overflow-hidden">
       <div className="w-full h-2/3">
@@ -19,7 +19,8 @@ const DashboardActions = () => {
           <Link to="/review" className="text-blue-600 hover:underline">Give us your review</Link>
         </li>
         <li>
-          <Link to="/edit-info" className="text-blue-600 hover:underline">Edit your personal info</Link>
+          {/* Utiliza customerId para construir la URL de edición */}
+          <Link to={`/edit-customer/${customerId}`} className="text-blue-600 hover:underline">Edit your personal info</Link>
         </li>
       </ul>
     </div>
