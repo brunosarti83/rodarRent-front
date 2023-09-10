@@ -13,6 +13,7 @@ const CustomerCard = ({ customer }) => {
           <h2>{`${customer.name} ${customer.lastName}`}</h2>
           <div>
             <p><strong>ID:</strong> {customer.id}</p>
+            <p><strong>Personal Id:</strong> {customer.personalId}</p>
             <p><strong>Date of Birth:</strong> {customer.birthDate}</p>
             <p><strong>Address:</strong> {customer.address}</p>
             <p><strong>City:</strong> {customer.city}</p>

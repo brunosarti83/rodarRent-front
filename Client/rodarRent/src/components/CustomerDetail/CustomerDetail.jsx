@@ -1,74 +1,121 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Importa Link
 import Loader from '../Loader/Loader';
+import DashboardActions from '../DashboardActions/DashboardActions';
+import CustomerInfo from '../CustomerInfo/CustomerInfo';
+import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
+import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl } from '../../helpers/routes';
 
 const CustomerDetail = () => {
   const { id } = useParams();
   const [customer, setCustomer] = useState(null);
+  const [customerBookings, setCustomerBookings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/customers/${id}`);
+        const response = await fetch(getCustomerDetailsUrl(id));
         const data = await response.json();
-        
         setCustomer(data);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error', error);
+        setIsLoading(false);
       }
     };
 
     fetchCustomerDetails();
   }, [id]);
 
-  if (!customer) {
-    return <Loader/>;
+  useEffect(() => {
+    const fetchCustomerBookings = async () => {
+      try {
+        if (id) {
+          const response = await fetch(getBookingsByIdCustomerUrl(id)); // Usamos el mismo id para las reservas
+          // const response = await fetch('http://localhost:3001/bookings/');
+          const data = await response.json();
+          setCustomerBookings(data.map((booking) => ({
+            ...booking,
+            formattedStartDate: new Date(booking.startDate).toLocaleDateString(),
+            formattedFinishDate: new Date(booking.finishDate).toLocaleDateString()
+          })));
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
+    };
+
+    fetchCustomerBookings();
+  }, [id]);
+
+  const handleLogout = () => {
+    // Función para realizar el logout
+  };
+
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
-    <div className="w-840 h-271 top-631 left-84 px-32 py-38">
-      <div className="w-769 h-59 left-39 px-20 py-17">
-        <p className="text-24 font-medium text-white bg-black w-205 h-26 top-17 left-20">
-          Personal Info
-        </p>
-        <div className="w-766 h-145 top-88 left-39 rounded-lg border-1 bg-gradient border-1 border-black shadow">
-          <div className="grid grid-cols-3 grid-rows-3 gap-3">
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>Name: {customer.name}</p>
-            </div>
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>Last Name: {customer.lastName}</p>
-            </div>
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>Personal ID: {customer.id}</p>
-            </div>
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>Birth Date: {customer.birthDate}</p>
-            </div>
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>Address: {customer.address}</p>
-            </div>
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>City: {customer.city}</p>
-            </div>
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>Country: {customer.country}</p>
-            </div>
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>Zip Code: {customer.zipCode}</p>
-            </div>
-            <div className="w-218 h-27 top-14 left-16 px-6 py-6 bg-white rounded-md shadow">
-              <p>Phone: {customer.phoneNumber}</p>
-            </div>
+    <div>
+      <div className="w-full">
+        <WelcomeCustomer customer={customer} onLogout={handleLogout} />
+      </div>
+      <div className="flex">
+        <div className="w-2/3 p-4">
+          <div>
+            <h2 className="text-32 font-medium text-black font-poppins">
+              Customer's Bookings
+            </h2>
+            {customerBookings.length === 0 ? (
+              <p>No bookings found for this customer.</p>
+            ) : (
+              <table className="w-full rounded-lg border-1 bg-gradient border-1 border-black shadow mt-2 mb-2">
+                <thead>
+                  <tr>
+                    <th>Start Date</th>
+                    <th>Finish Date</th>
+                    <th>Amount</th>
+                    <th>State</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {customerBookings.map((booking) => (
+                    <tr key={booking.id}>
+                      <td className="w-13 h-13 px-6 py-3 bg-white rounded-md shadow">
+                        {booking.formattedStartDate}
+                      </td>
+                      <td className="w-13 h-13 px-6 py-3 bg-white rounded-md shadow">
+                        {booking.formattedFinishDate}
+                      </td>
+                      <td className="w-13 h-13 px-6 py-3 bg-white rounded-md shadow">
+                        ${booking.amount}
+                      </td>
+                      <td className="w-13 h-13 px-6 py-3 bg-white rounded-md shadow">
+                        {booking.stateBooking}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+          <div className="w-full rounded-lg border-1 bg-gradient border-1 border-black shadow mt-2 mb-2">
+            {customer && <CustomerInfo customer={customer} />}
           </div>
         </div>
+
+
+        <div className="w-1/3 p-4">
+      <div className="flex justify-end">
+        {/* Pasa id como prop a DashboardActions */}
+        <DashboardActions customerId={id} />
+      </div>
+    </div>
       </div>
     </div>
   );
+
 };
-
 export default CustomerDetail;
-
-
-
-
