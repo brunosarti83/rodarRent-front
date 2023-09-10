@@ -10,7 +10,7 @@ const routesHelper = {
     allBookings: '/allBookings',
     detail: "/cars/:id",
     booking: '/booking',
-    admin: '/admin'
+    admin: '/admin',
 }
 
 export default routesHelper
