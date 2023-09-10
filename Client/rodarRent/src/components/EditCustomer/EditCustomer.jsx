@@ -8,7 +8,6 @@ const EditCustomer = () => {
   const [customer, setCustomer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // State para los campos editados
   const [editedFields, setEditedFields] = useState({
     id: '',
     name: '',
@@ -42,7 +41,6 @@ const EditCustomer = () => {
   }, [id]);
 
   useEffect(() => {
-    // Cuando los datos del cliente se cargan correctamente, actualiza los campos editados
     if (customer) {
       setEditedFields({
         ...customer,
@@ -53,7 +51,6 @@ const EditCustomer = () => {
   const handleFieldChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // Si el campo es un checkbox, maneja el valor de 'checked'
     const newValue = type === 'checkbox' ? checked : value;
 
     setEditedFields({
@@ -62,7 +59,7 @@ const EditCustomer = () => {
     });
   };
 
-  // Define la función handleSave para guardar los cambios
+
   const handleSave = async () => {
     try {
       const response = await fetch(updateCustomerInfoUrl, {
@@ -73,7 +70,6 @@ const EditCustomer = () => {
         body: JSON.stringify({editedFields}),
       });
 
-      // Aquí puedes manejar la respuesta del servidor si es necesario
 
     } catch (error) {
       console.error('Error', error);
@@ -218,11 +214,11 @@ const EditCustomer = () => {
             onChange={handleFieldChange}
           />
         </div>
-        {/* Agrega más campos de edición según tus necesidades */}
+
         <button type="button" onClick={handleSave}>
           Save
         </button>
-        {/* Enlace para volver a los detalles del cliente */}
+
         <Link to={`/customer/${id}`}>Back to Details</Link>
       </form>
     </div>
