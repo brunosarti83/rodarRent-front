@@ -1,24 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import mercadoPagoImg from "../../assets/img/mercado-pago.png"
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import carImage from "../../assets/img/landingImage.webp"
 const Booking = () => {
-    const [bookingData, setBookingData] = useState({
-        name: "",
-        lastName: "",
-        country: "",
-        city: "",
-        address: "",
-        address2: "",
-        method: "",
-      });
 
-const handleChange = ()=>{
-    console.log("Change input");
-}
+  let days = 0;
+  
+  const [bookingData, setBookingData] = useState({
+    name: "Customer",
+    lastName: "Customer Last Name",
+    country: "Customer Country",
+    city: "Customer City",
+    address: "Customer Address",
+    address2: "Customer Last Name",
+    payMethod: "Credit Card",
+    image: carImage,
+    terms: false,
+    startDate: "2023-05-12",
+    endDate: "2023-05-17",
+    price: 140,
+    totalAmount: 0,
+  });
+  
+    days = (new Date(bookingData.endDate)-new Date(bookingData.startDate))/(1000*60*60*24)
+    bookingData.totalAmount = days * bookingData.price
+    //console.log(days);
+
+  const handleChange = (event)=>{
+    const property = event.target.name;
+    const value = event.target.value;
+    setBookingData({ ...bookingData, [property]: value })
+  }
+
 const handleSubmit = (event)=>{
     event.preventDefault()
-    toast.success("Deal!");
+if(document.getElementsByName("terms")[0].checked){
+  toast.success("Deal!");
+}
+else {
+  toast.warn("First accept terms and conditions")
+}
 
 }
   return (
@@ -98,11 +120,11 @@ const handleSubmit = (event)=>{
           <hr className="ml-2 mr-2 p-2 text-gray" />
           <div className="flex justify-around">
             <label className="font-poppins text-sm flex m-1 mb-0 justify-start items-center">
-            <input className="m-2" type="radio" name="method" value={bookingData.method}/>
+            <input checked className="m-2 cursor-pointer" type="radio" name="payMethod" value="Credit Card" onChange={handleChange} />
             Credit Card
             </label>
             <label className="font-poppins text-sm flex m-1 mb-0 justify-start items-center">
-            <input className="m-2" type="radio" name="method" value={bookingData.method}/>
+            <input className="m-2 cursor-pointer" type="radio" name="payMethod" value="Wire Transfer" onChange={handleChange} />
             Wire Transfer
             </label>
           </div>
@@ -110,13 +132,46 @@ const handleSubmit = (event)=>{
             <img className="relative h-full m-1" src={mercadoPagoImg} alt="Mercado Pago Image" />
           </div>
           <div className="flex justify-end">
-            <button className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white" onClick={handleSubmit}>Reserve Deal</button>
+          <span className="font-poppins text-sm">Total to pay: <span className="font-poppins text-sm font-bold"> $ {bookingData.totalAmount}</span></span>
           </div>
+        </div>
+        <div className="flex flex-col justify-start items-start p-2 m-2">
+            <label className="font-poppins text-sm flex m-1 mb-0 justify-start items-center" htmlFor="">          
+            <input className="m-2 cursor-pointer" type="checkbox" name="terms" onChange={handleChange} />
+            I agree with terms conditions and privacy policy.
+            </label>
+            <label className="font-poppins text-sm flex m-1 mb-0 justify-start items-center" htmlFor="">          
+            <input className="m-2 cursor-pointer" type="checkbox" name="info" onChange={handleChange} />
+            I want to receive the latest information.
+            </label>
+        </div>
+        <div className="flex justify-end">
+           <button className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white" onClick={handleSubmit}>Reserve Deal</button>
         </div>
       </form>
       </div>
-      <div>
-        <h1>Tarjeta Vehiculo</h1>
+      <div className="w-1/4 m-8 flex flex-col p-8 h-full sticky drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
+        <div className="flex justify-center w">
+        <img className="w-full" src={bookingData.image} alt="Car Image" />
+        </div>
+        <div className="font-poppins text-sm border rounded-lg p-1 my-2">
+        <label>Pick up date: <input type="date" name="startDate" value={bookingData.startDate} onChange={handleChange} /></label>
+        </div>
+        <div className="font-poppins text-sm border rounded-lg p-1 my-2">
+        <label>Drop off date: <input type="date" name="endDate" value={bookingData.endDate} onChange={handleChange} /></label>
+        </div>
+        <div className="flex flex-col border rounded-lg p-1 my-2">
+        <div className="flex justify-between font-poppins text-sm p-1 my-2">
+        <span className="">Price per day: </span><span>$ {bookingData.price}</span>
+        </div>
+        <div className="flex justify-between font-poppins text-sm p-1 my-2">
+        <span className="">Total days: </span><span>{days=(new Date(bookingData.endDate)-new Date(bookingData.startDate))/(1000*60*60*24)}</span>
+        </div>
+        <hr />
+        <div className="flex justify-between font-poppins text-sm p-1 my-2">
+        <span className="">Total amount: </span><span>$ {bookingData.totalAmount}</span>
+        </div>
+        </div>
       </div>
       <ToastContainer
       position="top-left"
