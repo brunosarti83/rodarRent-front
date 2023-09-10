@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import validate from "./validateLogin";
 import formImage from '../../assets/img/loginRegister/login.png'
@@ -7,6 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { successLogin } from '../../helpers/successLogin';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,17 +40,13 @@ const Login = () => {
     event.preventDefault();
     try {
       const response = await axios.post('http://localhost:3001/customers/login',loginData);
-      
       if (response.status===200) {
-        setIsLoggedIn(true);
-        toast.success('Welcome!, '+loginData.email, {position: "top-left"});//Mensaje al inicio en vista de usuario
-        setTimeout(() => {
-          navigate("/cars")
-        }, "4000");
+        successLogin(response.data,navigate)
       } else {
         toast.error('Invalid login credentials', {position: "top-left"});
       }
     } catch (error) {
+      console.error('Error during login:', error);
       toast.error('Error during login:', error);
     }
   };
@@ -106,7 +104,7 @@ const Login = () => {
             </button>
             <a
               className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
-              href="#"
+              href={routesHelper.baseBackUrl+routesHelper.authGoogle}
             >
               <img
                 className="relative w-6 m-1"
