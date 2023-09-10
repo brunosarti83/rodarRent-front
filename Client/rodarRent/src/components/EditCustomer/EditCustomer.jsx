@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import { getCustomerDetailsUrl, updateCustomerInfoUrl } from '../../helpers/routes';
+import validateRegister from '../../views/Register/validateRegister'; // Importa la función de validación
 
 const EditCustomer = () => {
   const { id } = useParams();
   const [customer, setCustomer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
 
   const [editedFields, setEditedFields] = useState({
     id: '',
@@ -42,7 +42,6 @@ const EditCustomer = () => {
   }, [id]);
 
   useEffect(() => {
-
     if (customer) {
       setEditedFields({
         ...customer,
@@ -51,14 +50,12 @@ const EditCustomer = () => {
   }, [customer]);
 
   const handleFieldChange = (e) => {
-
     const { name, value } = e.target;
     setEditedFields({
       ...editedFields,
       [name]: value,
     });
   };
-
 
   const handleSaveAndBack = async () => {
     try {
@@ -74,8 +71,7 @@ const EditCustomer = () => {
       if (response.ok) {
         const updatedData = await response.json();
         console.log('Datos actualizados:', updatedData);
-        // Redirige de vuelta a los detalles del cliente
-        {`/customer/${id}`}
+  
       } else {
         // Si la solicitud no fue exitosa, maneja el error aquí
         console.error('Error en la solicitud:', response.statusText);
@@ -89,10 +85,14 @@ const EditCustomer = () => {
     return <Loader />;
   }
 
+  const errors = validateRegister(editedFields); // Aplica las validaciones
+
   return (
-    <div>
-      <h2>Edit Customer</h2>
-      <form>
+    <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
+      <div className="sticky drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900">
+        <form className="px-16 py-5 flex flex-col flex-wrap w-full rounded-xl justify-center">
+          <h2 className="font-poppins p-2 text-3xl">Edit Customer</h2>
+          <hr className="ml-8 mr-8 p-2 text-gray" />
         <div>
           <label htmlFor="id">ID:</label>
           <input
@@ -223,13 +223,18 @@ const EditCustomer = () => {
             onChange={handleFieldChange}
           />
         </div>
-        <button type="button" onClick={handleSaveAndBack}>
-          Save
-          
-        </button>
-
-        <Link to={`/customer/${id}`}>Back to Details</Link>
-      </form>
+        <div className="flex flex-col mt-4 mb-4">
+            <button
+              className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
+              onClick={handleSaveAndBack}
+              disabled={Object.keys(errors).length > 0} // Deshabilita el botón si hay errores de validación
+            >
+              Save
+            </button>
+            <Link to={`/customer/${id}`}>Back to Details</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
