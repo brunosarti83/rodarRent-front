@@ -1,48 +1,4 @@
-import { useState } from "react"
-
-export function useLocalStorage (key, initialValue) {
-    const [storedValue, setStoredValue] = useState(() => {
-        try {
-            const item = window.localStorage.getItem(key)
-            return item ? JSON.parse(item) : initialValue 
-        } catch (error) {
-            return initialValue
-        }
-    })
-    
-    const setValue = value => {
-        try {
-            setStoredValue(value)
-            window.localStorage.setItem(key, JSON.stringify(value))
-        } catch (error) {
-            console.error(error.message)
-        }
-    }
-    return [storedValue, setValue]
-}
-
-export function useSessionStorage (key, initialValue) {
-    const [storedValue, setStoredValue] = useState(() => {
-        try {
-            const item = window.sessionStorage.getItem(key)
-            return item ? JSON.parse(item) : initialValue 
-        } catch (error) {
-            return initialValue
-        }
-    })
-    
-    const setValue = value => {
-        try {
-            setStoredValue(value)
-            window.sessionStorage.setItem(key, JSON.stringify(value))
-        } catch (error) {
-            console.error(error.message)
-        }
-    }
-    return [storedValue, setValue]
-}
-
-export function getSessionStorage (key) {
+export function getSessionStorage (key) { //se borra al cerrar pestaña
     try {
         const item = window.sessionStorage.getItem(key)
         if (item) {
@@ -64,7 +20,7 @@ export function setSessionStorage (key, value) {
     }
 }
 
-export function getLocalStorage (key) {
+export function getLocalStorage (key) { //se borra al borrar historial de navegador
     try {
         const item = window.localStorage.getItem(key)
         if (item) {
