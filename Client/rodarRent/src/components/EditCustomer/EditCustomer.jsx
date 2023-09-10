@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import { getCustomerDetailsUrl, updateCustomerInfoUrl } from '../../helpers/routes';
+import validateRegister from '../../views/Register/validateRegister'; 
 
 const EditCustomer = () => {
   const { id } = useParams();
   const [customer, setCustomer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // State para los campos editados
   const [editedFields, setEditedFields] = useState({
     id: '',
     name: '',
@@ -42,7 +42,6 @@ const EditCustomer = () => {
   }, [id]);
 
   useEffect(() => {
-    // Cuando los datos del cliente se cargan correctamente, actualiza los campos editados
     if (customer) {
       setEditedFields({
         ...customer,
@@ -51,30 +50,31 @@ const EditCustomer = () => {
   }, [customer]);
 
   const handleFieldChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    // Si el campo es un checkbox, maneja el valor de 'checked'
-    const newValue = type === 'checkbox' ? checked : value;
-
+    const { name, value } = e.target;
     setEditedFields({
       ...editedFields,
-      [name]: newValue,
+      [name]: value,
     });
   };
 
-  // Define la función handleSave para guardar los cambios
-  const handleSave = async () => {
+  const handleSaveAndBack = async () => {
     try {
-      const response = await fetch(updateCustomerInfoUrl, {
+      const response = await fetch(updateCustomerInfoUrl(id), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({editedFields}),
+        body: JSON.stringify(editedFields),
       });
 
-      // Aquí puedes manejar la respuesta del servidor si es necesario
 
+      if (response.ok) {
+        const updatedData = await response.json();
+        console.log('Datos actualizados:', updatedData);
+  
+      } else {
+        console.error('Error en la solicitud:', response.statusText);
+      }
     } catch (error) {
       console.error('Error', error);
     }
@@ -84,12 +84,16 @@ const EditCustomer = () => {
     return <Loader />;
   }
 
+  const errors = validateRegister(editedFields);
+
   return (
-    <div>
-      <h2>Edit Customer</h2>
-      <form>
+    <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
+      <div className="sticky drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900">
+        <form className="px-16 py-5 flex flex-col flex-wrap w-full rounded-xl justify-center">
+          <h2 className="font-poppins p-2 text-3xl">Edit Customer</h2>
+          <hr className="ml-8 mr-8 p-2 text-gray" />
         <div>
-          <label htmlFor="id">Id:</label>
+          <label htmlFor="id">ID:</label>
           <input
             type="text"
             id="id"
@@ -218,13 +222,18 @@ const EditCustomer = () => {
             onChange={handleFieldChange}
           />
         </div>
-        {/* Agrega más campos de edición según tus necesidades */}
-        <button type="button" onClick={handleSave}>
-          Save
-        </button>
-        {/* Enlace para volver a los detalles del cliente */}
-        <Link to={`/customer/${id}`}>Back to Details</Link>
-      </form>
+        <div className="flex flex-col mt-4 mb-4">
+            <button
+              className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
+              onClick={handleSaveAndBack}
+              disabled={Object.keys(errors).length > 0}
+            >
+              Save
+            </button>
+            <Link to={`/customer/${id}`}>Back to Details</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
