@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBookings } from "../../redux/actions";
 import Loader from "../Loader/Loader";
@@ -19,9 +19,9 @@ function BookingList() {
   return (
     <div>
       <h2>Booking List</h2>
-      <ul>
+      <ul style={{ padding: 0, listStyle: "none" }}>
         {bookings.data.map((booking) => (
-          <li key={booking.id}>
+          <li key={booking.id} style={{ marginBottom: "10px" }}>
             <BookingCard booking={booking} />
           </li>
         ))}
