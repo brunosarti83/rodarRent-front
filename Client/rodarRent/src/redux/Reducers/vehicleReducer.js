@@ -5,7 +5,7 @@ import { GET_VEHICLE, SET_FILTERS } from "../constants";
 const filterObject = getSessionStorage('filterObject')
 
 const initialState = {
-  vehicles: [],
+  vehicles: {},
   filterObject: filterObject || { limit: 6, orderBy: 'pricePerDay', direction: 'DESC' },
   error: null,
 };
