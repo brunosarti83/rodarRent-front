@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
-
+import { logOut } from '../../redux/actions';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const AdminNav = (props) => {
     const { onDashboardChange, currentView } = props;
@@ -18,7 +20,12 @@ const AdminNav = (props) => {
         { name: 'Vehicles', key: 'vehicles' },
     ];
 
-    console.log(currentView)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logOut(navigate))
+    };
 
     return (
         <div className="h-full flex flex-col justify-center w-64 border-r-2 border-gray-200">
@@ -34,6 +41,7 @@ const AdminNav = (props) => {
                     </button>
                 ))}
             </div>
+            <button onClick={handleLogout} >Log Out</button>
         </div>
     );
 };
