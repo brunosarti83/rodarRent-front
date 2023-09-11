@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 // Actions
 import { setFilters } from "../../redux/actions";
 
-
 const ReservationSearch = () => {
   const dispatch = useDispatch();
   const filterObject = useSelector((state) => state.veh.filterObject);
