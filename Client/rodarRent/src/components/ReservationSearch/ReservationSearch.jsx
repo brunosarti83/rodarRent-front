@@ -6,9 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 // Actions
 import { setFilters } from "../../redux/actions";
 
+
 const ReservationSearch = () => {
   const dispatch = useDispatch();
   const filterObject = useSelector((state) => state.veh.filterObject);
+  const userData = useSelector((state)=> state.auth.customer[0])
+  const isLoggedIn = useSelector((state)=> state.auth.isLoggedIn)
 
   const [search, setSearch] = useState({
     startDate: filterObject.startDate ? filterObject.startDate : "",
@@ -28,6 +31,7 @@ const ReservationSearch = () => {
         ...filterObject,
         startDate: search.startDate,
         finishDate: search.finishDate,
+        offset: 0,
       })
     );
   };
@@ -72,20 +76,28 @@ const ReservationSearch = () => {
           </button>
         </form>
       </div>
-      <div className="flex w-1/3 justify-evenly">
-        <Link
-          className="text-md py-3 px-10 rounded-lg transition duration-300 hover:bg-black hover:text-white"
-          to={routesHelper.register}
-        >
-          Register
-        </Link>
-        <Link
-          className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
-          to={routesHelper.login}
-        >
-          Log in
-        </Link>
-      </div>
+      {isLoggedIn ?
+        <div className="flex w-1/3 justify-center" >
+          <Link 
+            className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
+            to={`/customer/${userData.id}`} >
+            My profile
+          </Link>
+        </div> :
+        <div className="flex w-1/3 justify-evenly">
+          <Link
+            className="text-md py-3 px-10 rounded-lg transition duration-300 hover:bg-black hover:text-white"
+            to={routesHelper.register}
+          >
+            Register
+          </Link>
+          <Link
+            className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
+            to={routesHelper.login}
+          >
+            Log in
+          </Link>
+        </div>}
     </div>
   );
 };
