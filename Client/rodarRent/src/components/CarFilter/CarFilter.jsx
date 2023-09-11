@@ -1,9 +1,8 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilters } from "../../redux/actions";
 
 const CarFilter = () => {
-
   const dispatch = useDispatch();
   const filterObject = useSelector((state) => state.veh.filterObject);
   const availableFilterOptions = useSelector(
@@ -14,7 +13,7 @@ const CarFilter = () => {
     brand: filterObject.brand || "",
     model: filterObject.model || "",
     transmission: filterObject.transmission || "",
-    fuel: filterObject.fuel || '',
+    fuel: filterObject.fuel || "",
     passengers: Number(filterObject.passengers) || "",
     pricePerDayMax: filterObject.pricePerDayMax || 300,
   });
@@ -25,20 +24,21 @@ const CarFilter = () => {
         ...filterObject,
         brand: "",
         model: "",
-        transmissions: '',
-        fuelTypes: '',
+        transmission: "",
+        fuelTypes: "",
         passengers: "",
         pricePerDayMax: 300,
+        offset: 0,
       })
     );
   };
 
   const onChangeFilter = (e) => {
     const filter = e.target.name;
-    const value = (filterObject[filter] !== e.target.value) ? e.target.value : '';
-    setLocalFilters({ ...localFilters, [filter]: value })
-    dispatch(setFilters({ ...filterObject, [filter]: value }))
-  }
+    const value = filterObject[filter] !== e.target.value ? e.target.value : "";
+    setLocalFilters({ ...localFilters, [filter]: value });
+    dispatch(setFilters({ ...filterObject, [filter]: value }));
+  };
 
   return (
     <div
@@ -87,8 +87,8 @@ const CarFilter = () => {
         <h3 className="text-md font-semibold mb-2">Passengers</h3>
         <hr className="border-gray-300" />
         <div className="flex mt-2">
-          {availableFilterOptions.passengers.map((passengers,index) => (
-            <div className={` ${index > 0 ? ' ml-4' : ''}`} key={passengers} >
+          {availableFilterOptions.passengers.map((passengers, index) => (
+            <div className={` ${index > 0 ? " ml-4" : ""}`} key={passengers}>
               <input
                 type="checkbox"
                 name="passengers"
@@ -111,7 +111,7 @@ const CarFilter = () => {
           value={filterObject.brand}
           onChange={onChangeFilter}
         >
-          <option value="">All Brands</option>
+          <option value="">Select a brand</option>
           {availableFilterOptions.brands.map((brand) => (
             <option key={brand} value={brand}>
               {brand}
@@ -127,7 +127,7 @@ const CarFilter = () => {
           value={filterObject.model}
           onChange={onChangeFilter}
         >
-          <option value="">All Models</option>
+          <option value="">Select a model</option>
           {availableFilterOptions.models.map((model) => (
             <option key={model} value={model}>
               {model}

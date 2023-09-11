@@ -1,25 +1,21 @@
-import{ useState } from 'react';
+/* eslint-disable react/prop-types */
 
-const Pagination = ({ carList, carsPerPage, onPageChange }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(carList.length / carsPerPage);
-
+const Pagination = ({ vehicles, onPageChange }) => {
   const handleClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
     onPageChange(pageNumber);
   };
-  
 
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
+    for (let i = 1; i <= vehicles.totalPages; i++) {
       pageNumbers.push(
         <li
           key={i}
           onClick={() => handleClick(i)}
           className={`cursor-pointer py-1 px-3 drop-shadow-lg border-none rounded-lg ${
-            currentPage === i ? 'font-semibold text-white bg-blue drop-shadow-lg' : 'font-normal'
+            vehicles.currentPage === i
+              ? "font-semibold text-white bg-blue drop-shadow-lg"
+              : "font-normal"
           }`}
         >
           {i}
@@ -28,9 +24,6 @@ const Pagination = ({ carList, carsPerPage, onPageChange }) => {
     }
     return pageNumbers;
   };
-
-  const startIndex = (currentPage - 1) * carsPerPage;
-  const endIndex = startIndex + carsPerPage;
 
   return (
     <div>

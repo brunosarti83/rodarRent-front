@@ -43,20 +43,6 @@ export function getVehicle(filterObject) {
 //       });
 //   };
 // }
-export function getAvaiability(search) {
-  const { pickUp, dropOff } = search
-  return async function (dispatch) {
-    try {
-      const response = await axios.get(`http://localhost:3001/available?startDate=${pickUp}&finishDate=${dropOff}`)
-      dispatch({
-        type: GET_VEHICLE,
-        payload: response.data.results
-      })
-    } catch (error) {
-      alert(error)
-    }
-  }
-}
 
 export function getAllCustomers() {
   return function (dispatch) {
@@ -125,7 +111,10 @@ export function getAvailability(queryObject){
           payload: response.data
         })
       } catch (error) {
-        console.log(error)
+        dispatch({
+          type: GET_VEHICLE,
+          payload: { error: error.message },
+        });
       }
   }
 }

@@ -5,12 +5,12 @@ import { GET_VEHICLE, SET_FILTERS } from "../constants";
 const filterObject = getSessionStorage('filterObject')
 
 const initialState = {
-  vehicles: [],
-  filterObject: filterObject || { limit: 6},
+  vehicles: {},
+  filterObject: filterObject || { limit: 6, orderBy: 'pricePerDay', direction: 'DESC' },
   error: null,
 };
 
-function vehicleReducer(state = initialState, {type,payload}) {
+function reducer(state = initialState, {type,payload}) {
   switch (type) {
     case GET_VEHICLE:
       if (payload.error) {
@@ -41,4 +41,4 @@ function vehicleReducer(state = initialState, {type,payload}) {
   }
 }
 
-export default vehicleReducer;
+export default reducer;

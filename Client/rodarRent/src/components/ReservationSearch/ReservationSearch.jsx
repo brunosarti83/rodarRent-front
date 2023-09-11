@@ -31,6 +31,7 @@ const ReservationSearch = () => {
         ...filterObject,
         startDate: search.startDate,
         finishDate: search.finishDate,
+        offset: 0,
       })
     );
   };
