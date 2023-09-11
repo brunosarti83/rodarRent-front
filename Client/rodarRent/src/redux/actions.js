@@ -139,10 +139,10 @@ export const logIn = (loginData,navigate) => async (dispatch) =>{
       const response = await axios.post('http://localhost:3001/customers/login',loginData);
       if (response.status===200) {
         successLogin(response.data,navigate)
-        const loginData = getLocalStorage('loginData')
+        // const loginData = getLocalStorage('loginData')
         dispatch({
           type:LOGIN,
-          payload: loginData
+          payload: response.data
         })
       } else {
         toast.error('Invalid login credentials', {position: "top-left"});

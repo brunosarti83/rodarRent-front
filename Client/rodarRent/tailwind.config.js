@@ -16,6 +16,7 @@ export default {
         landingLaptop:'560px',
         noNavDesktop:'93.1vh',
         noNavLaptop:'91.2vh',
+        customerDetail:'86.5vh',
         form:'738px',
         card:'328px',
         chart:'450px'
