@@ -174,7 +174,7 @@ const CustomerDetail = () => {
                 </div>
               )}
             </div>
-            <div className="fixed bottom-20 left-4 w-2/3 h-1/3">
+            <div className="w-2/3 h-1/3">
             <div className="mt-4 flex justify-between mx-[24rem]">
               <button onClick={handlePreviousPage} disabled={currentPage === 1}>
                   ❮
@@ -189,7 +189,7 @@ const CustomerDetail = () => {
         
         
         
-        <div className='flex w-2/3 fixed bottom-2 col-start-1 col-end-3 row-start-3 row-end-4 ' >
+        <div className='flex w-full col-start-1 col-end-3 row-start-3 row-end-4 ' >
           {customer && <CustomerInfo customer={customer} />}
         </div>
         
@@ -200,15 +200,13 @@ const CustomerDetail = () => {
           <DashboardActions openEditModal={openEditModal} />
         </div>
 
-       
-       
         <Modal 
           isOpen={isEditModalOpen}
           onRequestClose={closeEditModal}
           shouldCloseOnOverlayClick={true}
           contentLabel="Edit Customer Modal"
-          className="fixed inset-1/2 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg" // Clases de Tailwind CSS para centrar y redondear el modal
-          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black" // Clases de Tailwind CSS para la capa de fondo
+          className="fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg" 
+          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black" 
           ref={modalRef}
           onAfterOpen={closeModalOnClickOutside}
         >

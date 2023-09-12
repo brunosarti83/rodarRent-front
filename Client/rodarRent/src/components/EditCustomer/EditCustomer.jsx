@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import validateEdit from './validateEdit';
@@ -9,7 +9,6 @@ const EditCustomer = () => {
   const { id } = useParams();
   const [customer, setCustomer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [editedFields, setEditedFields] = useState({
     id: '',
@@ -86,10 +85,11 @@ const EditCustomer = () => {
     const { name, value } = e.target;
     setButtonText('Save Password');
     setPasswordFields({ ...passwordFields, [name]: value });
-    setErrors(validatePass({ ...editedFields, [name]: value }));
+    setErrors(validatePass({ ...passwordFields, [name]: value }));
   };
 
   const handleUpdatePassword = async () => {
+
     try {
       if (passwordFields.password !== passwordFields.repeatPass) {
         setPasswordError('Passwords do not match');
@@ -102,9 +102,9 @@ const EditCustomer = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id,
+          id: id,
           currentPassword: passwordFields.currentPassword,
-          password: passwordFields.password,
+          newPassword: passwordFields.password,
         }),
       });
       setButtonText('Save');
@@ -116,7 +116,7 @@ const EditCustomer = () => {
         console.log("Actualizada");
       }
     } catch (error) {
-      console.error('Error', error);
+      console.log('Error', error);
     }
   };
 
@@ -135,7 +135,7 @@ const EditCustomer = () => {
 
       if (response.ok) {
         const updatedData = await response.json();
-        console.log('Datos actualizados:', updatedData);
+        alert('Datos actualizados:', updatedData);
       } else {
         console.error('Error en la solicitud:', response.statusText);
       }
@@ -143,6 +143,8 @@ const EditCustomer = () => {
       console.error('Error', error);
     }
   };
+
+  console.log(passwordFields)
 
   if (isLoading) {
     return <Loader />;
@@ -159,8 +161,8 @@ const EditCustomer = () => {
 
   return (
     <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
-      <div className="sticky drop-shadow-md border bg-white rounded-l-3xl dark:bg-slate-900">
-        <form className="px-16 py-5 flex flex-col flex-wrap w-full rounded-xl justify-center">
+      <div className="w-120 drop-shadow-md border bg-white rounded-3xl dark:bg-slate-900">
+        <form className=" w-120 px-16 py-5 flex flex-col flex-wrap  rounded-xl justify-center">
           <h1 className="font-poppins p-2 text-3xl">Edit your info</h1>
           <hr className="ml-8 mr-8 p-2 text-gray" />
           <div className='flex'>

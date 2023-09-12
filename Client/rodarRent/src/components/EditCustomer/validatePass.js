@@ -13,7 +13,7 @@ const errors = {};
       errors.repeatPassMsj = "Both passwords must be the same";
     }
   }
- return errors;
+return errors;
 
 }
 
