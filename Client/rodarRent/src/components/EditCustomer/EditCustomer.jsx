@@ -9,6 +9,7 @@ const EditCustomer = () => {
   const { id } = useParams();
   const [customer, setCustomer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [editedFields, setEditedFields] = useState({
     id: '',
@@ -26,8 +27,8 @@ const EditCustomer = () => {
 
   const [passwordFields, setPasswordFields] = useState({
     currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
+    password: '',
+    repeatPass: '',
   });
 
   const [errors, setErrors] = useState({
@@ -43,8 +44,8 @@ const EditCustomer = () => {
     phoneNumber: '',
     email: '',
     currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
+    password: '',
+    repeatPass: '',
   });
 
   const [passwordError, setPasswordError] = useState(null);
@@ -90,7 +91,7 @@ const EditCustomer = () => {
 
   const handleUpdatePassword = async () => {
     try {
-      if (passwordFields.newPassword !== passwordFields.confirmPassword) {
+      if (passwordFields.password !== passwordFields.repeatPass) {
         setPasswordError('Passwords do not match');
         return;
       }
@@ -103,12 +104,12 @@ const EditCustomer = () => {
         body: JSON.stringify({
           id,
           currentPassword: passwordFields.currentPassword,
-          newPassword: passwordFields.newPassword,
+          password: passwordFields.password,
         }),
       });
       setButtonText('Save');
       handleSaveAndBack();
-      window.location.href = `/customer/${id}`;
+    
 
       if (response.ok) {
         setPasswordError(null);
@@ -147,6 +148,14 @@ const EditCustomer = () => {
     return <Loader />;
   }
 
+  const hasErrors = () => {
+    for (const errorKey in errors) {
+      if (errors[errorKey]) {
+        return true; // Si hay al menos un error, devuelve true
+      }
+    }
+    return false; // Si no hay errores, devuelve false
+  };
 
   return (
     <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
@@ -445,7 +454,7 @@ const EditCustomer = () => {
                 <input
                   className='w-full font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
                   type='password'
-                  name='currentcurrentPassword'
+                  name='currentPassword'
                   value={passwordFields.currentPassword}
                   onChange={handlePasswordChange}
                 />
@@ -530,6 +539,7 @@ const EditCustomer = () => {
               <button
                 className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
                 onClick={handleUpdatePassword}
+                disabled={hasErrors()}
               >
                 {buttonText}
               </button>

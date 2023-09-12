@@ -15,7 +15,6 @@ import CustomerDetail from './components/CustomerDetail/CustomerDetail';
 import BookingList from './components/BookingList/BookingList';
 import Admin from './views/Admin/Admin';
 import GoogleAuthAux from './views/googleAuthAux/googleAuthAux';
-import EditCustomer from './components/EditCustomer/EditCustomer';
 
 
 
@@ -49,7 +48,6 @@ function App() {
         <Route path={routesHelper.allBookings} element = {<BookingList/>}/>
         <Route path={routesHelper.admin} element={<Admin/>} />
         <Route path={routesHelper.googleAuthAux} element={<GoogleAuthAux/>} />
-        <Route path={routesHelper.editInfo} element={<EditCustomer/>} />
       </Routes>
     </div>
   );
