@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
+import validateEdit from './validateEdit';
+import validatePass from './validatePass';
 import { getCustomerDetailsUrl, updateCustomerInfoUrl, updatePasswordUrl } from '../../helpers/routes';
 
 const EditCustomer = () => {
@@ -23,6 +25,23 @@ const EditCustomer = () => {
   });
 
   const [passwordFields, setPasswordFields] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
+  const [errors, setErrors] = useState({
+    id: '',
+    name: '',
+    lastName: '',
+    personalId: '',
+    birthDate: '',
+    address: '',
+    city: '',
+    country: '',
+    zipCode: '',
+    phoneNumber: '',
+    email: '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
@@ -58,19 +77,15 @@ const EditCustomer = () => {
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
-    setEditedFields({
-      ...editedFields,
-      [name]: value,
-    });
+    setEditedFields({ ...editedFields, [name]: value });
+    setErrors(validateEdit({ ...editedFields, [name]: value }));
   };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
     setButtonText('Save Password');
-    setPasswordFields({
-      ...passwordFields,
-      [name]: value,
-    });
+    setPasswordFields({ ...passwordFields, [name]: value });
+    setErrors(validatePass({ ...editedFields, [name]: value }));
   };
 
   const handleUpdatePassword = async () => {
@@ -92,15 +107,12 @@ const EditCustomer = () => {
         }),
       });
       setButtonText('Save');
-      handleSaveAndBack()
-      window.location.href = `/customer/${id}`
+      handleSaveAndBack();
+      window.location.href = `/customer/${id}`;
 
       if (response.ok) {
         setPasswordError(null);
-          console.log("Actualizada");
-      } else {
-        const errorData = await response.json();
-        setPasswordError(errorData.error);
+        console.log("Actualizada");
       }
     } catch (error) {
       console.error('Error', error);
@@ -117,8 +129,8 @@ const EditCustomer = () => {
         body: JSON.stringify(editedFields),
       });
 
-      setButtonText('Save')
-      window.location.href = `/customer/${id}`
+      setButtonText('Save');
+      window.location.href = `/customer/${id}`;
 
       if (response.ok) {
         const updatedData = await response.json();
@@ -135,151 +147,394 @@ const EditCustomer = () => {
     return <Loader />;
   }
 
+
   return (
     <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="sticky drop-shadow-md border bg-white rounded-l-3xl dark:bg-slate-900">
         <form className="px-16 py-5 flex flex-col flex-wrap w-full rounded-xl justify-center">
-          <h2 className="font-poppins p-2 text-3xl">Edit Customer</h2>
+          <h1 className="font-poppins p-2 text-3xl">Edit your info</h1>
           <hr className="ml-8 mr-8 p-2 text-gray" />
-          <div>
-            <label htmlFor="name">Name: </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={editedFields.name}
-              onChange={handleFieldChange}
-            />
+          <div className='flex'>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='name'
+              >
+                Name
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray '
+                  type='text'
+                  name='name'
+                  value={editedFields.name}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.name
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.name}
+                </span>
+              </div>
+            </div>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='lastName'
+              >
+                Last Name
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='text'
+                  name='lastName'
+                  value={editedFields.lastName}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.lastName
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.lastName}
+                </span>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="lastName">Last Name: </label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              value={editedFields.lastName}
-              onChange={handleFieldChange}
-            />
+          <div className='flex'>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='email'
+              >
+                E-mail
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='text'
+                  name='email'
+                  value={editedFields.email}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.email
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.email}
+                </span>
+              </div>
+              <span
+                className={
+                  errors.emailMsj
+                    ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                    : null
+                }
+              >
+                {errors.emailMsj}
+              </span>
+            </div>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='phoneNumber'
+              >
+                Phone Number
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='text'
+                  name='phoneNumber'
+                  value={editedFields.phoneNumber}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.phoneNumber
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.phoneNumber}
+                </span>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="personalId">Personal ID: </label>
-            <input
-              type="text"
-              id="personalId"
-              name="personalId"
-              value={editedFields.personalId}
-              onChange={handleFieldChange}
-            />
+          <div className='flex'>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='personalId'
+              >
+                PersonalID
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='text'
+                  name='personalId'
+                  value={editedFields.personalId}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.personalId
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.personalId}
+                </span>
+              </div>
+            </div>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='birthDate'
+              >
+                Birth Date
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='date'
+                  name='birthDate'
+                  value={editedFields.birthDate}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.birthDate
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.birthDate}
+                </span>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="birthDate">Birth Date: </label>
-            <input
-              type="date"
-              id="birthDate"
-              name="birthDate"
-              value={editedFields.birthDate}
-              onChange={handleFieldChange}
-            />
+          <div className='flex'>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='country'
+              >
+                Country
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='text'
+                  name='country'
+                  value={editedFields.country}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.country
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.country}
+                </span>
+              </div>
+            </div>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='city'
+              >
+                City
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='text'
+                  name='city'
+                  value={editedFields.city}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.city
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.city}
+                </span>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="address">Address: </label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={editedFields.address}
-              onChange={handleFieldChange}
-            />
+          <div className='flex'>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='address'
+              >
+                Address
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='text'
+                  name='address'
+                  value={editedFields.address}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.address
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.address}
+                </span>
+              </div>
+            </div>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='zipCode'
+              >
+                Zip Code
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='text'
+                  name='zipCode'
+                  value={editedFields.zipCode}
+                  onChange={handleFieldChange}
+                />
+                <span
+                  className={
+                    errors.zipCode
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.zipCode}
+                </span>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="city">City: </label>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              value={editedFields.city}
-              onChange={handleFieldChange}
-            />
+          <div className='flex'>
+            <div className='w-full'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='currentPassword'
+              >
+                Current Password
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-full font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='password'
+                  name='currentcurrentPassword'
+                  value={passwordFields.currentPassword}
+                  onChange={handlePasswordChange}
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="country">Country: </label>
-            <input
-              type="text"
-              id="country"
-              name="country"
-              value={editedFields.country}
-              onChange={handleFieldChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="zipCode">Zip Code: </label>
-            <input
-              type="text"
-              id="zipCode"
-              name="zipCode"
-              value={editedFields.zipCode}
-              onChange={handleFieldChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="phoneNumber">Phone Number: </label>
-            <input
-              type="text"
-              id="phoneNumber"
-              name="phoneNumber"
-              value={editedFields.phoneNumber}
-              onChange={handleFieldChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Email: </label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={editedFields.email}
-              onChange={handleFieldChange}
-            />
-          </div>
-          <label htmlFor="currentPassword">Current Password: </label>
-          <input
-            type="password"
-            id="currentPassword"
-            name="currentPassword"
-            value={passwordFields.currentPassword}
-            onChange={handlePasswordChange}
-          />
 
-          <div>
-            <label htmlFor="newPassword">New Password: </label>
-            <input
-              type="password"
-              id="newPassword"
-              name="newPassword"
-              value={passwordFields.newPassword}
-              onChange={handlePasswordChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="confirmPassword">Confirm Password: </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={passwordFields.confirmPassword}
-              onChange={handlePasswordChange}
-            />
-          </div>
-          {passwordError && <p className="text-red-500">{passwordError}</p>}
-          <div className="flex flex-col mt-4 mb-4">
-            <button
-              className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
-              onClick={handleUpdatePassword}
-            >
-              {buttonText}
-            </button>
-           
-          </div>
+            <div className='flex'>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='password'
+                >
+                  Password
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='password'
+                    name='password'
+                    value={passwordFields.password}
+                    onChange={handlePasswordChange}
+                  />
+                  <span
+                    className={
+                      errors.password
+                        ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                        : null
+                    }
+                  >
+                    {errors.password}
+                  </span>
+                </div>
+                <span
+                  className={
+                    errors.passwordMsj
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.passwordMsj}
+                </span>
+              </div>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 justify-start'
+                  htmlFor='repeatPass'
+                >
+                  Repeat Password
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='password'
+                    name='repeatPass'
+                    value={passwordFields.repeatPass}
+                    onChange={handlePasswordChange}
+                  />
+                  <span
+                    className={
+                      errors.repeatPass
+                        ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                        : null
+                    }
+                  >
+                    {errors.repeatPass}
+                  </span>
+                </div>
+                <span
+                  className={
+                    errors.repeatPassMsj
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.repeatPassMsj}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col mt-4 mb-4">
+              <button
+                className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
+                onClick={handleUpdatePassword}
+              >
+                {buttonText}
+              </button>
+
+            </div>
 
         </form>
       </div>
