@@ -18,7 +18,7 @@ const CarList = () => {
   const filterObject = useSelector((state) => state.veh.filterObject);
 
   useEffect(() => {
-    loading || setLoading(true); // revisar lo de loading || condicional si no es true
+    loading || setLoading(true);
     dispatch(getAvailability(filterObject)).then(() => {
       setLoading(false);
     });
