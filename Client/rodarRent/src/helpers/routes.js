@@ -1,6 +1,6 @@
 const routesHelper = {
   baseFrontUrl: 'http://127.0.0.1:5173',
-  baseBackUrl: 'http://localhost:3001',
+  baseBackUrl: 'https://rodarrent-main-server.onrender.com',
   landing: '/',
   cars: '/cars',
   login: '/login',
@@ -20,7 +20,7 @@ const routesHelper = {
   bookingByIdCustomer: '/myBookings',
 };
 
-export const API_BASE_URL = 'http://localhost:3001';
+export const API_BASE_URL = 'https://rodarrent-main-server.onrender.com';
 
 export const getCustomerDetailsUrl = (customerId) =>
   `${API_BASE_URL}/customers/${customerId}`;
