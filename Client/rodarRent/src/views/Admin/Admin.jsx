@@ -1,11 +1,11 @@
 import AdminNav from "../../components/AdminNav/AdminNav"
-import AdminDashboard from "./AdminDashboard"
+import { Outlet } from "react-router-dom"
 
 const Admin = () =>{
     return(
-        <div className="h-noNavDesktop w-full flex" >
+        <div className="h-noNavDesktop w-full flex">
             <AdminNav/>
-            <AdminDashboard />
+            <Outlet /> 
         </div>
     )
 }

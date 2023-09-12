@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
-import Loader from '../../components/Loader/Loader';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
 
 export default function Detail({ saveState }) {
   const [vehicle, setVehicle] = useState({
-    id: '',
-    brand: '',
-    model: '',
-    transmission: '',
-    fuel: '',
-    passengers: '',
-    price: '',
-    image: '',
+    id: "",
+    brand: "",
+    model: "",
+    transmission: "",
+    fuel: "",
+    passengers: "",
+    price: "",
+    image: "",
   });
 
   const { id } = useParams();
@@ -38,7 +38,11 @@ export default function Detail({ saveState }) {
 
   return (
     <div className="bg-gray-100 w-full h-noNavDesktop flex flex-col">
-      {(!vehicle.model && <Loader />) || (
+      {(!vehicle.model && (
+        <div className="flex h-[72vh] justify-center items-center">
+          <Loader />
+        </div>
+      )) || (
         <div className="w-full flex ">
           <div className="w-full h-full flex relative items-end">
             <Link
@@ -51,7 +55,11 @@ export default function Detail({ saveState }) {
               Back
             </Link>
             <div className="w-1/3">
-              <img src={vehicle.image} alt={vehicle.model} className="w-full h-auto" />
+              <img
+                src={vehicle.image}
+                alt={vehicle.model}
+                className="w-full h-auto"
+              />
             </div>
             <div className="flex">
               <div className="p-4">
@@ -59,7 +67,8 @@ export default function Detail({ saveState }) {
                   {vehicle.brand} {vehicle.model}
                 </h2>
                 <p className="text-lg text-gray-700 mb-4">
-                  {vehicle.transmission} | {vehicle.fuel} | {vehicle.passengers} Passengers
+                  {vehicle.transmission} | {vehicle.fuel} | {vehicle.passengers}{" "}
+                  Passengers
                 </p>
                 <p className="text-2xl font-semibold mb-4">
                   Price per Day: ${vehicle.price}

@@ -1,31 +1,30 @@
-import { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import CarCard from '../CarCard/CarCard';
-import CarFilter from '../CarFilter/CarFilter';
-import Pagination from '../Pagination/Pagination';
-import { getVehicle } from '../../redux/actions';
-import { Link } from 'react-router-dom';
-import Loader from '../Loader/Loader';
+import { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import CarCard from "../CarCard/CarCard";
+import CarFilter from "../CarFilter/CarFilter";
+import Pagination from "../Pagination/Pagination";
+import { getVehicle } from "../../redux/actions";
+import { Link } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 const mapStateToProps = (state) => {
   return {
-    vehicles: state.vehicleReducer.vehicles, 
+    vehicles: state.vehicleReducer.vehicles,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getVehicle: () => dispatch(getVehicle()), 
+    getVehicle: () => dispatch(getVehicle()),
   };
 };
-
 
 const CarList = ({ vehicles, getVehicle }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getVehicle().then(() => {
-      setLoading(false); 
+      setLoading(false);
     });
   }, [getVehicle]);
 
@@ -38,15 +37,32 @@ const CarList = ({ vehicles, getVehicle }) => {
   }, [vehicles]);
 
   const handleFilter = (filterOptions) => {
-    const filteredResults = vehicles.filter(car => {
-      const brandFilter = !filterOptions.brand || car.brand === filterOptions.brand;
-      const modelFilter = !filterOptions.model || car.model === filterOptions.model;
-      const transmissionFilter = filterOptions.transmissions.length === 0 || filterOptions.transmissions.includes(car.transmission);
-      const fuelTypeFilter = filterOptions.fuelTypes.length === 0 || filterOptions.fuelTypes.includes(car.fuel);
-      const capacityFilter = filterOptions.passengers.length === 0 || filterOptions.passengers.includes(car.passengers);
-      const priceFilter = car.pricePerDay >= filterOptions.priceRange[0] && car.pricePerDay <= filterOptions.priceRange[1];
-      console.log(car.passengers)
-      return brandFilter && modelFilter && transmissionFilter && fuelTypeFilter && capacityFilter && priceFilter;
+    const filteredResults = vehicles.filter((car) => {
+      const brandFilter =
+        !filterOptions.brand || car.brand === filterOptions.brand;
+      const modelFilter =
+        !filterOptions.model || car.model === filterOptions.model;
+      const transmissionFilter =
+        filterOptions.transmissions.length === 0 ||
+        filterOptions.transmissions.includes(car.transmission);
+      const fuelTypeFilter =
+        filterOptions.fuelTypes.length === 0 ||
+        filterOptions.fuelTypes.includes(car.fuel);
+      const capacityFilter =
+        filterOptions.passengers.length === 0 ||
+        filterOptions.passengers.includes(car.passengers);
+      const priceFilter =
+        car.pricePerDay >= filterOptions.priceRange[0] &&
+        car.pricePerDay <= filterOptions.priceRange[1];
+      console.log(car.passengers);
+      return (
+        brandFilter &&
+        modelFilter &&
+        transmissionFilter &&
+        fuelTypeFilter &&
+        capacityFilter &&
+        priceFilter
+      );
     });
 
     setFilteredCars(filteredResults);
@@ -64,10 +80,15 @@ const CarList = ({ vehicles, getVehicle }) => {
   return (
     <div>
       {loading ? (
-        <Loader />
+        <div className="flex h-[72vh] justify-center items-center">
+          <Loader />
+        </div>
       ) : (
         <div className="flex w-full justify-between dark:bg-slate-900 dark:text-gray-100 transition duration-300 ">
-          <div className="w-1/4 p-4 dark:bg-slate-900" style={{ height: '827px' }}>
+          <div
+            className="w-1/4 p-4 dark:bg-slate-900"
+            style={{ height: "827px" }}
+          >
             <h1 className="text-xl font-bold mb-4">Filter By</h1>
             <CarFilter carData={filteredCars} onFilter={handleFilter} />
           </div>
@@ -77,7 +98,6 @@ const CarList = ({ vehicles, getVehicle }) => {
                 <Link to={`/car/${car.id}`} key={car.id}>
                   <CarCard car={car} />
                 </Link>
-
               ))}
             </div>
             <div className="w-full mt-4">

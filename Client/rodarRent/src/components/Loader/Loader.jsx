@@ -6,7 +6,7 @@ const Loader = () => {
         const redirectTimeout = setTimeout(() => {
 
             window.location.href = "/home/notfound";
-        }, 5000);
+        }, 500000);
 
         return () => clearTimeout(redirectTimeout);
     }, []);
