@@ -1,19 +1,19 @@
-import {useState, useEffect } from "react";
-import mercadoPagoImg from "../../assets/img/mercado-pago.png"
+import { useState, useEffect } from 'react';
+import mercadoPagoImg from '../../assets/img/mercado-pago.png';
 import { useLocation, Link } from 'react-router-dom'; // Importa Link
 import { ToastContainer, toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
 //import carImage from "../../assets/img/landingImage.webp";
-import { getLocalStorage } from "../../helpers/storage";
-import axios  from "axios";
+import { getLocalStorage } from '../../helpers/storage';
+import axios from 'axios';
 import { createReservationUrl, paymentUrl } from '../../helpers/routes';
 
 const Booking = () => {
-  const customer = getLocalStorage('loginData')
+  const customer = getLocalStorage('loginData');
   //console.log(customer);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const carId = queryParams.get('parametro')
+  const carId = queryParams.get('parametro');
 
   const [vehicle, setVehicle] = useState({
     price: '',
@@ -23,7 +23,7 @@ const Booking = () => {
   function getVehicleById(carId) {
     axios.get(`http://localhost:3001/vehicles/${carId}`).then((vehicle) => {
       setVehicle({
-        title: vehicle.data.brand + " " + vehicle.data.model,
+        title: vehicle.data.brand + ' ' + vehicle.data.model,
         price: vehicle.data.pricePerDay,
         image: vehicle.data.image,
       });
@@ -32,270 +32,393 @@ const Booking = () => {
   useEffect(() => {
     getVehicleById(carId);
   }, [carId]);
-  
+
   let days = 0;
-  
+
   const [bookingData, setBookingData] = useState({
     name: customer.name,
     lastName: customer.lastName,
     country: customer.country,
     city: customer.city,
     address: customer.address,
-    address2: "",
+    address2: '',
     terms: false,
-    startDate: "",
-    endDate: "",
+    startDate: '',
+    endDate: '',
     totalAmount: 0,
   });
 
-let today = new Date()
-let año = today.getFullYear();
-let mes = today.getMonth() + 1; // Los meses comienzan desde 0, así que sumamos 1
-let díaS = today.getDate();
-let díaE = today.getDate()+1;
+  let today = new Date();
+  let año = today.getFullYear();
+  let mes = today.getMonth() + 1; // Los meses comienzan desde 0, así que sumamos 1
+  let díaS = today.getDate();
+  let díaE = today.getDate() + 1;
 
-// Formatear la fecha en "yyyy-mm-dd"
-let fechaFormateadaStart = año + "-" + (mes < 10 ? "0" : "") + mes + "-" + (díaS < 10 ? "0" : "") + díaS;
-let fechaFormateadaEnd = año + "-" + (mes < 10 ? "0" : "") + mes + "-" + (díaE < 10 ? "0" : "") + díaE;
+  // Formatear la fecha en "yyyy-mm-dd"
+  let fechaFormateadaStart =
+    año +
+    '-' +
+    (mes < 10 ? '0' : '') +
+    mes +
+    '-' +
+    (díaS < 10 ? '0' : '') +
+    díaS;
+  let fechaFormateadaEnd =
+    año +
+    '-' +
+    (mes < 10 ? '0' : '') +
+    mes +
+    '-' +
+    (díaE < 10 ? '0' : '') +
+    díaE;
 
-//console.log("Fecha formateada: " + fechaFormateada);
+  //console.log("Fecha formateada: " + fechaFormateada);
 
-if (bookingData.startDate === ""){
-  bookingData.startDate = fechaFormateadaStart;
-}
-if (bookingData.endDate === ""){
-  bookingData.endDate = fechaFormateadaEnd
-}
-    days = (new Date(bookingData.endDate)-new Date(bookingData.startDate))/(1000*60*60*24)
-    
-    bookingData.totalAmount = days * vehicle.price
-    //console.log(days);
+  if (bookingData.startDate === '') {
+    bookingData.startDate = fechaFormateadaStart;
+  }
+  if (bookingData.endDate === '') {
+    bookingData.endDate = fechaFormateadaEnd;
+  }
+  days =
+    (new Date(bookingData.endDate) - new Date(bookingData.startDate)) /
+    (1000 * 60 * 60 * 24);
 
-  const handleChange = (event)=>{
+  bookingData.totalAmount = days * vehicle.price;
+  //console.log(days);
+
+  const handleChange = (event) => {
     const property = event.target.name;
     const value = event.target.value;
-    setBookingData({ ...bookingData, [property]: value })
-  }
+    setBookingData({ ...bookingData, [property]: value });
+  };
 
   const reservationData = {
-    "VehicleId": carId,
-    "CustomerId": "b0f9449a-7eb3-4481-87ae-cbbc644b69e5",
-    "startDate": bookingData.startDate,
-    "finishDate": bookingData.endDate,
-    "pricePerDay": vehicle.price,
-    "pickUpLocationId": "62f49e38-b587-491f-a5b2-06fd808f82aa",
-    "returnLocationId": "62f49e38-b587-491f-a5b2-06fd808f82aa",
-  }
-  
+    VehicleId: carId,
+    CustomerId: customer.id,
+    startDate: bookingData.startDate,
+    finishDate: bookingData.endDate,
+    pricePerDay: vehicle.price,
+    pickUpLocationId: '62f49e38-b587-491f-a5b2-06fd808f82aa',
+    returnLocationId: '62f49e38-b587-491f-a5b2-06fd808f82aa',
+  };
+
   /*const axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
     },
   };*/
   console.log(reservationData);
-let idBooking = "";
-const handleSubmit = async (event)=>{
-  if(document.getElementsByName("terms")[0].checked){
-    event.preventDefault()
-     try {
-      const response = await fetch(createReservationUrl(), {
-        method: 'POST',
+  let idBooking = '';
+  const handleSubmit = async (event) => {
+    if (document.getElementsByName('terms')[0].checked) {
+      event.preventDefault();
+      try {
+        const response = await fetch(createReservationUrl(), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(reservationData),
+        });
+
+        if (response.ok) {
+          const bookingResponse = await response.json();
+          console.log('Datos actualizados:', bookingResponse);
+          idBooking = bookingResponse.id;
+          console.log(idBooking);
+        } else {
+          console.error('Error en la solicitud:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
+    } else {
+      toast.warn('First accept terms and conditions');
+    }
+  };
+
+  const handlePay = async () => {
+    try {
+      const payData = {
+        id: idBooking,
+        title: vehicle.title,
+        quantity: days,
+        currency_id: 'ARS',
+        unit_price: vehicle.price,
+      };
+      console.log(payData);
+
+      const queryParams = new URLSearchParams(payData).toString();
+      const url = `http://localhost:3001/createorder?${queryParams}`;
+      console.log(url);
+      console.log(queryParams);
+
+      const response = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(reservationData),
       });
+      console.log(response);
+      if (response.status === 200) {
+        const payLink = response.data;
 
-      if (response.ok) {
-        const bookingResponse = await response.json();
-        console.log('Datos actualizados:', bookingResponse);
-        idBooking = bookingResponse.id;
-        console.log(idBooking);
-        
+        if (payLink) {
+          window.location.href = payLink;
+        } else {
+          console.log('No se encontró un enlace de pago en la respuesta.');
+        }
       } else {
-        console.error('Error en la solicitud:', response.statusText);
+        console.log(
+          'La solicitud no fue exitosa. Código de estado:',
+          response.status,
+        );
       }
     } catch (error) {
-      console.error('Error', error);
-    }}
-else {
-  toast.warn("First accept terms and conditions")
-}
-}
-
-
-const handlePay = async () => {
-  try {
-    const payData = {
-      "id": idBooking,
-      "title": vehicle.title,
-      "quantity": days,
-      "currency_id": "ARS",
-      "unit_price": vehicle.price,
+      console.log('Error:', error);
     }
-    const queryParams = new URLSearchParams(payData).toString();
-    const url = `http://localhost:3001/createorder?${queryParams}`;
-    console.log(url);
-    console.log(queryParams);
-
-    const response = await axios.get(url, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-console.log(response);
-    if (response.status === 200) {
-      const payLink = response.data.payLink;
-
-      if (payLink) {
-        window.location.href = payLink;
-      } else {
-        console.log('No se encontró un enlace de pago en la respuesta.');
-      }
-
-    } else {
-      console.log('La solicitud no fue exitosa. Código de estado:', response.status);
-    }
-  } catch (error) {
-    console.log('Error:', error);
-  }
-};
-
+  };
 
   return (
     <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="sticky drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
-      <form className="px-12 py-5 flex flex-col flex-wrap w-full justify-center">
-        <div>
-          <h1 className="font-poppins p-2 text-3xl">Thank you for your booking</h1>
-          <h6 className="font-poppins p-2 text-gray">Please fill your pay method and your billing address</h6>
-        </div>
-        <div className="border rounded-3xl p-2 m-2 w-full">
-          <h4 className="font-poppins p-1 text-xl">Billing Information</h4>
-          <hr className="ml-2 mr-2 p-2 text-gray" />
-          <div className="flex">
-          <div className="w-11/12">
-            <label htmlFor="name" className="font-poppins text-sm flex m-1 mb-0 justify-start">Name</label>
-            <input className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
-              type="text"
-              name="name"
-              value={bookingData.name}
-              onChange={handleChange}
-            />
+        <form className="px-12 py-5 flex flex-col flex-wrap w-full justify-center">
+          <div>
+            <h1 className="font-poppins p-2 text-3xl">
+              Thank you for your booking
+            </h1>
+            <h6 className="font-poppins p-2 text-gray">
+              Please fill your pay method and your billing address
+            </h6>
+          </div>
+          <div className="border rounded-3xl p-2 m-2 w-full">
+            <h4 className="font-poppins p-1 text-xl">Billing Information</h4>
+            <hr className="ml-2 mr-2 p-2 text-gray" />
+            <div className="flex">
+              <div className="w-11/12">
+                <label
+                  htmlFor="name"
+                  className="font-poppins text-sm flex m-1 mb-0 justify-start"
+                >
+                  Name
+                </label>
+                <input
+                  className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
+                  type="text"
+                  name="name"
+                  value={bookingData.name}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-11/12">
+                <label
+                  htmlFor="lastName"
+                  className="font-poppins text-sm flex m-1 mb-0 justify-start"
+                >
+                  Last Name
+                </label>
+                <input
+                  className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
+                  type="text"
+                  name="lastName"
+                  value={bookingData.lastName}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
-            <div className="w-11/12">
-            <label htmlFor="lastName" className="font-poppins text-sm flex m-1 mb-0 justify-start">Last Name</label>
-            <input className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
-              type="text"
-              name="lastName"
-              value={bookingData.lastName}
-              onChange={handleChange}
-            />
-          </div>
-          </div>
-          <div className="flex">
-          <div className="w-11/12">
-            <label htmlFor="country" className="font-poppins text-sm flex m-1 mb-0 justify-start">Country</label>
-            <input className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
-              type="text"
-              name="country"
-              value={bookingData.country}
-              onChange={handleChange}
-            />
+            <div className="flex">
+              <div className="w-11/12">
+                <label
+                  htmlFor="country"
+                  className="font-poppins text-sm flex m-1 mb-0 justify-start"
+                >
+                  Country
+                </label>
+                <input
+                  className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
+                  type="text"
+                  name="country"
+                  value={bookingData.country}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-11/12">
+                <label
+                  htmlFor="city"
+                  className="font-poppins text-sm flex m-1 mb-0 justify-start"
+                >
+                  City
+                </label>
+                <input
+                  className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
+                  type="text"
+                  name="city"
+                  value={bookingData.city}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
-            <div className="w-11/12">
-            <label htmlFor="city" className="font-poppins text-sm flex m-1 mb-0 justify-start">City</label>
-            <input className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
-              type="text"
-              name="city"
-              value={bookingData.city}
-              onChange={handleChange}
-            />
-          </div>
-          </div>
-          <div className="flex">
-          <div className="w-11/12">
-            <label htmlFor="address" className="font-poppins text-sm flex m-1 mb-0 justify-start">Address</label>
-            <input className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
-              type="text"
-              name="address"
-              value={bookingData.address}
-              onChange={handleChange}
-            />
+            <div className="flex">
+              <div className="w-11/12">
+                <label
+                  htmlFor="address"
+                  className="font-poppins text-sm flex m-1 mb-0 justify-start"
+                >
+                  Address
+                </label>
+                <input
+                  className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
+                  type="text"
+                  name="address"
+                  value={bookingData.address}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-11/12">
+                <label
+                  htmlFor="address2"
+                  className="font-poppins text-sm flex m-1 mb-0 justify-start"
+                >
+                  Address 2
+                </label>
+                <input
+                  className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
+                  type="text"
+                  name="address2"
+                  value={bookingData.address2}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
-            <div className="w-11/12">
-            <label htmlFor="address2" className="font-poppins text-sm flex m-1 mb-0 justify-start">Address 2</label>
-            <input className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray"
-              type="text"
-              name="address2"
-              value={bookingData.address2}
-              onChange={handleChange}
-            />
           </div>
+          <div className="border rounded-3xl p-2 m-2 w-full">
+            <h4 className="font-poppins p-1 text-xl">Pay Method</h4>
+            <hr className="ml-2 mr-2 p-2 text-gray" />
+            <div className="flex items-center h-24">
+              <img
+                className="relative h-full m-1"
+                src={mercadoPagoImg}
+                alt="Mercado Pago Image"
+              />
+            </div>
+            <div className="flex justify-end">
+              <span className="font-poppins text-sm">
+                Total to pay:{' '}
+                <span className="font-poppins text-sm font-bold">
+                  {' '}
+                  $ {bookingData.totalAmount}
+                </span>
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="border rounded-3xl p-2 m-2 w-full">
-          <h4 className="font-poppins p-1 text-xl">Pay Method</h4>
-          <hr className="ml-2 mr-2 p-2 text-gray" />
-          <div className="flex items-center h-24">
-            <img className="relative h-full m-1" src={mercadoPagoImg} alt="Mercado Pago Image" />
-          </div>
-          <div className="flex justify-end">
-          <span className="font-poppins text-sm">Total to pay: <span className="font-poppins text-sm font-bold"> $ {bookingData.totalAmount}</span></span>
-          </div>
-        </div>
-        <div className="flex flex-col justify-start items-start p-2 m-2">
-            <label className="font-poppins text-sm flex m-1 mb-0 justify-start items-center" htmlFor="">          
-            <input className="m-2 cursor-pointer" type="checkbox" name="terms" onChange={handleChange} />
-            I agree with terms conditions and privacy policy.
+          <div className="flex flex-col justify-start items-start p-2 m-2">
+            <label
+              className="font-poppins text-sm flex m-1 mb-0 justify-start items-center"
+              htmlFor=""
+            >
+              <input
+                className="m-2 cursor-pointer"
+                type="checkbox"
+                name="terms"
+                onChange={handleChange}
+              />
+              I agree with terms conditions and privacy policy.
             </label>
-            <label className="font-poppins text-sm flex m-1 mb-0 justify-start items-center" htmlFor="">          
-            <input className="m-2 cursor-pointer" type="checkbox" name="info" onChange={handleChange} />
-            I want to receive the latest information.
+            <label
+              className="font-poppins text-sm flex m-1 mb-0 justify-start items-center"
+              htmlFor=""
+            >
+              <input
+                className="m-2 cursor-pointer"
+                type="checkbox"
+                name="info"
+                onChange={handleChange}
+              />
+              I want to receive the latest information.
             </label>
-        </div>
-      </form>
+          </div>
+        </form>
         <div className="flex justify-end">
-           <button className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white" onClick={handleSubmit}>Reserve Deal 
-           </button>
-           <button className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white" onClick={handlePay}>Pago 
-           </button>
+          <button
+            className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+            onClick={handleSubmit}
+          >
+            Reserve Deal
+          </button>
+          <button
+            className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+            onClick={handlePay}
+          >
+            Pago
+          </button>
         </div>
       </div>
       <div className="w-1/4 m-8 flex flex-col p-8 h-full sticky drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
         <div className="flex justify-center w">
-        <img className="w-full" src={vehicle.image} alt="Car Image" />
+          <img className="w-full" src={vehicle.image} alt="Car Image" />
         </div>
         <div className="font-poppins text-sm border rounded-lg p-1 my-2">
-        <label>Pick up date: <input type="date" name="startDate" value={!bookingData.startDate?fechaFormateadaStart:bookingData.startDate} onChange={handleChange} /></label>
+          <label>
+            Pick up date:{' '}
+            <input
+              type="date"
+              name="startDate"
+              value={
+                !bookingData.startDate
+                  ? fechaFormateadaStart
+                  : bookingData.startDate
+              }
+              onChange={handleChange}
+            />
+          </label>
         </div>
         <div className="font-poppins text-sm border rounded-lg p-1 my-2">
-        <label>Drop off date: <input type="date" name="endDate" value={!bookingData.endDate?fechaFormateadaEnd:bookingData.endDate} onChange={handleChange} /></label>
+          <label>
+            Drop off date:{' '}
+            <input
+              type="date"
+              name="endDate"
+              value={
+                !bookingData.endDate ? fechaFormateadaEnd : bookingData.endDate
+              }
+              onChange={handleChange}
+            />
+          </label>
         </div>
         <div className="flex flex-col border rounded-lg p-1 my-2">
-        <div className="flex justify-between font-poppins text-sm p-1 my-2">
-        <span className="">Price per day: </span><span>$ {vehicle.price}</span>
-        </div>
-        <div className="flex justify-between font-poppins text-sm p-1 my-2">
-        <span className="">Total days: </span><span>{days=(new Date(bookingData.endDate)-new Date(bookingData.startDate))/(1000*60*60*24)}</span>
-        </div>
-        <hr />
-        <div className="flex justify-between font-poppins text-sm p-1 my-2">
-        <span className="">Total amount: </span><span>$ {bookingData.totalAmount}</span>
-        </div>
+          <div className="flex justify-between font-poppins text-sm p-1 my-2">
+            <span className="">Price per day: </span>
+            <span>$ {vehicle.price}</span>
+          </div>
+          <div className="flex justify-between font-poppins text-sm p-1 my-2">
+            <span className="">Total days: </span>
+            <span>
+              {
+                (days =
+                  (new Date(bookingData.endDate) -
+                    new Date(bookingData.startDate)) /
+                  (1000 * 60 * 60 * 24))
+              }
+            </span>
+          </div>
+          <hr />
+          <div className="flex justify-between font-poppins text-sm p-1 my-2">
+            <span className="">Total amount: </span>
+            <span>$ {bookingData.totalAmount}</span>
+          </div>
         </div>
       </div>
       <ToastContainer
-      position="top-left"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
+        position="top-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
       />
     </div>
   );
