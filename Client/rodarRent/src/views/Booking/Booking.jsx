@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getLocalStorage, getSessionStorage } from "../../helpers/storage";
 import axios from "axios";
-import { createReservationUrl, paymentUrl } from "../../helpers/routes";
+import { API_BASE_URL, createReservationUrl, paymentUrl } from "../../helpers/routes";
 
 const Booking = () => {
   const customer = getLocalStorage("loginData");
@@ -20,7 +20,7 @@ const Booking = () => {
   });
 
   function getVehicleById(carId) {
-    axios.get(`http://localhost:3001/vehicles/${carId}`).then((vehicle) => {
+    axios.get(`${API_BASE_URL}/vehicles/${carId}`).then((vehicle) => {
       setVehicle({
         title: vehicle.data.brand + " " + vehicle.data.model,
         price: vehicle.data.pricePerDay,
