@@ -4,13 +4,14 @@ import queryMaker from "../helpers/queryMaker";
 import { setSessionStorage, getLocalStorage } from "../helpers/storage";
 import { successLogin, logOutSession } from '../helpers/Log';
 import {toast} from 'react-toastify';
+import { API_BASE_URL } from '../helpers/routes';
 
 
 export function getVehicle(filterObject) {
   const queryString = queryMaker(filterObject)
   return function (dispatch) {
     return axios
-      .get("http://localhost:3001/vehicles/" + queryString)
+      .get(`${API_BASE_URL}/vehicles/` + queryString)
       .then((response) => {
         dispatch({
           type: GET_VEHICLE,
@@ -47,7 +48,7 @@ export function getVehicle(filterObject) {
 export function getAllCustomers() {
   return function (dispatch) {
     return axios
-      .get("http://localhost:3001/customers/")
+      .get(`${API_BASE_URL}/customers/`)
       .then((response) => {
         dispatch({
           type: GET_CUSTOMERS,
@@ -66,7 +67,7 @@ export function getAllCustomers() {
 export function getCustomerById() {
   return function (dispatch) {
     return axios
-      .get("http://localhost:3001/customers/:id/")
+      .get(`${API_BASE_URL}/customers/:id/`)
       .then((response) => {
         dispatch({
           type: GET_CUSTOMERBYID,
@@ -85,7 +86,7 @@ export function getCustomerById() {
 export function getAllBookings() {
   return function (dispatch) {
     return axios
-      .get("http://localhost:3001/bookings/")
+      .get(`${API_BASE_URL}/bookings/`)
       .then((response) => {
         dispatch({
           type: GET_ALLBOOKINGS,
@@ -105,7 +106,7 @@ export function getAvailability(queryObject){
   const queryString = queryMaker(queryObject)
   return async function(dispatch){
       try {
-        const response = await axios.get(`http://localhost:3001/available/`+ queryString)
+        const response = await axios.get(`${API_BASE_URL}/available/`+ queryString)
         dispatch({
           type: GET_VEHICLE,
           payload: response.data
@@ -136,7 +137,7 @@ export function setFilters(filterObject){
 
 export const logIn = (loginData,navigate) => async (dispatch) =>{
     try {
-      const response = await axios.post('http://localhost:3001/customers/login',loginData);
+      const response = await axios.post(`${API_BASE_URL}/customers/login`,loginData);
       if (response.status===200) {
         successLogin(response.data,navigate)
         // const loginData = getLocalStorage('loginData')

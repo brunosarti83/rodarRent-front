@@ -1,27 +1,27 @@
-import { useState, useEffect } from 'react';
-import mercadoPagoImg from '../../assets/img/mercado-pago.png';
-import { useLocation, Link } from 'react-router-dom'; // Importa Link
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-//import carImage from "../../assets/img/landingImage.webp";
-import { getLocalStorage } from '../../helpers/storage';
-import axios from 'axios';
-import { createReservationUrl, paymentUrl } from '../../helpers/routes';
+
+import { useState, useEffect } from "react";
+import mercadoPagoImg from "../../assets/img/mercado-pago.png";
+import { useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getLocalStorage, getSessionStorage } from "../../helpers/storage";
+import axios from "axios";
+import { API_BASE_URL, createReservationUrl, paymentUrl } from "../../helpers/routes";
 
 const Booking = () => {
-  const customer = getLocalStorage('loginData');
-  //console.log(customer);
+  const customer = getLocalStorage("loginData");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const carId = queryParams.get('parametro');
+  const carId = queryParams.get("parametro");
+  const { startDate, finishDate } = getSessionStorage("filterObject");
 
   const [vehicle, setVehicle] = useState({
-    price: '',
-    image: '',
+    price: "",
+    image: "",
   });
 
   function getVehicleById(carId) {
-    axios.get(`http://localhost:3001/vehicles/${carId}`).then((vehicle) => {
+    axios.get(`${API_BASE_URL}/vehicles/${carId}`).then((vehicle) => {
       setVehicle({
         title: vehicle.data.brand + ' ' + vehicle.data.model,
         price: vehicle.data.pricePerDay,
@@ -43,8 +43,8 @@ const Booking = () => {
     address: customer.address,
     address2: '',
     terms: false,
-    startDate: '',
-    endDate: '',
+    startDate: startDate || "",
+    endDate: finishDate || "",
     totalAmount: 0,
   });
 
@@ -57,27 +57,25 @@ const Booking = () => {
   // Formatear la fecha en "yyyy-mm-dd"
   let fechaFormateadaStart =
     año +
-    '-' +
-    (mes < 10 ? '0' : '') +
+    "-" +
+    (mes < 10 ? "0" : "") +
     mes +
-    '-' +
-    (díaS < 10 ? '0' : '') +
+    "-" +
+    (díaS < 10 ? "0" : "") +
     díaS;
   let fechaFormateadaEnd =
     año +
-    '-' +
-    (mes < 10 ? '0' : '') +
+    "-" +
+    (mes < 10 ? "0" : "") +
     mes +
-    '-' +
-    (díaE < 10 ? '0' : '') +
+    "-" +
+    (díaE < 10 ? "0" : "") +
     díaE;
 
-  //console.log("Fecha formateada: " + fechaFormateada);
-
-  if (bookingData.startDate === '') {
+  if (!bookingData.startDate) {
     bookingData.startDate = fechaFormateadaStart;
   }
-  if (bookingData.endDate === '') {
+  if (!bookingData.endDate) {
     bookingData.endDate = fechaFormateadaEnd;
   }
   days =
@@ -85,7 +83,6 @@ const Booking = () => {
     (1000 * 60 * 60 * 24);
 
   bookingData.totalAmount = days * vehicle.price;
-  //console.log(days);
 
   const handleChange = (event) => {
     const property = event.target.name;
@@ -99,83 +96,55 @@ const Booking = () => {
     startDate: bookingData.startDate,
     finishDate: bookingData.endDate,
     pricePerDay: vehicle.price,
-    pickUpLocationId: '62f49e38-b587-491f-a5b2-06fd808f82aa',
-    returnLocationId: '62f49e38-b587-491f-a5b2-06fd808f82aa',
+    pickUpLocationId: "62f49e38-b587-491f-a5b2-06fd808f82aa",
+    returnLocationId: "62f49e38-b587-491f-a5b2-06fd808f82aa",
   };
 
-  /*const axiosConfig = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };*/
-  console.log(reservationData);
-  let idBooking = '';
   const handleSubmit = async (event) => {
-    if (document.getElementsByName('terms')[0].checked) {
+    if (document.getElementsByName("terms")[0].checked) {
       event.preventDefault();
       try {
         const response = await fetch(createReservationUrl(), {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(reservationData),
         });
 
         if (response.ok) {
           const bookingResponse = await response.json();
-          console.log('Datos actualizados:', bookingResponse);
-          idBooking = bookingResponse.id;
-          console.log(idBooking);
+          const payData = {
+            id: bookingResponse.id,
+            title: vehicle.title,
+            quantity: days,
+            currency_id: "ARS",
+            unit_price: vehicle.price,
+          };
+          const queryParams = new URLSearchParams(payData).toString();
+          const url = `${paymentUrl()}?${queryParams}`;
+          //console.log(url);
+          const responseUrl = await axios.get(url, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          const payLink = responseUrl.data;
+
+          if (payLink) {
+            window.location.href = payLink;
+          } else {
+            console.log("No se encontró un enlace de pago en la respuesta.");
+          }
         } else {
-          console.error('Error en la solicitud:', response.statusText);
+          console.error("Error en la solicitud:", response.statusText);
         }
       } catch (error) {
-        console.error('Error', error);
+        console.error("Error", error);
       }
     } else {
-      toast.warn('First accept terms and conditions');
-    }
-  };
-
-  const handlePay = async () => {
-    try {
-      const payData = {
-        id: idBooking,
-        title: vehicle.title,
-        quantity: days,
-        currency_id: 'ARS',
-        unit_price: vehicle.price,
-      };
-      console.log(payData);
-
-      const queryParams = new URLSearchParams(payData).toString();
-      const url = `http://localhost:3001/createorder?${queryParams}`;
-      console.log(url);
-      console.log(queryParams);
-
-      const response = await axios.get(url, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      console.log(response);
-      if (response.status === 200) {
-        const payLink = response.data;
-
-        if (payLink) {
-          window.location.href = payLink;
-        } else {
-          console.log('No se encontró un enlace de pago en la respuesta.');
-        }
-      } else {
-        console.log(
-          'La solicitud no fue exitosa. Código de estado:',
-          response.status,
-        );
-      }
-    } catch (error) {
-      console.log('Error:', error);
+      toast.warn("First accept terms and conditions");
     }
   };
 
@@ -303,9 +272,9 @@ const Booking = () => {
             </div>
             <div className="flex justify-end">
               <span className="font-poppins text-sm">
-                Total to pay:{' '}
+                Total to pay:{" "}
                 <span className="font-poppins text-sm font-bold">
-                  {' '}
+                  {" "}
                   $ {bookingData.totalAmount}
                 </span>
               </span>
@@ -345,12 +314,6 @@ const Booking = () => {
           >
             Reserve Deal
           </button>
-          <button
-            className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
-            onClick={handlePay}
-          >
-            Pago
-          </button>
         </div>
       </div>
       <div className="w-1/4 m-8 flex flex-col p-8 h-full sticky drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
@@ -359,7 +322,7 @@ const Booking = () => {
         </div>
         <div className="font-poppins text-sm border rounded-lg p-1 my-2">
           <label>
-            Pick up date:{' '}
+            Pick up date:{" "}
             <input
               type="date"
               name="startDate"
@@ -374,7 +337,7 @@ const Booking = () => {
         </div>
         <div className="font-poppins text-sm border rounded-lg p-1 my-2">
           <label>
-            Drop off date:{' '}
+            Drop off date:{" "}
             <input
               type="date"
               name="endDate"

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader';
-import routesHelper from '../../helpers/routes';
+import routesHelper, { API_BASE_URL } from '../../helpers/routes';
 import { BiArrowBack } from "react-icons/bi"
 
 export default function Detail({ saveState }) {
@@ -20,7 +20,7 @@ export default function Detail({ saveState }) {
   const { id } = useParams();
 
   function getVehicleById(id) {
-    axios.get(`http://localhost:3001/vehicles/${id}`).then((vehicle) => {
+    axios.get(`${API_BASE_URL}/vehicles/${id}`).then((vehicle) => {
       setVehicle({
         id: vehicle.data.id,
         brand: vehicle.data.brand,

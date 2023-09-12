@@ -1,7 +1,7 @@
 import formImage from '../../assets/img/loginRegister/login.png';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import routesHelper from '../../helpers/routes';
+import routesHelper, { API_BASE_URL } from '../../helpers/routes';
 import validateRegister from './validateRegister';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -74,7 +74,7 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await axios
-      .post('http://localhost:3001/customers', data)
+      .post(`${API_BASE_URL}/customers`, data)
       .then((response) => {
         toast.success('Registered user!', { position: 'top-left' });
         setTimeout(() => {
