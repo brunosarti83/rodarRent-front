@@ -121,7 +121,7 @@ const Booking = () => {
           };
           const queryParams = new URLSearchParams(payData).toString();
           const url = `${paymentUrl()}?${queryParams}`;
-          console.log(url);
+          //console.log(url);
           const responseUrl = await axios.get(url, {
             headers: {
               "Content-Type": "application/json",
