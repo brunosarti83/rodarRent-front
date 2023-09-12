@@ -1,30 +1,74 @@
-import { useEffect, useState } from "react";
+import {useState, useEffect } from "react";
 import mercadoPagoImg from "../../assets/img/mercado-pago.png"
+import { useLocation, Link } from 'react-router-dom'; // Importa Link
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import carImage from "../../assets/img/landingImage.webp"
-const Booking = () => {
+//import carImage from "../../assets/img/landingImage.webp";
+import { getLocalStorage } from "../../helpers/storage";
+import axios  from "axios";
+import { createReservationUrl, paymentUrl } from '../../helpers/routes';
 
+const Booking = () => {
+  const customer = getLocalStorage('loginData')
+  //console.log(customer);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const carId = queryParams.get('parametro')
+
+  const [vehicle, setVehicle] = useState({
+    price: '',
+    image: '',
+  });
+
+  function getVehicleById(carId) {
+    axios.get(`http://localhost:3001/vehicles/${carId}`).then((vehicle) => {
+      setVehicle({
+        title: vehicle.data.brand + " " + vehicle.data.model,
+        price: vehicle.data.pricePerDay,
+        image: vehicle.data.image,
+      });
+    });
+  }
+  useEffect(() => {
+    getVehicleById(carId);
+  }, [carId]);
+  
   let days = 0;
   
   const [bookingData, setBookingData] = useState({
-    name: "Customer",
-    lastName: "Customer Last Name",
-    country: "Customer Country",
-    city: "Customer City",
-    address: "Customer Address",
-    address2: "Customer Last Name",
-    payMethod: "Credit Card",
-    image: carImage,
+    name: customer.name,
+    lastName: customer.lastName,
+    country: customer.country,
+    city: customer.city,
+    address: customer.address,
+    address2: "",
     terms: false,
-    startDate: "2023-05-12",
-    endDate: "2023-05-17",
-    price: 140,
+    startDate: "",
+    endDate: "",
     totalAmount: 0,
   });
-  
+
+let today = new Date()
+let año = today.getFullYear();
+let mes = today.getMonth() + 1; // Los meses comienzan desde 0, así que sumamos 1
+let díaS = today.getDate();
+let díaE = today.getDate()+1;
+
+// Formatear la fecha en "yyyy-mm-dd"
+let fechaFormateadaStart = año + "-" + (mes < 10 ? "0" : "") + mes + "-" + (díaS < 10 ? "0" : "") + díaS;
+let fechaFormateadaEnd = año + "-" + (mes < 10 ? "0" : "") + mes + "-" + (díaE < 10 ? "0" : "") + díaE;
+
+//console.log("Fecha formateada: " + fechaFormateada);
+
+if (bookingData.startDate === ""){
+  bookingData.startDate = fechaFormateadaStart;
+}
+if (bookingData.endDate === ""){
+  bookingData.endDate = fechaFormateadaEnd
+}
     days = (new Date(bookingData.endDate)-new Date(bookingData.startDate))/(1000*60*60*24)
-    bookingData.totalAmount = days * bookingData.price
+    
+    bookingData.totalAmount = days * vehicle.price
     //console.log(days);
 
   const handleChange = (event)=>{
@@ -33,16 +77,91 @@ const Booking = () => {
     setBookingData({ ...bookingData, [property]: value })
   }
 
-const handleSubmit = (event)=>{
+  const reservationData = {
+    "VehicleId": carId,
+    "CustomerId": "b0f9449a-7eb3-4481-87ae-cbbc644b69e5",
+    "startDate": bookingData.startDate,
+    "finishDate": bookingData.endDate,
+    "pricePerDay": vehicle.price,
+    "pickUpLocationId": "62f49e38-b587-491f-a5b2-06fd808f82aa",
+    "returnLocationId": "62f49e38-b587-491f-a5b2-06fd808f82aa",
+  }
+  
+  /*const axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };*/
+  console.log(reservationData);
+let idBooking = "";
+const handleSubmit = async (event)=>{
+  if(document.getElementsByName("terms")[0].checked){
     event.preventDefault()
-if(document.getElementsByName("terms")[0].checked){
-  toast.success("Deal!");
-}
+     try {
+      const response = await fetch(createReservationUrl(), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reservationData),
+      });
+
+      if (response.ok) {
+        const bookingResponse = await response.json();
+        console.log('Datos actualizados:', bookingResponse);
+        idBooking = bookingResponse.id;
+        console.log(idBooking);
+        
+      } else {
+        console.error('Error en la solicitud:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error', error);
+    }}
 else {
   toast.warn("First accept terms and conditions")
 }
-
 }
+
+
+const handlePay = async () => {
+  try {
+    const payData = {
+      "id": idBooking,
+      "title": vehicle.title,
+      "quantity": days,
+      "currency_id": "ARS",
+      "unit_price": vehicle.price,
+    }
+    const queryParams = new URLSearchParams(payData).toString();
+    const url = `http://localhost:3001/createorder?${queryParams}`;
+    console.log(url);
+    console.log(queryParams);
+
+    const response = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+console.log(response);
+    if (response.status === 200) {
+      const payLink = response.data.payLink;
+
+      if (payLink) {
+        window.location.href = payLink;
+      } else {
+        console.log('No se encontró un enlace de pago en la respuesta.');
+      }
+
+    } else {
+      console.log('La solicitud no fue exitosa. Código de estado:', response.status);
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+};
+
+
   return (
     <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="sticky drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
@@ -118,16 +237,6 @@ else {
         <div className="border rounded-3xl p-2 m-2 w-full">
           <h4 className="font-poppins p-1 text-xl">Pay Method</h4>
           <hr className="ml-2 mr-2 p-2 text-gray" />
-          <div className="flex justify-around">
-            <label className="font-poppins text-sm flex m-1 mb-0 justify-start items-center">
-            <input checked className="m-2 cursor-pointer" type="radio" name="payMethod" value="Credit Card" onChange={handleChange} />
-            Credit Card
-            </label>
-            <label className="font-poppins text-sm flex m-1 mb-0 justify-start items-center">
-            <input className="m-2 cursor-pointer" type="radio" name="payMethod" value="Wire Transfer" onChange={handleChange} />
-            Wire Transfer
-            </label>
-          </div>
           <div className="flex items-center h-24">
             <img className="relative h-full m-1" src={mercadoPagoImg} alt="Mercado Pago Image" />
           </div>
@@ -145,24 +254,27 @@ else {
             I want to receive the latest information.
             </label>
         </div>
-        <div className="flex justify-end">
-           <button className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white" onClick={handleSubmit}>Reserve Deal</button>
-        </div>
       </form>
+        <div className="flex justify-end">
+           <button className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white" onClick={handleSubmit}>Reserve Deal 
+           </button>
+           <button className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white" onClick={handlePay}>Pago 
+           </button>
+        </div>
       </div>
       <div className="w-1/4 m-8 flex flex-col p-8 h-full sticky drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
         <div className="flex justify-center w">
-        <img className="w-full" src={bookingData.image} alt="Car Image" />
+        <img className="w-full" src={vehicle.image} alt="Car Image" />
         </div>
         <div className="font-poppins text-sm border rounded-lg p-1 my-2">
-        <label>Pick up date: <input type="date" name="startDate" value={bookingData.startDate} onChange={handleChange} /></label>
+        <label>Pick up date: <input type="date" name="startDate" value={!bookingData.startDate?fechaFormateadaStart:bookingData.startDate} onChange={handleChange} /></label>
         </div>
         <div className="font-poppins text-sm border rounded-lg p-1 my-2">
-        <label>Drop off date: <input type="date" name="endDate" value={bookingData.endDate} onChange={handleChange} /></label>
+        <label>Drop off date: <input type="date" name="endDate" value={!bookingData.endDate?fechaFormateadaEnd:bookingData.endDate} onChange={handleChange} /></label>
         </div>
         <div className="flex flex-col border rounded-lg p-1 my-2">
         <div className="flex justify-between font-poppins text-sm p-1 my-2">
-        <span className="">Price per day: </span><span>$ {bookingData.price}</span>
+        <span className="">Price per day: </span><span>$ {vehicle.price}</span>
         </div>
         <div className="flex justify-between font-poppins text-sm p-1 my-2">
         <span className="">Total days: </span><span>{days=(new Date(bookingData.endDate)-new Date(bookingData.startDate))/(1000*60*60*24)}</span>
