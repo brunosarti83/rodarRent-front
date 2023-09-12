@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import mercadoPagoImg from "../../assets/img/mercado-pago.png";
-import { useLocation, Link } from "react-router-dom"; // Importa Link
+import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getLocalStorage } from "../../helpers/storage";
+import { getLocalStorage, getSessionStorage } from "../../helpers/storage";
 import axios from "axios";
 import { createReservationUrl, paymentUrl } from "../../helpers/routes";
 
@@ -12,6 +12,7 @@ const Booking = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const carId = queryParams.get("parametro");
+  const { startDate, finishDate } = getSessionStorage("filterObject");
 
   const [vehicle, setVehicle] = useState({
     price: "",
@@ -41,8 +42,8 @@ const Booking = () => {
     address: customer.address,
     address2: "",
     terms: false,
-    startDate: "",
-    endDate: "",
+    startDate: startDate || "",
+    endDate: finishDate || "",
     totalAmount: 0,
   });
 
@@ -70,10 +71,10 @@ const Booking = () => {
     (díaE < 10 ? "0" : "") +
     díaE;
 
-  if (bookingData.startDate === "") {
+  if (!bookingData.startDate) {
     bookingData.startDate = fechaFormateadaStart;
   }
-  if (bookingData.endDate === "") {
+  if (!bookingData.endDate) {
     bookingData.endDate = fechaFormateadaEnd;
   }
   days =
@@ -90,7 +91,7 @@ const Booking = () => {
 
   const reservationData = {
     VehicleId: carId,
-    CustomerId: "b0f9449a-7eb3-4481-87ae-cbbc644b69e5", //Acá iría customer.id del local storage
+    CustomerId: customer.id,
     startDate: bookingData.startDate,
     finishDate: bookingData.endDate,
     pricePerDay: vehicle.price,
