@@ -13,6 +13,8 @@ import {
 } from "../../helpers/routes";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../redux/actions";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CustomerDetail = () => {
   const { id } = useParams();
