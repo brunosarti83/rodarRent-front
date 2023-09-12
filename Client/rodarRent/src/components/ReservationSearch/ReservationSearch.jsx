@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 // Actions
 import { setFilters } from "../../redux/actions";
 
-
 const ReservationSearch = () => {
   const dispatch = useDispatch();
   const filterObject = useSelector((state) => state.veh.filterObject);
@@ -40,6 +39,9 @@ const ReservationSearch = () => {
     !search.startDate ||
     !search.finishDate ||
     new Date(search.finishDate) < new Date(search.startDate);
+
+  // * Variable para verificar si el usuario es el admin
+  const isAdmin = userData?.id === 'fd2daf55-3d6a-4254-ad40-74adc5229cde'
 
   return (
     <div className=" h-18 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
@@ -80,7 +82,7 @@ const ReservationSearch = () => {
         <div className="flex w-1/3 justify-center" >
           <Link 
             className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
-            to={`/customer/${userData.id}`} >
+            to={isAdmin ? '/admin' :`/customer/${userData.id}`} >
             My profile
           </Link>
         </div> :

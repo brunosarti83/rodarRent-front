@@ -5,7 +5,6 @@ import bookingReducer from './Reducers/bookingReducer';
 import authReducer from "./Reducers/authReducer";
 
 const rootReducer = combineReducers({
-    vehicleReducer,
     customerReducer, 
     bookingReducer,
     veh: vehicleReducer, 

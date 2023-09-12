@@ -27,4 +27,7 @@ export const getCustomerDetailsUrl = (customerId) =>
 export const getBookingsByIdCustomerUrl = (customerId) =>
   `${API_BASE_URL}/booking/filter?CustomerId=${customerId}`;
 export const updateCustomerInfoUrl = () => `${API_BASE_URL}/customers`;
+export const updatePasswordUrl = () => `${API_BASE_URL}/customers/updatePassword`;
+export const createReservationUrl = () => `${API_BASE_URL}/bookings`;
+export const paymentUrl = () => `${API_BASE_URL}/createorder`;
 export default routesHelper;

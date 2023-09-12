@@ -1,20 +1,21 @@
+import { BiLogOut} from "react-icons/bi"
+
 
 const WelcomeCustomer = ({ customer, onLogout }) => {
   return (
-    <div className="mt-4 flex justify-between mx-[3.5rem]">
+    <div className="h-full flex justify-between items-center px-16">
       {customer && (
         <div className="flex items-center">
-          <p className="text-3xl text-black font-bold">
-            {`Welcome back! ${customer.name} ${customer.lastName}`}
-          </p>
+        <h2 className="text-3xl font-semibold" >Welcome Back! <span className=" text-blue" >{`${customer.name} ${customer.lastName}`}</span></h2>
         </div>
       )}
       {customer && (
         <div>
           <button
-            className=" bg-blue basis-2/4 p-8 text-gray-100 rounded-lg" 
+            className=" bg-blue basis-2/4 py-1 w-44 text-gray-100 rounded-lg text-xl flex items-center justify-evenly" 
             onClick={onLogout}
           >
+            <BiLogOut size='24px'/>
             Log out
           </button>
         </div>
