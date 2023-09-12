@@ -1,15 +1,18 @@
-import { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // Importa Link
-import Loader from '../Loader/Loader';
-import DashboardActions from '../DashboardActions/DashboardActions';
-import Modal from 'react-modal';
-import { toast } from 'react-toastify';
-import EditCustomer from '../EditCustomer/EditCustomer';
-import CustomerInfo from '../CustomerInfo/CustomerInfo';
-import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
-import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl } from '../../helpers/routes';
-import { useDispatch } from 'react-redux';
-import { logOut } from '../../redux/actions';
+import { useEffect, useState, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom"; // Importa Link
+import Loader from "../Loader/Loader";
+import DashboardActions from "../DashboardActions/DashboardActions";
+import Modal from "react-modal";
+import { toast } from "react-toastify";
+import EditCustomer from "../EditCustomer/EditCustomer";
+import CustomerInfo from "../CustomerInfo/CustomerInfo";
+import WelcomeCustomer from "../WelcomeCustomer/WelcomeCustomer";
+import {
+  getCustomerDetailsUrl,
+  getBookingsByIdCustomerUrl,
+} from "../../helpers/routes";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/actions";
 
 const CustomerDetail = () => {
   const { id } = useParams();
@@ -21,8 +24,6 @@ const CustomerDetail = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const modalRef = useRef();
 
-
-
   const openEditModal = () => {
     setIsEditModalOpen(true);
   };
@@ -30,8 +31,8 @@ const CustomerDetail = () => {
   const closeEditModal = () => {
     setIsEditModalOpen(false);
 
-    toast.success('Customer information updated successfully', {
-      position: 'top-left',
+    toast.success("Customer information updated successfully", {
+      position: "top-left",
       autoClose: 3000,
     });
   };
@@ -55,8 +56,8 @@ const CustomerDetail = () => {
     };
   }, []);
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
@@ -66,7 +67,7 @@ const CustomerDetail = () => {
         setCustomer(data);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error', error);
+        console.error("Error", error);
         setIsLoading(false);
       }
     };
@@ -82,13 +83,17 @@ const CustomerDetail = () => {
           const data = await response.json();
           const formattedData = data.map((booking) => ({
             ...booking,
-            formattedStartDate: new Date(booking.startDate).toLocaleDateString(),
-            formattedFinishDate: new Date(booking.finishDate).toLocaleDateString(),
+            formattedStartDate: new Date(
+              booking.startDate
+            ).toLocaleDateString(),
+            formattedFinishDate: new Date(
+              booking.finishDate
+            ).toLocaleDateString(),
           }));
           setCustomerBookings(formattedData);
         }
       } catch (error) {
-        console.error('Error', error);
+        console.error("Error", error);
       }
     };
 
@@ -96,7 +101,7 @@ const CustomerDetail = () => {
   }, [id]);
 
   const handleLogout = () => {
-    dispatch(logOut(navigate))
+    dispatch(logOut(navigate));
   };
 
   if (isLoading) {
@@ -127,16 +132,15 @@ const CustomerDetail = () => {
   const currentBookings = paginate(customerBookings);
 
   return (
-    <div className=' h-noNavDesktop font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100' >
+    <div className=" h-noNavDesktop font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100">
       <div className="w-full h-16">
         <WelcomeCustomer customer={customer} onLogout={handleLogout} />
       </div>
       <div className="grid grid-cols-3 grid-row-3 h-customerDetail">
-        <div className='flex justify-center col-start-1 col-end-3 row-start-1 row-end-3' >
+        <div className="flex justify-center col-start-1 col-end-3 row-start-1 row-end-3">
           <div className="w-full p-4">
-            <div className='border-b-2 border-gray-300' >
-              <h1 className=" text-2xl font-medium text-black dark:text-gray-100 font-poppins " >
-
+            <div className="border-b-2 border-gray-300">
+              <h1 className=" text-2xl font-medium text-black dark:text-gray-100 font-poppins ">
                 Customer's Bookings
               </h1>
               {customerBookings.length === 0 ? (
@@ -175,45 +179,57 @@ const CustomerDetail = () => {
               )}
             </div>
             <div className="w-2/3 h-1/3">
-            <div className="mt-4 flex justify-between mx-[24rem]">
-              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+              <div className="mt-4 flex justify-between mx-[24rem]">
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                >
                   ❮
                 </button>
-                <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
                   ❯
                 </button>
               </div>
             </div>
           </div>
         </div>
-        
-        
-        
-        <div className='flex w-full col-start-1 col-end-3 row-start-3 row-end-4 ' >
+
+        <div className="flex w-full col-start-1 col-end-3 row-start-3 row-end-4 ">
           {customer && <CustomerInfo customer={customer} />}
         </div>
-        
-        
-        
-        
-        <div className=' row-start-1 row-end-4 col-start-3 flex justify-center'>
+
+        <div className=" row-start-1 row-end-4 col-start-3 flex justify-center">
           <DashboardActions openEditModal={openEditModal} />
         </div>
 
-        <Modal 
+        <Modal
           isOpen={isEditModalOpen}
           onRequestClose={closeEditModal}
           shouldCloseOnOverlayClick={true}
           contentLabel="Edit Customer Modal"
-          className="fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg" 
-          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black" 
+          className="fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
+          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black"
           ref={modalRef}
           onAfterOpen={closeModalOnClickOutside}
         >
           <EditCustomer closeEditModal={closeEditModal} />
         </Modal>
-
       </div>
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
