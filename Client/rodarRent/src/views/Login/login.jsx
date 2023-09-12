@@ -116,7 +116,7 @@ const Login = () => {
             >
               <img
                 className="relative w-6 m-1"
-                src="../../src/assets/img/google_logo.png"
+                src="https://res.cloudinary.com/daiztctac/image/upload/v1694553181/pogqgaencfemfipzu7xo.png" //"../../src/assets/img/google_logo.png"
                 alt="Google img"
               ></img>
               Sign in with google
