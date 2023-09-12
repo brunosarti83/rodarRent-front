@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // Actions
 import { setFilters } from "../../redux/actions";
-import { getLocalStorage } from "../../helpers/storage";
 
 const ReservationSearch = () => {
   const dispatch = useDispatch();
@@ -42,8 +41,7 @@ const ReservationSearch = () => {
     new Date(search.finishDate) < new Date(search.startDate);
 
   // * Variable para verificar si el usuario es el admin
-  const loginData = getLocalStorage('loginData');
-  const isAdmin = loginData?.id === 'fd2daf55-3d6a-4254-ad40-74adc5229cde'
+  const isAdmin = userData?.id === 'fd2daf55-3d6a-4254-ad40-74adc5229cde'
 
   return (
     <div className=" h-18 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">

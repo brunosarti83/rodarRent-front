@@ -48,7 +48,7 @@ const CarCard = ({ car }) => {
         <p className="text-lg">
           <span className="font-bold">{`$${car.pricePerDay}`}</span> per day
         </p>
-        <Link to={routesHelper.booking}>
+        <Link to={`${routesHelper.booking}?parametro=${car.id}`}>
           <button
             disabled={isLogged ? false : true}
             className={`text-white bg-blue py-1 px-4 rounded-xl ${
