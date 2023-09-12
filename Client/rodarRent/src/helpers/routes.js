@@ -1,5 +1,5 @@
 const routesHelper = {
-  baseFrontUrl: 'http://localhost:5173',
+  baseFrontUrl: 'http://127.0.0.1:5173',
   baseBackUrl: 'http://localhost:3001',
   landing: '/',
   cars: '/cars',

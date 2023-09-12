@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import mercadoPagoImg from "../../assets/img/mercado-pago.png";
 import { useLocation } from "react-router-dom";
@@ -22,7 +23,7 @@ const Booking = () => {
   function getVehicleById(carId) {
     axios.get(`${API_BASE_URL}/vehicles/${carId}`).then((vehicle) => {
       setVehicle({
-        title: vehicle.data.brand + " " + vehicle.data.model,
+        title: vehicle.data.brand + ' ' + vehicle.data.model,
         price: vehicle.data.pricePerDay,
         image: vehicle.data.image,
       });
@@ -40,7 +41,7 @@ const Booking = () => {
     country: customer.country,
     city: customer.city,
     address: customer.address,
-    address2: "",
+    address2: '',
     terms: false,
     startDate: startDate || "",
     endDate: finishDate || "",
@@ -129,7 +130,7 @@ const Booking = () => {
             },
           });
 
-          const payLink = responseUrl.data.payLink;
+          const payLink = responseUrl.data;
 
           if (payLink) {
             window.location.href = payLink;
