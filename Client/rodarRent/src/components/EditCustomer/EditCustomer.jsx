@@ -1,9 +1,12 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import validateEdit from './validateEdit';
 import validatePass from './validatePass';
 import { getCustomerDetailsUrl, updateCustomerInfoUrl, updatePasswordUrl } from '../../helpers/routes';
+// Toastify
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditCustomer = () => {
   const { id } = useParams();
@@ -109,7 +112,7 @@ const EditCustomer = () => {
       });
       setButtonText('Save');
       handleSaveAndBack();
-    
+
 
       if (response.ok) {
         setPasswordError(null);
@@ -131,20 +134,22 @@ const EditCustomer = () => {
       });
 
       setButtonText('Save');
-      window.location.href = `/customer/${id}`;
 
-      if (response.ok) {
-        const updatedData = await response.json();
-        alert('Datos actualizados:', updatedData);
+      if (response.status === 200) {
+        toast.success('Datos actualizados con éxito');
+        setTimeout(() => {
+          window.location.href = `/customer/${id}`;
+        }, 2000);
       } else {
         console.error('Error en la solicitud:', response.statusText);
+        toast.error('Error al actualizar los datos');
       }
     } catch (error) {
       console.error('Error', error);
+      toast.error('Error inesperado');
     }
   };
 
-  console.log(passwordFields)
 
   if (isLoading) {
     return <Loader />;
@@ -464,91 +469,102 @@ const EditCustomer = () => {
             </div>
           </div>
 
-            <div className='flex'>
-              <div className='w-2/4'>
-                <label
-                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                  htmlFor='password'
-                >
-                  Password
-                </label>
-                <div className='flex items-center'>
-                  <input
-                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                    type='password'
-                    name='password'
-                    value={passwordFields.password}
-                    onChange={handlePasswordChange}
-                  />
-                  <span
-                    className={
-                      errors.password
-                        ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                        : null
-                    }
-                  >
-                    {errors.password}
-                  </span>
-                </div>
-                <span
-                  className={
-                    errors.passwordMsj
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.passwordMsj}
-                </span>
-              </div>
-              <div className='w-2/4'>
-                <label
-                  className='font-poppins text-sm flex m-1 justify-start'
-                  htmlFor='repeatPass'
-                >
-                  Repeat Password
-                </label>
-                <div className='flex items-center'>
-                  <input
-                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                    type='password'
-                    name='repeatPass'
-                    value={passwordFields.repeatPass}
-                    onChange={handlePasswordChange}
-                  />
-                  <span
-                    className={
-                      errors.repeatPass
-                        ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                        : null
-                    }
-                  >
-                    {errors.repeatPass}
-                  </span>
-                </div>
-                <span
-                  className={
-                    errors.repeatPassMsj
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.repeatPassMsj}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col mt-4 mb-4">
-              <button
-                className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
-                onClick={handleUpdatePassword}
-                disabled={hasErrors()}
+          <div className='flex'>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                htmlFor='password'
               >
-                {buttonText}
-              </button>
-
+                Password
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='password'
+                  name='password'
+                  value={passwordFields.password}
+                  onChange={handlePasswordChange}
+                />
+                <span
+                  className={
+                    errors.password
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.password}
+                </span>
+              </div>
+              <span
+                className={
+                  errors.passwordMsj
+                    ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                    : null
+                }
+              >
+                {errors.passwordMsj}
+              </span>
             </div>
+            <div className='w-2/4'>
+              <label
+                className='font-poppins text-sm flex m-1 justify-start'
+                htmlFor='repeatPass'
+              >
+                Repeat Password
+              </label>
+              <div className='flex items-center'>
+                <input
+                  className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                  type='password'
+                  name='repeatPass'
+                  value={passwordFields.repeatPass}
+                  onChange={handlePasswordChange}
+                />
+                <span
+                  className={
+                    errors.repeatPass
+                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                      : null
+                  }
+                >
+                  {errors.repeatPass}
+                </span>
+              </div>
+              <span
+                className={
+                  errors.repeatPassMsj
+                    ? 'font-poppins text-ls flex m-1 justify-start text-red'
+                    : null
+                }
+              >
+                {errors.repeatPassMsj}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col mt-4 mb-4">
+            <button
+              className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
+              onClick={handleUpdatePassword}
+              disabled={hasErrors()}
+            >
+              {buttonText}
+            </button>
+
+          </div>
 
         </form>
+        <ToastContainer 
+          position='top-left'
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light' />
       </div>
     </div>
   );

@@ -39,7 +39,7 @@ export default function Detail({ saveState }) {
   }, [id]);
 
   return (
-    <div className="bg-gray-100 w-full h-noNavDesktop flex flex-col">
+    <div className="bg-gray-100 w-full xl:h-noNavLaptop h-noNavDesktop flex flex-col">
       {(!vehicle.model && <Loader />) || (
         <div className='h-full px-28 py-8 font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100' >
           <Link className='border flex w-36 justify-evenly items-center border-gray-300 bg-white text-xl drop-shadow-md py-1 rounded-lg font-normal transition duration-300 hover:drop-shadow-none dark:bg-slate-950' to={routesHelper.cars} onClick={() => saveState()}>
@@ -47,10 +47,10 @@ export default function Detail({ saveState }) {
             Back
           </Link><br />
           <div className='w-full h-form flex items-center justify-between' >
-            <div className='w-1/2 self-end' >
+            <div className=' w-1/2 self-end' >
               <img className='w-full' src={vehicle.image} alt={`${vehicle.brand} ${vehicle.model}`} />
             </div>
-            <div className=' w-100 rounded-3xl p-6 bg-white drop-shadow-md border transition duration-300 border-gray-300 dark:bg-slate-950'>
+            <div className=' xl:w-96 2xl:w-100 rounded-3xl p-6 bg-white drop-shadow-md border transition duration-300 border-gray-300 dark:bg-slate-950'>
               <div>
                 <h2 className='text-2xl font-extralight'>{vehicle.brand}</h2>
                 <h1 className='text-5xl mt-3 font-semibold'>{vehicle.model}</h1>
