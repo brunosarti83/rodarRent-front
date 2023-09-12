@@ -1,18 +1,17 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import validate from "./validateLogin";
-import formImage from '../../assets/img/loginRegister/login.png'
+import formImage from "../../assets/img/loginRegister/login.png";
 import { Link } from "react-router-dom";
 import routesHelper from "../../helpers/routes";
-import { ToastContainer} from 'react-toastify';
-import {useDispatch} from 'react-redux';
+import { ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {logIn} from '../../redux/actions'
+import { logIn } from "../../redux/actions";
 import "react-toastify/dist/ReactToastify.css";
-
+import googleImg from "../../src/assets/img/google_logo.png";
 
 const Login = () => {
-
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const btnState = async (err) => {
     if (Object.keys(err).length === 0) setDisabledSubmit(false);
@@ -33,15 +32,15 @@ const Login = () => {
     validate({ ...loginData, [property]: value });
     setLoginData({ ...loginData, [property]: value });
     setErrors(validate({ ...loginData, [property]: value }));
-    btnState(validate({ ...loginData, [property]: value }))
+    btnState(validate({ ...loginData, [property]: value }));
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    dispatch(logIn(loginData,navigate))
+    dispatch(logIn(loginData, navigate));
   };
 
   return (
@@ -67,7 +66,13 @@ const Login = () => {
             value={loginData.email}
             onChange={handleChange}
           />
-          <span className={errors.email ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+          <span
+            className={
+              errors.email
+                ? "font-poppins text-xs flex m-1 justify-start text-red"
+                : null
+            }
+          >
             {errors.email}
           </span>
           <label
@@ -84,12 +89,22 @@ const Login = () => {
             value={loginData.password}
             onChange={handleChange}
           />
-          <span className={errors.password ? "font-poppins text-xs flex m-1 justify-start text-red" : null}>
+          <span
+            className={
+              errors.password
+                ? "font-poppins text-xs flex m-1 justify-start text-red"
+                : null
+            }
+          >
             {errors.password}
           </span>
           <div className="flex flex-col mt-4 mb-4">
             <button
-              className={disabledSubmit ? "font-poppins bg-blue cursor-not-allowed rounded-lg p-2 m-2 text-white":"font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"}
+              className={
+                disabledSubmit
+                  ? "font-poppins bg-blue cursor-not-allowed rounded-lg p-2 m-2 text-white"
+                  : "font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+              }
               onClick={handleLogin}
               disabled={disabledSubmit}
             >
@@ -97,11 +112,11 @@ const Login = () => {
             </button>
             <a
               className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
-              href={routesHelper.baseBackUrl+routesHelper.authGoogle}
+              href={routesHelper.baseBackUrl + routesHelper.authGoogle}
             >
               <img
                 className="relative w-6 m-1"
-                src="../../src/assets/img/google_logo.png"
+                src={googleImg}
                 alt="Google img"
               ></img>
               Sign in with google
@@ -109,18 +124,14 @@ const Login = () => {
           </div>
           <hr className="ml-8 mr-8 text-gray" />
           <div className="flex flex-col justify-center items-center m-5">
-          <div className="flex justify-center items-center m-4">
-            <p className="font-poppins text-gray text-xs m-2">
-              Don't have an account?
-            </p>
-            <p
-              className="text-sm underline decoration-solid font-poppins"
-            >
-              <Link to={routesHelper.register}>
-                Sign up for free
-              </Link>
-            </p>
-          </div>
+            <div className="flex justify-center items-center m-4">
+              <p className="font-poppins text-gray text-xs m-2">
+                Don't have an account?
+              </p>
+              <p className="text-sm underline decoration-solid font-poppins">
+                <Link to={routesHelper.register}>Sign up for free</Link>
+              </p>
+            </div>
             <a className="font-poppins text-gray text-xs" href="#">
               Forgot your password?
             </a>
@@ -128,11 +139,11 @@ const Login = () => {
         </form>
       </div>
       <div className=" h-form drop-shadow-md rounded-r-3xl bg-blue py-28">
-        <div className="text-4xl text-center font-semibold pb-6 text-white" >
+        <div className="text-4xl text-center font-semibold pb-6 text-white">
           <h1>One step closer to</h1>
           <h1>your dream car!</h1>
         </div>
-        <div className="w-100 h-auto" >
+        <div className="w-100 h-auto">
           <img className="w-max " src={formImage} alt="side-login-car-image" />
         </div>
       </div>
@@ -147,7 +158,7 @@ const Login = () => {
         draggable
         pauseOnHover
         theme="light"
-        />
+      />
     </div>
   );
 };
