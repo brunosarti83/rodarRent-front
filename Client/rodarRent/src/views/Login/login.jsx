@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logIn } from "../../redux/actions";
 import "react-toastify/dist/ReactToastify.css";
-//const googleImg = require("../../src/assets/img/google_logo.png");
 
 const Login = () => {
   const [disabledSubmit, setDisabledSubmit] = useState(true);

@@ -7,7 +7,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//const googleImg = require("../../src/assets/img/google_logo.png");
 
 function Register() {
   const navigate = useNavigate();
