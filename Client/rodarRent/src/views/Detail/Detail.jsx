@@ -46,11 +46,11 @@ export default function Detail({ saveState }) {
             <BiArrowBack />
             Back
           </Link><br />
-          <div className='w-full h-form flex items-center justify-between' >
-            <div className='w-1/2 self-end' >
+          <div className='w-full h-5/6 flex items-center justify-between' >
+            <div className=' w-1/2 self-end' >
               <img className='w-full' src={vehicle.image} alt={`${vehicle.brand} ${vehicle.model}`} />
             </div>
-            <div className=' w-100 rounded-3xl p-6 bg-white drop-shadow-md border transition duration-300 border-gray-300 dark:bg-slate-950'>
+            <div className=' xl:w-96 2xl:w-100 rounded-3xl p-6 bg-white drop-shadow-md border transition duration-300 border-gray-300 dark:bg-slate-950'>
               <div>
                 <h2 className='text-2xl font-extralight'>{vehicle.brand}</h2>
                 <h1 className='text-5xl mt-3 font-semibold'>{vehicle.model}</h1>
