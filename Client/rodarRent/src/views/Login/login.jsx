@@ -10,9 +10,7 @@ import { useNavigate } from "react-router-dom";
 import {logIn} from '../../redux/actions'
 import "react-toastify/dist/ReactToastify.css";
 
-
 const Login = () => {
-
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const btnState = async (err) => {
     if (Object.keys(err).length === 0) setDisabledSubmit(false);
@@ -101,7 +99,7 @@ const Login = () => {
             >
               <img
                 className="relative w-6 m-1"
-                src="../../src/assets/img/google_logo.png"
+                src="https://res.cloudinary.com/daiztctac/image/upload/v1694553181/pogqgaencfemfipzu7xo.png" //"../../src/assets/img/google_logo.png"
                 alt="Google img"
               ></img>
               Sign in with google
