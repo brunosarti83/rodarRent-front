@@ -10,6 +10,8 @@ import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
 import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl } from '../../helpers/routes';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/actions';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CustomerDetail = () => {
   const { id } = useParams();
@@ -214,6 +216,18 @@ const CustomerDetail = () => {
         </Modal>
 
       </div>
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
