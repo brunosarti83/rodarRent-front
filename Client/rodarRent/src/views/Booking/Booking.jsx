@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import mercadoPagoImg from "../../assets/img/mercado-pago.png";
 import { useLocation } from "react-router-dom";
@@ -6,14 +5,18 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getLocalStorage, getSessionStorage } from "../../helpers/storage";
 import axios from "axios";
-import { API_BASE_URL, createReservationUrl, paymentUrl } from "../../helpers/routes";
+import {
+  API_BASE_URL,
+  createReservationUrl,
+  paymentUrl,
+} from "../../helpers/routes";
 
 const Booking = () => {
   const customer = getLocalStorage("loginData");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const carId = queryParams.get("parametro");
-  const { startDate, finishDate } = getSessionStorage("filterObject");
+  const filterObject = getSessionStorage("filterObject");
 
   const [vehicle, setVehicle] = useState({
     price: "",
@@ -23,7 +26,7 @@ const Booking = () => {
   function getVehicleById(carId) {
     axios.get(`${API_BASE_URL}/vehicles/${carId}`).then((vehicle) => {
       setVehicle({
-        title: vehicle.data.brand + ' ' + vehicle.data.model,
+        title: vehicle.data.brand + " " + vehicle.data.model,
         price: vehicle.data.pricePerDay,
         image: vehicle.data.image,
       });
@@ -41,10 +44,10 @@ const Booking = () => {
     country: customer.country,
     city: customer.city,
     address: customer.address,
-    address2: '',
+    address2: "",
     terms: false,
-    startDate: startDate || "",
-    endDate: finishDate || "",
+    startDate: filterObject ? filterObject.startDate : "",
+    endDate: filterObject ? filterObject.finishDate : "",
     totalAmount: 0,
   });
 
