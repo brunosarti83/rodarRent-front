@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens:{
+        "xs":"350px"
+      },
       fontSize:{
         landing2Xl:'5rem',
         landingXl:'4.5rem',
@@ -22,7 +25,7 @@ export default {
       height:{
         landingMd:'70vh',
         landingLaptop:'80vh',
-        noNavDesktop:'93.1vh',
+        landingDesktop:'75vh',
         noNavLaptop:'99.1vh',
         customerDetail:'86.5vh',
         form:'738px',
