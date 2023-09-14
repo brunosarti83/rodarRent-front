@@ -2,11 +2,18 @@
 import { Link, useLocation } from "react-router-dom"
 import routesHelper from "../../helpers/routes"
 import { GiCarKey } from "react-icons/gi"
-import { BiSun, BiMoon } from "react-icons/bi"
+import { BiSun, BiMoon, BiMenu } from "react-icons/bi"
+import { useState } from "react"
 
 function Nav(props) {
 
     const {darkMode, toggleDarkMode} = props
+    
+    const [dropMenu,setDropMenu] = useState(false)
+
+    const handleDropMenu = () =>{
+        setDropMenu(!dropMenu)
+    }
 
     const location = useLocation()
     const isLanding = location.pathname !== '/'
@@ -20,8 +27,9 @@ function Nav(props) {
                     {isLanding ? <Link to={routesHelper.landing}>RodarRent</Link> :'RodarRent'}
                 </h2>
             </div>
-            <nav className="flex items-center" >
-                <ul className="flex text-xl" >
+            <nav className="flex items-center">
+                <BiMenu onClick={handleDropMenu} size='50px' className=" 2xl:hidden xl:hidden lg:hidden md:block sm:block" />
+                <ul className={`text-xl ${dropMenu ? 'hidden':'flex'}`} >
                     <li className="mr-14" ><Link to={routesHelper.aboutUs}>About Us</Link></li>
                     <li className="mr-14" ><Link to={routesHelper.cars}>Cars</Link></li>
                     <li className="mr-14" ><Link to={routesHelper.contact}>Contact</Link></li>
