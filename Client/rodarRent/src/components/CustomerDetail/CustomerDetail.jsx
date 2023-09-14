@@ -1,18 +1,15 @@
-import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // Importa Link
-import Loader from "../Loader/Loader";
-import DashboardActions from "../DashboardActions/DashboardActions";
-import Modal from "react-modal";
-import { toast } from "react-toastify";
-import EditCustomer from "../EditCustomer/EditCustomer";
-import CustomerInfo from "../CustomerInfo/CustomerInfo";
-import WelcomeCustomer from "../WelcomeCustomer/WelcomeCustomer";
-import {
-  getCustomerDetailsUrl,
-  getBookingsByIdCustomerUrl,
-} from "../../helpers/routes";
-import { useDispatch } from "react-redux";
-import { logOut } from "../../redux/actions";
+import { useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'; // Importa Link
+import Loader from '../Loader/Loader';
+import DashboardActions from '../DashboardActions/DashboardActions';
+import Modal from 'react-modal';
+import { toast } from 'react-toastify';
+import EditCustomer from '../EditCustomer/EditCustomer';
+import CustomerInfo from '../CustomerInfo/CustomerInfo';
+import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
+import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl } from '../../helpers/routes';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../redux/actions';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

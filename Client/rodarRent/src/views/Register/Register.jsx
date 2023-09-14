@@ -92,14 +92,14 @@ function Register() {
   };
 
   return (
-    <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
-      <div className="sticky drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900">
-        <form className="px-16 py-5 flex flex-col flex-wrap w-full rounded-xl justify-center">
-          <h1 className="font-poppins p-2 text-3xl">Welcome to RodarRent!</h1>
-          <h6 className="font-poppins p-2 text-gray">Please enter your info</h6>
-          <hr className="ml-8 mr-8 p-2 text-gray" />
-          <div className="flex">
-            <div className="w-2/4">
+    <div className='w-full h-noNavLaptop  bg-white dark:bg-slate-900 transition duration-300 dark:text-gray-100 flex items-center justify-center'>
+      <div className='drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900'>
+        <form className='px-16 pt-10 flex flex-col flex-wrap w-full rounded-xl justify-center'>
+          <h1 className='font-poppins p-2 text-3xl'>Welcome to RodarRent!</h1>
+          <h6 className='font-poppins p-2 text-gray'>Please enter your info</h6>
+          <hr className='ml-8 mr-8 p-2 text-gray' />
+          <div className='flex'>
+            <div className='w-2/4'>
               <label
                 className="font-poppins text-sm flex m-1 mb-0 justify-start"
                 htmlFor="name"
@@ -466,9 +466,9 @@ function Register() {
               className="font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray"
             >
               <img
-                className="relative w-6 m-1"
+                className='relative w-6 m-1'
                 src="https://res.cloudinary.com/daiztctac/image/upload/v1694553181/pogqgaencfemfipzu7xo.png" //"../../src/assets/img/google_logo.png"
-                alt="Google img"
+                alt='Google img'
               ></img>
               Sign up with google
             </button>
@@ -484,13 +484,13 @@ function Register() {
           </div>
         </form>
       </div>
-      <div className=" h-register drop-shadow-md rounded-r-3xl bg-blue py-28">
-        <div className="text-4xl text-center font-semibold pb-6 text-white">
+      <div className=' h-register drop-shadow-md rounded-r-3xl flex flex-col justify-evenly items-center bg-blue'>
+        <div className='text-4xl text-center font-semibold pb-6 text-white'>
           <h1>One step closer to</h1>
           <h1>your dream car!</h1>
         </div>
-        <div className="w-120 h-auto">
-          <img className="w-max " src={formImage} alt="side-login-car-image" />
+        <div className='w-100 h-auto'>
+          <img className='w-max ' src={formImage} alt='side-login-car-image' />
         </div>
       </div>
       <ToastContainer
