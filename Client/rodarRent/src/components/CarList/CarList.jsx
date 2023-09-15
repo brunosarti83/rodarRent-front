@@ -39,6 +39,7 @@ const CarList = () => {
         ...filterObject,
         orderBy,
         direction,
+        offset: 0,
       })
     );
   };

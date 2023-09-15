@@ -16,6 +16,7 @@ const CarFilter = () => {
     fuel: filterObject.fuel || "",
     passengers: Number(filterObject.passengers) || "",
     pricePerDayMax: filterObject.pricePerDayMax || 300,
+    offset: 0
   });
 
   const resetFilters = () => {
@@ -36,8 +37,8 @@ const CarFilter = () => {
   const onChangeFilter = (e) => {
     const filter = e.target.name;
     const value = filterObject[filter] !== e.target.value ? e.target.value : "";
-    setLocalFilters({ ...localFilters, [filter]: value });
-    dispatch(setFilters({ ...filterObject, [filter]: value }));
+    setLocalFilters({ ...localFilters, [filter]: value, offset: 0 });
+    dispatch(setFilters({ ...filterObject, [filter]: value, offset: 0 }));
   };
 
   return (
