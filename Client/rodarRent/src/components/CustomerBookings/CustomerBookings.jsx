@@ -1,5 +1,5 @@
 import React from 'react';
-import BookingCard from '../BookingCard/BookingCard'; // Asumiendo que tienes un componente BookingCard
+import BookingCard from '../BookingCard/BookingCard';
 
 const CustomerBookings = ({ bookings }) => {
   return (
