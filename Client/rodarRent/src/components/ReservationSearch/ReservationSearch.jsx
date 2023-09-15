@@ -72,22 +72,22 @@ const ReservationSearch = () => {
     <div className=" h-18 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
       <div className="flex h-full ml-5">
         <form className="flex w-full h-full items-center" action="">
-          <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-2 dark:bg-slate-950">
+          <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
             <label className="text-xs mb-2">Pick up Date</label>
             <input
               onChange={handleChange}
-              className="text-xs border-rounded dark:bg-slate-950"
+              className="text-xs border rounded dark:bg-slate-950"
               type="date"
               name="startDate"
               value={search.startDate || ""}
               id=""
             />
           </div>
-          <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-2 dark:bg-slate-950">
+          <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
             <label className=" text-xs mb-2">Return Date</label>
             <input
               onChange={handleChange}
-              className="text-xs border-rounded dark:bg-slate-950"
+              className="text-xs border rounded dark:bg-slate-950"
               type="date"
               name="finishDate"
               value={search.finishDate || ""}
@@ -95,7 +95,7 @@ const ReservationSearch = () => {
             />
           </div>
           <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-2 dark:bg-slate-950">
-            <label className=" text-xs mb-2">Pick Up Location</label>
+            <label className=" text-xs mb-2 mt-1">Pick Up Location</label>
             <select
               className="text-xs border rounded dark:bg-slate-950"
               name="pickUpLocation"
@@ -111,7 +111,7 @@ const ReservationSearch = () => {
             </select>
           </div>
           <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-2 dark:bg-slate-950">
-            <label className=" text-xs mb-2">Return Location</label>
+            <label className=" text-xs mb-2 mt-1">Return Location</label>
             <select
               className="text-xs border rounded dark:bg-slate-950"
               name="returnLocation"
@@ -129,7 +129,7 @@ const ReservationSearch = () => {
           <button
             onClick={handleSubmit}
             disabled={disableButton}
-            className="bg-blue text-white h-12 px-10 ml-3 rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-blue text-white h-12 px-10 ml-4 rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Search
           </button>
