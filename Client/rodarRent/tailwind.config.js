@@ -15,6 +15,7 @@ export default {
         landingXl:'4.5rem',
         landingLg: '3.8rem',
         landingMd:'3.5rem',
+        landingMobile:'2.2rem'
       },
       scale:{
         '175':'1.75',
@@ -24,6 +25,7 @@ export default {
       },
       height:{
         landingMd:'70vh',
+        landingXs:'53vh',
         landingLaptop:'80vh',
         landingDesktop:'75vh',
         noNavLaptop:'99.1vh',
