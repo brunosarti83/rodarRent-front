@@ -20,7 +20,7 @@ function Nav(props) {
     const isLanding = location.pathname !== "/";
 
     return (
-        <header className=" h-28 flex xs:px-5 px-16 py-2 justify-between items-center font-poppins bg-white dark:bg-slate-900 dark:text-gray-100 transition duration-300">
+        <header className=" h-28 flex xs:px-5 2xl:px-16 py-2 justify-between items-center font-poppins bg-white dark:bg-slate-900 dark:text-gray-100 transition duration-300">
             <div className="flex items-center">
                 <GiCarKey size="50px" />
                 <h2 className=" ml-4 text-2xl xs:text-lg md:text-2xl lg:text-2xl xl:text-3xl 2xl:text-3xl">
