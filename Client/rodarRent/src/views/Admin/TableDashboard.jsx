@@ -7,69 +7,35 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableVirtuoso } from 'react-virtuoso';
+import { useQuery } from "react-query";
 
-const userNames = [
-  'Alexis',
-  'Martin T',
-  'Bruno',
-  'Gerson',
-  'Alejandro',
-  'Martin',
-  'Matías',
-  'Samuel'
-];
-
-const sample = [
-  ['Frozen yoghurt', 159, 6.0, 24, 4.0],
-  ['Ice cream sandwich', 237, 9.0, 37, 4.3],
-  ['Eclair', 262, 16.0, 24, 6.0],
-  ['Cupcake', 305, 3.7, 67, 4.3],
-  ['Gingerbread', 356, 16.0, 49, 3.9],
-];
-
-function createData(id) {
-  const randomUserName = userNames[Math.floor(Math.random() * userNames.length)];
-  const randomCarId = Math.floor(Math.random() * 200) + 1;
-  const randomAmount = (Math.random() * 100 + 200).toFixed(0); 
-  return {id, user: randomUserName, carId: randomCarId, amount: `$${randomAmount}` };
-}
 
 const columns = [
   {
-    width: 100,
-    label: 'ID',
-    dataKey: 'id',
+    width: 120,
+    label: 'Domain',
+    dataKey: 'domain',
     numeric: true,
   },
   {
     width: 120,
-    label: 'User',
-    dataKey: 'user',
+    label: 'Brand',
+    dataKey: 'brand',
     numeric: true,
   },
   {
     width: 120,
-    label: 'Car ID',
-    dataKey: 'carId',
-    numeric: true,
-  },
-  {
-    width: 120,
-    label: 'Finish Date',
-    dataKey: 'finishDate',
+    label: 'Model',
+    dataKey: 'model',
   },
   {
     width: 120,
     label: 'Amount',
-    dataKey: 'amount',
+    dataKey: 'pricePerDay',
     numeric: true,
   },
 ];
 
-const rows = Array.from({ length: 200 }, (_, index) => {
-  const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-  return createData(index, ...randomSelection);
-});
 
 const VirtuosoTableComponents = {
   Scroller: React.forwardRef((props, ref) => (
@@ -83,6 +49,7 @@ const VirtuosoTableComponents = {
   TableBody: React.forwardRef((props, ref) => <TableBody {...props} ref={ref} />),
 };
 
+
 function fixedHeaderContent() {
   return (
     <TableRow>
@@ -93,7 +60,8 @@ function fixedHeaderContent() {
           align={column.numeric || false ? 'right' : 'left'}
           style={{ width: column.width }}
           sx={{
-            backgroundColor: 'honeydew',
+            backgroundColor: '#1976D2',
+            color:"white"
           }}
         >
           {column.label}
@@ -103,16 +71,21 @@ function fixedHeaderContent() {
   );
 }
 
-function rowContent(_index, row) {
+
+function rowContent(index, row) {
+  const isEvenRow = index % 2 === 0; // Determina si la fila es par o impar
   return (
     <React.Fragment>
       {columns.map((column) => (
         <TableCell
           key={column.dataKey}
           align={column.numeric || false ? 'right' : 'left'}
-          className={column.dataKey === 'finishDate' ? '' : row[column.dataKey]}
+          className={`${isEvenRow ? 'bg-gray-200' : 'bg-white'} ${column.dataKey === 'finishDate' ? '' : row[column.dataKey]}`}
         >
-          {row[column.dataKey]}
+          {
+            column.dataKey === 'finishDate' ? row[column.dataKey].slice(0, 10)
+            : row[column.dataKey]
+          }
         </TableCell>
       ))}
     </React.Fragment>
@@ -120,14 +93,24 @@ function rowContent(_index, row) {
 }
 
 export default function TableDashboard() {
+
+  const queryVehicles = useQuery(["vehicles"], () =>
+  fetch("http://localhost:3001/vehicles").then((res) => res.json())
+  );
+  
+
+  const data = queryVehicles.data?.results
+// console.log(data.results)
+
   return (
     <Paper style={{ height: 400, width: '100%' }}>
       <TableVirtuoso
-        data={rows}
+        data={data}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
         itemContent={rowContent}
       />
     </Paper>
   );
+
 }

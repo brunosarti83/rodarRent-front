@@ -17,11 +17,39 @@ import { useQuery } from "react-query";
 import Loader from "../../components/Loader/Loader";
 
 const Dashboard = () => {
-  const [bookingData, setBookingData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  
-  const queryBookings = useQuery(["bookings"], () =>
-    fetch("http://localhost:3001/booking/filter").then((res) => res.json())
+  const [carId, setCarId] = useState();
+  const [selectedVehicle, setSelectedVehicle] = useState("");
+
+  const [pickUpDate, setPickUpDate] = useState(dayjs(new Date()));
+  const [dropOffDate, setDropOffDate] = useState(dayjs(new Date()));
+
+  function fetchBookings() {
+    return fetch("http://localhost:3001/booking/filter?limit=100").then((res) =>
+      res.json()
+    );
+  }
+
+  const queryBookings = useQuery(["bookings"], fetchBookings);
+
+  const queryVehicles = useQuery(["vehicles"], () =>
+    fetch("http://localhost:3001/vehicles").then((res) => res.json())
+  );
+
+  function fetchAvailable(carId, pickUpDate, dropOffDate) {
+    const startDate = pickUpDate.toISOString().slice(0, 10);
+    const endDate = dropOffDate.toISOString().slice(0, 10);
+    console.log(startDate, endDate);
+    const url = `http://localhost:3001/available/${carId}/${startDate}/${endDate}`;
+    console.log(url);
+    return fetch(url).then((res) => res.json());
+  }
+
+  const queryAvailable = useQuery(
+    ["available", carId, pickUpDate, dropOffDate],
+    () => fetchAvailable(carId, pickUpDate, dropOffDate),
+    {
+      enabled: !!carId,
+    }
   );
 
   useEffect(() => {
@@ -88,15 +116,14 @@ const Dashboard = () => {
     };
   });
 
-  const [pickUpDate, setPickUpDate] = useState(dayjs(new Date()));
-  const [dropOffDate, setDropOffDate] = useState(dayjs(new Date()));
-
   useEffect(() => {
     const newDropOffDate = pickUpDate.add(1, "day");
     setDropOffDate(newDropOffDate);
   }, [pickUpDate]);
 
-  const incomeToday = bookingData?.map((e) => e.amount).reduce((a, b) => a + b);
+  const incomeToday = queryBookings.data
+    ?.map((e) => e.amount)
+    .reduce((a, b) => a + b);
 
   const tarjeta = (
     <div className="col-span-1 md:col-span-1 mb-8">
@@ -117,68 +144,50 @@ const Dashboard = () => {
     </div>
   );
 
+  const infoVehicles = queryVehicles.data?.results?.map((e) => ({
+    id: e.id,
+    brand: e.brand,
+    domain: e.domain,
+  }));
+
   const grafico = (
     <div className="matriz2-1 h-chart rounded-lg bg-white drop-shadow-md border-2">
       <div id="hireCancel" className="w-full h-full"></div>
     </div>
   );
 
-  const [carNumber, setCarNumber] = useState("");
+  function vehicleString(data) {
+    return `${data.brand}-${data.domain}`;
+  }
 
-  const handleChange = (event) => {
-    setCarNumber(event.target.value);
+  const handleChange = (e) => {
+    setSelectedVehicle(e.target.value);
+    let id;
+    infoVehicles.forEach(car => {
+      if (e.target.value === vehicleString(car)) id = car.id;
+    })
+    setCarId(id);
   };
 
-  useEffect(() => {
-    const infoVehicles = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/vehicles");
-        console.log(response.data);
-        setVehiclesData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error al realizar la solicitud:", error);
-        setLoading(false);
-      }
-    };
-
-    infoVehicles();
-  }, []);
-
-  useEffect(() => {
-    const infoBookingFilter = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3001/booking/filter"
-        );
-        console.log(response.data);
-        setBookingData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error al realizar la solicitud:", error);
-        setLoading(false);
-      }
-    };
-
-    infoBookingFilter();
-  }, []);
 
   const filtros = (
     <div className="border-2 rounded-2xl p-4 ml-8 w-full">
       <div className="superior grid grid-cols-4 gap-4">
         <Box sx={{ minWidth: 120 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Number car</InputLabel>
+            <InputLabel id="demo-simple-select-label">Vehicles</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={carNumber}
+              value={selectedVehicle}
               label="Car number"
               onChange={handleChange}
             >
-              <MenuItem value={1}>One</MenuItem>
-              <MenuItem value={2}>Two</MenuItem>
-              <MenuItem value={3}>Three</MenuItem>
+              {infoVehicles?.map((car) => { return (
+                <MenuItem key={car.id} value={vehicleString(car)}>
+                  {vehicleString(car)}
+                </MenuItem>
+              )})}
             </Select>
           </FormControl>
         </Box>
@@ -214,13 +223,16 @@ const Dashboard = () => {
         />
 
         <Stack spacing={2} direction="column">
-          <Button className="h-14" variant="contained">
+          <Button 
+          className="h-14" 
+          variant="contained"
+          >
             Search
           </Button>
         </Stack>
       </div>
       <div className="inferior mt-4 py-4 text-center text-5xl border-2 rounded-lg">
-        Result status car
+        Status : {queryAvailable.data?.state}
       </div>
     </div>
   );
@@ -235,7 +247,7 @@ const Dashboard = () => {
         <div className="flex-1 p-4">
           {filtros}
           <div className="border-2 rounded-2xl p-4 ml-8 w-full m-8">
-            <TableDashboard />
+            {queryBookings.isLoading ? <Loader /> : <TableDashboard />}
           </div>
         </div>
       </div>
