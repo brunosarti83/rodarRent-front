@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import DashboardActions from '../DashboardActions/DashboardActions';
@@ -8,7 +9,7 @@ import EditCustomer from '../EditCustomer/EditCustomer';
 import EditBooking from '../EditBooking/EditBooking';
 import CustomerInfo from '../CustomerInfo/CustomerInfo';
 import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
-import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl } from '../../helpers/routes';
+import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl, getAllVehicles } from '../../helpers/routes';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/actions';
 import { ToastContainer } from 'react-toastify';
@@ -24,9 +25,25 @@ const CustomerDetail = () => {
   const itemsPerPage = 6;
   const [isEditCustomerModalOpen, setIsEditCustomerModalOpen] = useState(false);
   const [isEditBookingModalOpen, setIsEditBookingModalOpen] = useState(false);
+  const [allVehicles, setAllVehicles] = useState([]);
   const modalRefCustomer = useRef();
   const modalRefBooking = useRef();
 
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const response = await axios.get(getAllVehicles());
+        const vehiclesArray = response.data.results;
+        setAllVehicles(vehiclesArray);
+      } catch (error) {
+        console.error('Error fetching vehicles', error);
+      }
+    };
+
+    fetchVehicles();
+  }, []); 
+
+ 
   const openEditCustomerModal = () => {
     setIsEditCustomerModalOpen(true);
   };
@@ -112,12 +129,12 @@ const CustomerDetail = () => {
 
     fetchCustomerBookings();
   }, [id]);
-  
+
   const handleEditBooking = (bookingId) => {
     setSelectedBookingId(bookingId);
     openEditBookingModal();
   };
-  
+
 
   const handleLogout = () => {
     dispatch(logOut(navigate));
@@ -168,6 +185,7 @@ const CustomerDetail = () => {
                   <table className="w-full h-max rounded-lg border-1 bg-gradient border-1 border-black">
                     <thead>
                       <tr>
+                        <th>Vehicle</th>
                         <th>Start Date</th>
                         <th>Finish Date</th>
                         <th>Amount</th>
@@ -177,6 +195,15 @@ const CustomerDetail = () => {
                     <tbody>
                       {currentBookings.map((booking) => (
                         <tr key={booking.id}>
+                          <td className="w-1/4 h-10 px-6 py-3 bg-white rounded-md shadow">
+                            {allVehicles.map((vehicle) => (
+                              vehicle.id === booking.VehicleId && (
+                                <div key={vehicle.id}>
+                                  <span>{vehicle.brand} - {vehicle.model}</span>
+                                </div>
+                              )
+                            ))}
+                          </td>
                           <td className="w-1/4 h-10 px-6 py-3 bg-white rounded-md shadow">
                             {booking.formattedStartDate}
                           </td>
@@ -189,17 +216,16 @@ const CustomerDetail = () => {
                           <td className="w-1/4 h-10 px-6 py-3 bg-white rounded-md shadow">
                             <div className="flex items-center justify-between">
                               <span
-                                className={`${
-                                  booking.stateBooking === 'completed'
-                                    ? 'text-green-500'
-                                    : booking.stateBooking === 'confirmed'
+                                className={`${booking.stateBooking === 'completed'
+                                  ? 'text-green-500'
+                                  : booking.stateBooking === 'confirmed'
                                     ? 'text-yellow-500'
                                     : booking.stateBooking === 'pending'
-                                    ? 'text-cyan-500'
-                                    : booking.stateBooking === 'canceled'
-                                    ? 'text-red'
-                                    : ''
-                                }`}
+                                      ? 'text-cyan-500'
+                                      : booking.stateBooking === 'canceled'
+                                        ? 'text-red'
+                                        : ''
+                                  }`}
                               >
                                 {booking.stateBooking}
                               </span>
@@ -209,11 +235,6 @@ const CustomerDetail = () => {
                                   onClick={() => handleEditBooking(booking.id)}
                                 >
                                   Edit
-                                </button>
-                              )}
-                              {booking.stateBooking === 'pending' && (
-                                <button className="bg-cyan-500 text-white px-2 py-1 rounded-md">
-                                  Pay
                                 </button>
                               )}
                             </div>
@@ -243,7 +264,7 @@ const CustomerDetail = () => {
         </div>
 
         <div className="row-start-1 row-end-4 col-start-3 flex justify-center">
-        <DashboardActions openEditModal={openEditCustomerModal} />
+          <DashboardActions openEditModal={openEditCustomerModal} />
         </div>
 
         <Modal
