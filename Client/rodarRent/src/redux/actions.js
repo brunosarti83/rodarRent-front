@@ -140,7 +140,6 @@ export const logIn = (loginData,navigate) => async (dispatch) =>{
       const response = await axios.post(`${API_BASE_URL}/customers/login`,loginData);
       if (response.status===200) {
         successLogin(response.data,navigate)
-        // const loginData = getLocalStorage('loginData')
         dispatch({
           type:LOGIN,
           payload: response.data
