@@ -52,7 +52,7 @@ const CarCard = ({ car }) => {
           <button
             disabled={isLogged ? false : true}
             className={`text-white bg-blue py-1 px-4 rounded-xl ${
-              isLogged ? "cursor-pointer" : "cursor-not-allowed"
+              isLogged ? "cursor-pointer" : "cursor-not-allowed opacity-50"
             }`}
           >
             Reserve Deal

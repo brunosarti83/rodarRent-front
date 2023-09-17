@@ -1,47 +1,32 @@
 /* eslint-disable react/prop-types */
-import { logOut } from '../../redux/actions';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import routesHelper from '../../helpers/routes';
+import { logOut } from '../../redux/actions';
+import { Link, useNavigate } from 'react-router-dom';
 
-const AdminNav = (props) => {
-    const { onDashboardChange, currentView } = props;
+const AdminNav = () =>{
 
-    const [activeButton, setActiveButton] = useState('');
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    const handleButtonClick = (dashboardName) => {
-        setActiveButton(dashboardName); 
-        onDashboardChange(dashboardName);
-    };
-
-    const buttons = [
-        { name: 'Dashboard', key: 'dashBoard' }, 
-        { name: 'Clients', key: 'clients' },
-        { name: 'Vehicles', key: 'vehicles' },
-    ];
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
+    const handleLogout = () =>{
         dispatch(logOut(navigate))
-    };
+    }
 
-    return (
-        <div className="h-full flex flex-col justify-center w-64 border-r-2 border-gray-200">
-            <div className="flex flex-col h-52 justify-evenly items-center">
-                {buttons.map((button) => (
-                    <button
-                        key={button.key}
-                        onClick={() => handleButtonClick(button.key)}
-                        className={`border border-gray-300 py-1 w-48 text-xl rounded-full bg-white transition duration-300 dark:bg-slate-950 ${
-                            currentView === button.key ? 'drop-shadow-none' : 'drop-shadow-xl'
-                        } ${activeButton === button.key ? 'drop-shadow-none' : 'drop-shadow-xl'}`}>
-                        {button.name}
-                    </button>
-                ))}
+    return(
+        <div className=" h-full flex flex-col justify-center w-64 border-r-2 border-gray-200 " >
+            <div className="flex flex-col h-52 justify-evenly items-center" >
+                <Link to={routesHelper.admin} >
+                    <button className="border border-gray-300 py-1  w-48 text-xl rounded-full bg-white drop-shadow-lg transition duration-300 active:drop-shadow-none" >Dashboard</button>
+                </Link>
+                <Link to={routesHelper.adminClients} >
+                    <button className="border border-gray-300 py-1 w-48 text-xl rounded-full bg-white drop-shadow-lg transition duration-300 active:drop-shadow-none" >Clients</button>
+                </Link>
+                <Link to={routesHelper.adminVehicles} >
+                    <button className="border border-gray-300 py-1 w-48 text-xl rounded-full bg-white drop-shadow-lg transition duration-300 active:drop-shadow-none " >Vehicles</button>
+                </Link>
             </div>
-            <button onClick={handleLogout} >Log Out</button>
+            <button onClick={handleLogout}>Log Out</button>
         </div>
     );
 };

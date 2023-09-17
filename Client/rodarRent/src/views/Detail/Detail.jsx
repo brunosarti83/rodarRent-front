@@ -7,14 +7,14 @@ import { BiArrowBack } from "react-icons/bi"
 
 export default function Detail({ saveState }) {
   const [vehicle, setVehicle] = useState({
-    id: '',
-    brand: '',
-    model: '',
-    transmission: '',
-    fuel: '',
-    passengers: '',
-    price: '',
-    image: '',
+    id: "",
+    brand: "",
+    model: "",
+    transmission: "",
+    fuel: "",
+    passengers: "",
+    price: "",
+    image: "",
   });
 
   const { id } = useParams();

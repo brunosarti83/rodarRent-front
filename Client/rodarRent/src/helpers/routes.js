@@ -15,6 +15,8 @@ const routesHelper = {
   detail: '/cars/:id',
   booking: '/booking',
   admin: '/admin',
+  adminClients:'/admin/clients',
+  adminVehicles:'/admin/vehicles',
   googleAuthAux: '/googleAuthAux',
   editInfo: '/edit-customer/:id',
   bookingByIdCustomer: '/myBookings',
@@ -30,4 +32,10 @@ export const updateCustomerInfoUrl = () => `${API_BASE_URL}/customers`;
 export const updatePasswordUrl = () => `${API_BASE_URL}/customers/updatePassword`;
 export const createReservationUrl = () => `${API_BASE_URL}/bookings`;
 export const paymentUrl = () => `${API_BASE_URL}/createorder`;
+export const updateBookingUrl = (bookingId) => `${API_BASE_URL}/bookings/${bookingId}`;
+export const getBookingById = (bookingId) => `${API_BASE_URL}/bookings/${bookingId}`;
+export const getAllLocations = () => `${API_BASE_URL}/locations`;
+export const getAllVehicles = () => `${API_BASE_URL}/vehicles`;
+export const getVehicleAvailabilityById = () => `${API_BASE_URL}/available/${VehicleId}/${startDate}/${finishDate}`;
+
 export default routesHelper;
