@@ -15,6 +15,7 @@ export const InfoAmount = ()=>{
   // const incomeToday = queryBookings.isSuccess ? queryBookings?.data
   //   ?.map((e) => e.amount)
   //   .reduce((a, b) => a + b) : 0;
+
 return (
     <div className="col-span-1 md:col-span-1 mb-8">
       <div className="flex-col w-auto rounded-2xl border-2 drop-shadow-md">
@@ -27,7 +28,7 @@ return (
           {!incomeToday ? (
             <Loader />
           ) : (
-            // <div className="text-5xl">${incomeToday}</div>
+            <div className="text-5xl">${incomeToday}</div>
           )}
           <hr className="border-t-2 border-gray-300 w-3/4 mx-auto my-6" />
         </div> */}
