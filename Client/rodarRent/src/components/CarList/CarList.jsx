@@ -1,81 +1,48 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
+// Hooks & tools
 import { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { getAvailability, setFilters } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+// Components
 import CarCard from "../CarCard/CarCard";
 import CarFilter from "../CarFilter/CarFilter";
 import Pagination from "../Pagination/Pagination";
-import { getVehicle } from "../../redux/actions";
-import { Link } from "react-router-dom";
 import Loader from "../Loader/Loader";
+import OrderCars from "../OrderCars/OrderCars";
 
-const mapStateToProps = (state) => {
-  return {
-    vehicles: state.vehicleReducer.vehicles,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getVehicle: () => dispatch(getVehicle()),
-  };
-};
-
-const CarList = ({ vehicles, getVehicle }) => {
+const CarList = () => {
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const vehicles = useSelector((state) => state.veh.vehicles);
+  const filterObject = useSelector((state) => state.veh.filterObject);
 
   useEffect(() => {
-    getVehicle().then(() => {
+    loading || setLoading(true);
+    dispatch(getAvailability(filterObject)).then(() => {
       setLoading(false);
     });
-  }, [getVehicle]);
-
-  const [filteredCars, setFilteredCars] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const carsPerPage = 6;
-
-  useEffect(() => {
-    setFilteredCars(vehicles);
-  }, [vehicles]);
-
-  const handleFilter = (filterOptions) => {
-    const filteredResults = vehicles.filter((car) => {
-      const brandFilter =
-        !filterOptions.brand || car.brand === filterOptions.brand;
-      const modelFilter =
-        !filterOptions.model || car.model === filterOptions.model;
-      const transmissionFilter =
-        filterOptions.transmissions.length === 0 ||
-        filterOptions.transmissions.includes(car.transmission);
-      const fuelTypeFilter =
-        filterOptions.fuelTypes.length === 0 ||
-        filterOptions.fuelTypes.includes(car.fuel);
-      const capacityFilter =
-        filterOptions.passengers.length === 0 ||
-        filterOptions.passengers.includes(car.passengers);
-      const priceFilter =
-        car.pricePerDay >= filterOptions.priceRange[0] &&
-        car.pricePerDay <= filterOptions.priceRange[1];
-      console.log(car.passengers);
-      return (
-        brandFilter &&
-        modelFilter &&
-        transmissionFilter &&
-        fuelTypeFilter &&
-        capacityFilter &&
-        priceFilter
-      );
-    });
-
-    setFilteredCars(filteredResults);
-    setCurrentPage(1);
-  };
+  }, [filterObject]);
 
   const onPageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    dispatch(
+      setFilters({
+        ...filterObject,
+        offset: (pageNumber - 1) * filterObject.limit,
+      })
+    );
   };
 
-  const startIndex = (currentPage - 1) * carsPerPage;
-  const endIndex = startIndex + carsPerPage;
-  const carsToShow = filteredCars.slice(startIndex, endIndex);
+  const onChangeOrder = (orderBy, direction) => {
+    dispatch(
+      setFilters({
+        ...filterObject,
+        orderBy,
+        direction,
+        offset: 0,
+      })
+    );
+  };
 
   return (
     <div>
@@ -86,26 +53,24 @@ const CarList = ({ vehicles, getVehicle }) => {
       ) : (
         <div className="flex w-full justify-between dark:bg-slate-900 dark:text-gray-100 transition duration-300 ">
           <div
-            className="w-1/4 p-4 dark:bg-slate-900"
+            className=" w-1/5 p-2 dark:bg-slate-900"
             style={{ height: "827px" }}
           >
-            <h1 className="text-xl font-bold mb-4">Filter By</h1>
-            <CarFilter carData={filteredCars} onFilter={handleFilter} />
+            <h1 className="text-xl font-bold mb-2">Filter By</h1>
+            <CarFilter />
           </div>
-          <div className=" w-3/4 flex flex-col p-7">
-            <div className="w-full flex flex-wrap justify-between gap-y-4">
-              {carsToShow.map((car) => (
-                <Link to={`/car/${car.id}`} key={car.id}>
-                  <CarCard car={car} />
-                </Link>
+          <div className=" w-4/5 flex flex-col p-7">
+            <OrderCars
+              filterObject={filterObject}
+              onChangeOrder={onChangeOrder}
+            />
+            <div className="w-full flex flex-wrap justify-around gap-y-4">
+              {vehicles.results.map((car) => (
+                <CarCard car={car} key={car.id} />
               ))}
             </div>
             <div className="w-full mt-4">
-              <Pagination
-                carList={filteredCars}
-                carsPerPage={carsPerPage}
-                onPageChange={onPageChange}
-              />
+              <Pagination vehicles={vehicles} onPageChange={onPageChange} />
             </div>
           </div>
         </div>
@@ -114,4 +79,4 @@ const CarList = ({ vehicles, getVehicle }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CarList);
+export default CarList;
