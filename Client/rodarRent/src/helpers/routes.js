@@ -15,6 +15,8 @@ const routesHelper = {
   detail: '/cars/:id',
   booking: '/booking',
   admin: '/admin',
+  adminClients:'/admin/clients',
+  adminVehicles:'/admin/vehicles',
   googleAuthAux: '/googleAuthAux',
   editInfo: '/edit-customer/:id',
   bookingByIdCustomer: '/myBookings',

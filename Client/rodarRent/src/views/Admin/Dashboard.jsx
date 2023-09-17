@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import{ useEffect, useState } from "react";
 import * as echarts from "echarts";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
@@ -12,7 +12,6 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import TableDashboard from "./TableDashboard";
-import axios from "axios";
 import { useQuery } from "react-query";
 import Loader from "../../components/Loader/Loader";
 
