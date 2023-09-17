@@ -5,7 +5,7 @@ const validate = (data) => {
   if (!data.email) {
     errors.email = "Email is required";
   }
-  if (!regexEmail.test(data.email)) {
+  else if (!regexEmail.test(data.email)) {
     //FORMATO REGULAR PARA VER SI CUMPLE CON EL FORMATO EMAIL
     errors.email = "It must be an email";
   }
