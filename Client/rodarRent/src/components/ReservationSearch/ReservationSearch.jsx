@@ -98,8 +98,8 @@ const ReservationSearch = () => {
             <label className=" text-xs mb-2 mt-1">Pick Up Location</label>
             <select
               className="text-xs border rounded dark:bg-slate-950"
-              name="pickUpLocation"
-              value={filterObject.model}
+              name="pickUpLocationId"
+              value={search.pickUpLocationId || ""}
               onChange={handleChange}
             >
               <option value="">Choose pick up location</option>
@@ -114,8 +114,8 @@ const ReservationSearch = () => {
             <label className=" text-xs mb-2 mt-1">Return Location</label>
             <select
               className="text-xs border rounded dark:bg-slate-950"
-              name="returnLocation"
-              value={filterObject.model}
+              name="returnLocationId"
+              value={search.returnLocationId || ""}
               onChange={handleChange}
             >
               <option value="">Choose a return location</option>

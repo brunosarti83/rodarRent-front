@@ -35,15 +35,14 @@ const Booking = () => {
   }
 
   function getLocations() {
-    axios.get(`${API_BASE_URL}/locations`)
-    .then(({ data }) => {
-      setLocations(data)
-    })
+    axios.get(`${API_BASE_URL}/locations`).then(({ data }) => {
+      setLocations(data);
+    });
   }
 
   useEffect(() => {
     getVehicleById(carId);
-    getLocations()
+    getLocations();
   }, [carId]);
 
   let today = new Date();
@@ -84,10 +83,10 @@ const Booking = () => {
     returnLocationId: filterObject?.returnLocationId || "",
     totalAmount: 0,
   });
-  
+
   let days = 0;
   days =
-  (new Date(bookingData.endDate) - new Date(bookingData.startDate)) /
+    (new Date(bookingData.endDate) - new Date(bookingData.startDate)) /
     (1000 * 60 * 60 * 24);
 
   bookingData.totalAmount = days * vehicle.price;
@@ -357,37 +356,37 @@ const Booking = () => {
           </label>
         </div>
         <div className="flex flex-col font-poppins border bg-white rounded-lg my-2 p-2 dark:bg-slate-950">
-            <label className="text-sm mb-1 mt-1">Pick Up Location</label>
-            <select
-              className="text-sm border rounded dark:bg-slate-950"
-              name="pickUpLocation"
-              value={filterObject.model}
-              onChange={handleChange}
-            >
-              <option value="">Choose pick up location</option>
-              {locations.map((loc) => (
-                <option key={loc.id} value={loc.id}>
-                  {`${loc.alias} - ${loc.city}`}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col font-poppins border bg-white rounded-lg my-2 p-2 dark:bg-slate-950">
-            <label className="text-sm mb-1 mt-1">Return Location</label>
-            <select
-              className="text-sm border rounded dark:bg-slate-950"
-              name="returnLocation"
-              value={filterObject.model}
-              onChange={handleChange}
-            >
-              <option value="">Choose a return location</option>
-              {locations.map((loc) => (
-                <option key={loc.id} value={loc.id}>
-                  {`${loc.alias} - ${loc.city}`}
-                </option>
-              ))}
-            </select>
-          </div>
+          <label className="text-sm mb-1 mt-1">Pick Up Location</label>
+          <select
+            className="text-sm border rounded dark:bg-slate-950"
+            name="pickUpLocationId"
+            value={filterObject.model}
+            onChange={handleChange}
+          >
+            <option value="">Choose pick up location</option>
+            {locations.map((loc) => (
+              <option key={loc.id} value={loc.id}>
+                {`${loc.alias} - ${loc.city}`}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col font-poppins border bg-white rounded-lg my-2 p-2 dark:bg-slate-950">
+          <label className="text-sm mb-1 mt-1">Return Location</label>
+          <select
+            className="text-sm border rounded dark:bg-slate-950"
+            name="returnLocationId"
+            value={filterObject.model}
+            onChange={handleChange}
+          >
+            <option value="">Choose a return location</option>
+            {locations.map((loc) => (
+              <option key={loc.id} value={loc.id}>
+                {`${loc.alias} - ${loc.city}`}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="flex flex-col border rounded-lg p-1 my-2">
           <div className="flex justify-between font-poppins text-sm p-1 my-2">
             <span className="">Price per day: </span>
