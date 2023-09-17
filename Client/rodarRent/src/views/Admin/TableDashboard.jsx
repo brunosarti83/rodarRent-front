@@ -100,7 +100,7 @@ export default function TableDashboard() {
   
 
   const data = queryVehicles.data?.results
-// console.log(data.results)
+  console.log(data)
 
   return (
     <Paper style={{ height: 400, width: '100%' }}>
