@@ -31,6 +31,7 @@ export default {
         noNavLaptop:'99.1vh',
         customerDetail:'86.5vh',
         form:'738px',
+        adminCardWrapper:'810px',
         formLaptop:'630px',
         register:'730px',
         card:'328px',
