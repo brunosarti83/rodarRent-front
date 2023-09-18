@@ -360,7 +360,7 @@ const Booking = () => {
           <select
             className="text-sm border rounded dark:bg-slate-950"
             name="pickUpLocationId"
-            value={filterObject.model}
+            value={bookingData.pickUpLocationId}
             onChange={handleChange}
           >
             <option value="">Choose pick up location</option>
@@ -376,7 +376,7 @@ const Booking = () => {
           <select
             className="text-sm border rounded dark:bg-slate-950"
             name="returnLocationId"
-            value={filterObject.model}
+            value={bookingData.returnLocationId}
             onChange={handleChange}
           >
             <option value="">Choose a return location</option>
