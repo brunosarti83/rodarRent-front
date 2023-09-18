@@ -68,7 +68,7 @@ function Nav(props) {
                         </div>
                         <ul className="flex flex-col text-black dark:text-gray-100 text-xl items-center justify-between min-h-[250px]">
                             {navItems.map((item, index) => (
-                                <li className="my-8" key={index}>
+                                <li onClick={()=> setIsNavOpen(!isNavOpen)} className="my-8" key={index}>
                                     <Link className="" to={item.link}>{item.name}</Link>
                                 </li>
                             ))}

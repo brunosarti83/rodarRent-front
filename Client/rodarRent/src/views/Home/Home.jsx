@@ -1,4 +1,4 @@
-import Cars from '../../components/CarList/CarList'
+import CarList from '../../components/CarList/CarList'
 import ReservationSearch from '../../components/ReservationSearch/ReservationSearch'
 import { getLocalStorage } from '../../helpers/storage'
 import {useEffect} from 'react'
@@ -19,7 +19,7 @@ function Home() {
     return (
         <div>
             <ReservationSearch /> 
-            <Cars />
+            <CarList />
         </div>
     )
 }

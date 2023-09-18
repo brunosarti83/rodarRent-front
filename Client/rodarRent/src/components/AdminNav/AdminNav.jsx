@@ -1,47 +1,48 @@
 /* eslint-disable react/prop-types */
-import { logOut } from '../../redux/actions';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import routesHelper from '../../helpers/routes';
+import { logOut } from '../../redux/actions';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { BiGridAlt,BiCar,BiUser,BiLogOut } from "react-icons/bi"
 
-const AdminNav = (props) => {
-    const { onDashboardChange, currentView } = props;
+const AdminNav = () =>{
 
-    const [activeButton, setActiveButton] = useState('');
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    const handleButtonClick = (dashboardName) => {
-        setActiveButton(dashboardName); 
-        onDashboardChange(dashboardName);
-    };
-
-    const buttons = [
-        { name: 'Dashboard', key: 'dashBoard' }, 
-        { name: 'Clients', key: 'clients' },
-        { name: 'Vehicles', key: 'vehicles' },
-    ];
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
+    const handleLogout = () =>{
         dispatch(logOut(navigate))
-    };
+    }
 
-    return (
-        <div className="h-full flex flex-col justify-center w-64 border-r-2 border-gray-200">
-            <div className="flex flex-col h-52 justify-evenly items-center">
-                {buttons.map((button) => (
-                    <button
-                        key={button.key}
-                        onClick={() => handleButtonClick(button.key)}
-                        className={`border border-gray-300 py-1 w-48 text-xl rounded-full bg-white transition duration-300 dark:bg-slate-950 ${
-                            currentView === button.key ? 'drop-shadow-none' : 'drop-shadow-xl'
-                        } ${activeButton === button.key ? 'drop-shadow-none' : 'drop-shadow-xl'}`}>
-                        {button.name}
+    const location = useLocation()
+    
+
+    return(
+        <div className="h-full flex flex-col justify-evenly w-64 border-r-2 border-gray-200 dark:bg-slate-900 dark:text-gray-300 " >
+            <div className="flex flex-col h-56 justify-evenly" >
+                <Link to={routesHelper.admin} >
+                    <button className={`w-full flex flex-col h-16 text-lg justify-evenly items-center ${location.pathname === routesHelper.admin ? 'bg-gray-200 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'} transition duration-400 hover:bg-gray-200`}>
+                    <BiGridAlt/>
+                    Dashboard
                     </button>
-                ))}
+                </Link>
+                <Link to={routesHelper.adminClients} >
+                    <button className={`w-full flex flex-col h-16 text-lg justify-evenly items-center ${location.pathname === routesHelper.adminClients ? 'bg-gray-200 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'} transition duration-400 hover:bg-gray-200`}>
+                        <BiUser/>
+                        Clients
+                    </button>
+                </Link>
+                <Link to={routesHelper.adminVehicles} >
+                    <button className={`w-full flex flex-col h-16 text-lg justify-evenly items-center ${location.pathname === routesHelper.adminVehicles ? 'bg-gray-200 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'} transition duration-400 hover:bg-gray-200`}>
+                        <BiCar/>
+                        Vehicles
+                    </button>
+                </Link>
             </div>
-            <button onClick={handleLogout} >Log Out</button>
+            <button className='w-full h-16 flex flex-col justify-evenly items-center text-lg bg-white dark:bg-slate-900 transition duration-400 hover:bg-rose-200 ' onClick={handleLogout}>
+                <BiLogOut/>
+                Log Out
+            </button>
         </div>
     );
 };
