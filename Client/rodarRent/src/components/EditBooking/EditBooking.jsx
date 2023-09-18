@@ -5,7 +5,7 @@ import {
   getBookingById,
   getAllVehicles,
   getAllLocations,
-} from "../../helpers/routes"; // Asegúrate de importar las rutas correctas
+} from "../../helpers/routes";
 
 function EditBooking({ bookingId }) {
   const [bookingData, setBookingData] = useState({
@@ -14,56 +14,67 @@ function EditBooking({ bookingId }) {
     finishDate: "",
     pickUpLocationId: "",
     returnLocationId: "",
+    stateBooking: "confirmed"
   });
 
   const [allVehicles, setAllVehicles] = useState([]);
   const [allLocations, setAllLocations] = useState([]);
 
   useEffect(() => {
-    // Realiza una solicitud GET para obtener los detalles de la reserva existente por su ID (bookingId) y actualiza el estado con los datos existentes.
+
     axios.get(getBookingById(bookingId)).then((response) => {
-      console.log("Booking Data:", response.data); // Muestra los datos de la reserva en la consola
+      console.log("Booking Data:", response.data);
       const existingBookingData = response.data;
       setBookingData(existingBookingData);
     });
 
-    // Obtén la lista de todos los vehículos
-    axios.get(getAllVehicles()).then((response) => {
-      console.log("Vehicles Data:", response.data); // Muestra los datos de vehículos en la consola
 
-      // Extrae la matriz de vehículos de la respuesta
+    axios.get(getAllVehicles()).then((response) => {
+      console.log("Vehicles Data:", response.data);
+
+
       const vehiclesArray = response.data.results;
 
-      // Establece la lista de vehículos en el estado
+
       setAllVehicles(vehiclesArray);
     });
 
-    // Obtén la lista de todas las localizaciones
+
     axios.get(getAllLocations()).then((response) => {
-      console.log("Locations Data:", response.data); // Muestra los datos de localizaciones en la consola
-      setAllLocations(response.data); // Asegúrate de utilizar la estructura de datos correcta en la respuesta
+      console.log("Locations Data:", response.data);
+      setAllLocations(response.data);
     });
   }, [bookingId]);
 
   const handleUpdate = async (event) => {
     event.preventDefault();
-
+  
     try {
-      // Realiza una solicitud PUT para actualizar la reserva.
+    
+      const updatedBookingData = {
+        ...bookingData,
+        startDate: addOneDay(bookingData.startDate),
+        finishDate: addOneDay(bookingData.finishDate),
+      };
+  
       const response = await axios.put(
         updateBookingUrl(bookingId),
-        bookingData
+        updatedBookingData
       );
-
+  
       if (response.status === 200) {
-        // Realiza alguna acción después de una actualización exitosa
-      } else {
-        // Maneja errores aquí si la solicitud no fue exitosa.
+      
+        window.location.reload();
       }
     } catch (error) {
-      console.error("Error fetching booking data:", error); // Muestra los errores en la consola
-      // Maneja errores de solicitud aquí.
+      console.error("Error fetching booking data:", error);
     }
+  };
+  
+  const addOneDay = (dateString) => {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split("T")[0];
   };
 
   const handleChange = (event) => {
@@ -73,34 +84,42 @@ function EditBooking({ bookingId }) {
       [name]: value,
     });
   };
+  
 
   return (
     <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="w-120 drop-shadow-md border bg-white rounded-3xl dark:bg-slate-900">
-        <div className="flex">
-          <div className="w-2/4">
-            <h2>Edit Booking</h2>
-            <form onSubmit={handleUpdate}>
-              <div>
-                <label>Vehicle</label>
-                <select
-                  name="VehicleId"
-                  value={bookingData.VehicleId}
-                  onChange={handleChange}
-                >
-                  <option value="">Select a Vehicle</option>
-                  {allVehicles.map((vehicle) => (
-                    <option key={vehicle.id} value={vehicle.id}>
-                      {vehicle.brand} - {vehicle.model}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        <form onSubmit={handleUpdate} className="w-120 px-16 py-5 flex flex-col rounded-xl justify-center">
+          <h1 className="font-poppins p-2 text-3xl">Edit Booking</h1>
+          <hr className="ml-8 mr-8 p-2 text-gray" />
 
+          <div className="mb-4">
+            <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="VehicleId">
+              Vehicle
+            </label>
+            <select
+              className="w-full font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+              name="VehicleId"
+              value={bookingData.VehicleId}
+              onChange={handleChange}
+            >
+              <option value="">Select a Vehicle</option>
+              {allVehicles.map((vehicle) => (
+                <option key={vehicle.id} value={vehicle.id}>
+                  {vehicle.brand} - {vehicle.model}
+                </option>
+              ))}
+            </select>
+          </div>
 
-              <div>
-                <label>Pick Up Location</label>
+          <div className="mb-4 flex">
+            <div className="w-1/2 pr-2">
+              <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="pickUpLocationId">
+                Pick Up Location
+              </label>
+              <div className="flex items-center">
                 <select
+                  className="w-full font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
                   name="pickUpLocationId"
                   value={bookingData.pickUpLocationId}
                   onChange={handleChange}
@@ -113,31 +132,73 @@ function EditBooking({ bookingId }) {
                   ))}
                 </select>
               </div>
-              <div>
-                <label>Start Date</label>
+            </div>
+
+            <div className="w-1/2 pl-2">
+              <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="returnLocationId">
+                Return Location
+              </label>
+              <div className="flex items-center">
+                <select
+                  className="w-full font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                  name="returnLocationId"
+                  value={bookingData.returnLocationId}
+                  onChange={handleChange}
+                >
+                  <option value="">Select a Location</option>
+                  {allLocations.map((location) => (
+                    <option key={location.id} value={location.id}>
+                      {location.alias}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4 flex">
+            <div className="w-1/2 pr-2">
+              <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="startDate">
+                Start Date
+              </label>
+              <div className="flex items-center">
                 <input
+                  className="w-full font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
                   type="date"
                   name="startDate"
                   value={bookingData.startDate}
                   onChange={handleChange}
                 />
               </div>
-              <div>
-                <label>Finish Date</label>
+            </div>
+            <div className="w-1/2 pl-2">
+              <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="finishDate">
+                Finish Date
+              </label>
+              <div className="flex items-center">
                 <input
+                  className="w-full font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
                   type="date"
                   name="finishDate"
                   value={bookingData.finishDate}
                   onChange={handleChange}
                 />
               </div>
-              <button type="submit">Save</button>
-            </form>
+            </div>
           </div>
-        </div>
+
+          <div className="flex flex-col mt-4 mb-4">
+            <button
+              className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
+              type="submit"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
-}
+};
 
 export default EditBooking;
