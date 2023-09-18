@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import routesHelper from "../../helpers/routes";
 
 const CustomerDetail = () => {
   const { id } = useParams();
@@ -218,9 +219,9 @@ const CustomerDetail = () => {
                               <span
                                 className={`${booking.stateBooking === 'completed'
                                   ? 'text-green-500'
-                                  : booking.stateBooking === 'confirmed'
+                                  : booking.stateBooking === 'confirmed' 
                                     ? 'text-yellow-500'
-                                    : booking.stateBooking === 'pending'
+                                    : booking.stateBooking === 'pending' 
                                       ? 'text-cyan-500'
                                       : booking.stateBooking === 'canceled'
                                         ? 'text-red'
@@ -237,6 +238,13 @@ const CustomerDetail = () => {
                                   Edit
                                 </button>
                               )}
+                              {/* {booking.stateBooking === 'pending' && (
+                                <button 
+                                  className="bg-cyan-500 text-white px-2 py-1 rounded-md"
+                                  onClick={() => navigate(`${routesHelper.booking}?parametro=${booking.VehicleId}`)}>
+                                    Pay
+                                </button>
+                              )} */}
                             </div>
                           </td>
                         </tr>
