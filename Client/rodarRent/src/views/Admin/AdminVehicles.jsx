@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getVehicle, setFilters } from "../../redux/actions";
 import { useEffect } from "react";
-import { BiTrash, BiEdit } from "react-icons/bi"; 
+import { BiTrash, BiEdit } from "react-icons/bi";
 //Components
 import Pagination from '../../components/Pagination/Pagination'
 
@@ -10,7 +10,7 @@ const AdminVehicles = () => {
 
     const dispatch = useDispatch();
 
-    const vehicles = useSelector((state) => state.veh.vehicles.results);
+    const vehicles = useSelector((state) => state.veh.vehicles);
     const filterObject = useSelector((state) => state.veh.filterObject);
 
 
@@ -38,12 +38,11 @@ const AdminVehicles = () => {
         );
     };
 
-    console.log(vehicles)
     return (
-        <div className="w-[calc(100vw-256px)] h-full" >
-            <div className="w-3/5 h-adminCardWrapper" >
+        <div className="w-[calc(100vw-256px)] h-full px-4 py-2" >
+            <div className="w-3/5" >
                 <div className="" >
-                    {vehicles?.map((vehicle, index) => (
+                    {vehicles?.results?.map((vehicle, index) => (
                         <div className="border border-gray-200 drop-shadow-lg bg-white flex h-full mt-3 rounded-lg " key={index}>
                             <div className="w-2/5 p-5" >
                                 <img className="w-full h-full" src={vehicle.image} alt="" />
@@ -57,7 +56,7 @@ const AdminVehicles = () => {
                                 </div>
                                 <div className="w-full pt-2" >
                                     <table className="w-full table-auto" >
-                                        <thead className=" text-left border border-b-gray-300" >
+                                        <thead className=" text-left border border-t-0 border-r-0 border-l-0 border-b-gray-300" >
                                             <th>Type</th>
                                             <th>Transmission</th>
                                             <th>Fuel</th>
@@ -76,10 +75,13 @@ const AdminVehicles = () => {
                             </div>
                         </div>
                     ))}
+                    <div className="pt-4" >
+                        <Pagination vehicles={vehicles} onPageChange={onPageChange} />
+                    </div>
                 </div>
             </div>
             <div>
-                
+
             </div>
         </div>
     )
