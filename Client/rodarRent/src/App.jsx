@@ -5,6 +5,7 @@ import Nav from "./components/Nav/Nav";
 import Landing from "./views/Landing/Landing";
 import Login from "./views/Login/login";
 import Register from "./views/Register/Register";
+import ReviewForm from "./components/ReviewForm/ReviewForm";
 import Detail from "./views/Detail/Detail";
 import { useState } from "react";
 import Booking from "./views/Booking/Booking";
@@ -40,6 +41,7 @@ function App() {
         <Route path={routesHelper.landing} element={<Landing />} />
         <Route path={routesHelper.login} element={<Login />} />
         <Route path={routesHelper.register} element={<Register />} />
+        <Route path={routesHelper.review} element={<ReviewForm />} />
         <Route path={routesHelper.detail} element={<Detail />} />
         <Route path={routesHelper.booking} element={<Booking />} />
         <Route path={routesHelper.aboutUs} element={<AboutUs />} />
