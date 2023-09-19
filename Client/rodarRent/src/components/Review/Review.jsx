@@ -1,13 +1,25 @@
 import React from "react";
 
-const Review = ({ rev }) => {
+const Review = ({ review }) => {
+      const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+      const fechaObjeto = new Date(review.updatedAt);
+      const diaSemana = diasSemana[fechaObjeto.getDay()];
+      const dia = fechaObjeto.getDate().toString().padStart(2, '0');
+      const mes = (fechaObjeto.getMonth() + 1).toString().padStart(2, '0');
+      const año = fechaObjeto.getFullYear();
+      const horas = fechaObjeto.getHours().toString().padStart(2, '0');
+      const minutos = fechaObjeto.getMinutes().toString().padStart(2, '0');
+      const segundos = fechaObjeto.getSeconds().toString().padStart(2, '0');
+      
+      const fechaFormateada = `${diaSemana} ${dia}/${mes}/${año} ${horas}:${minutos}:${segundos}`;
+
   // Función para renderizar las estrellas del rating
   const renderRatingStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
         <svg
-          className={i <= rating ? 'w-4 h-4 text-yellow-300' : 'w-4 h-4 text-gray-300 dark:text-gray-500'}
+          className={i <= rating ? 'w-4 h-4 text-yellow-300' : 'w-4 h-4 text-gray-300 dark:text-white'}
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
@@ -20,14 +32,14 @@ const Review = ({ rev }) => {
     return stars;
   };
   return (
-    <div className="font-poppins text-sm p-4 m-4 bg-slate-50 rounded-lg drop-shadow-md border border-gray">
-      <h3>{rev.name}</h3>
+    <div className="font-poppins text-sm p-4 m-4 bg-slate-50 rounded-lg drop-shadow-md border border-gray dark:bg-slate-900 duration-300 text-gray-900 dark:text-white">
+      <h3>{review.Customer.name}</h3>
       <br />
-      <p>{rev.dateReview}</p>
+      <p>{fechaFormateada}</p>
       <br />
-      <div className="flex items-center space-x-1">{renderRatingStars(rev.rating)}</div>
+      <div className="flex items-center space-x-1">{renderRatingStars(review.rating)}</div>
       <br />
-      <p>{rev.review}</p>
+      <p>{review.review}</p>
       <br />
     </div>
   );

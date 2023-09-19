@@ -1,31 +1,50 @@
 import React from "react";
 import { getLocalStorage } from "../../helpers/storage";
 import { useState } from "react";
-import { ToastContainer, toast} from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API_BASE_URL } from "../../helpers/routes";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const ReviewForm = () => {
+  const navigate = useNavigate();
   const customer = getLocalStorage("loginData");
+  //console.log(customer.id);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [review, setReview] = useState("");
 
   const handleChange = (event) => {
     const value = event.target.value;
-    setReview({ ...review, value });
+    setReview(value);
   };
-
+  
   const reviewData = {
-    "CustomerID": customer.id,
+    "CustomerId": customer.id,
     "rating": rating,
-    "review": review.value,
+    "review": review,
   };
-
-  const handlerSubmit = (event) => {
+//console.log(reviewData);
+  const handlerSubmit = async (event) => {
     event.preventDefault();
-    toast.success(`Review sent!, thanks ${customer.name}`)
-    console.log(reviewData);
+    try {
+      const response = await axios.post(`${API_BASE_URL}/reviews`, reviewData).then(response=>{
+        console.log(response);
+        toast.success(`Sent review!, tanks ${customer.name}`);
+        setTimeout(() => {
+          navigate("/aboutUs");
+        }, 4000);
+      });
+
+      /*if (response.status === 201) {
+        
+      } else {
+        console.log("Error en la solicitud:", response.statusText);
+      }*/
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="font-poppins w-full h-noNavDesktop  bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
@@ -42,7 +61,7 @@ const ReviewForm = () => {
                   className={
                     index <= (hover || rating)
                       ? "w-6 h-6 text-yellow-300"
-                      : "w-6 h-6 text-gray-300 dark:text-gray-500"
+                      : "w-6 h-6 text-gray-300 dark:text-white"
                   }
                   onClick={() => setRating(index)}
                   onMouseEnter={() => setHover(index)}
@@ -64,7 +83,7 @@ const ReviewForm = () => {
           <div className="py-4 my-4">
             <label htmlFor="review"></label>
             <textarea
-              className="p-4 rounded-lg drop-shadow-md border border-gray"
+              className="p-4 rounded-lg drop-shadow-md border border-gray dark:bg-slate-900 duration-300"
               name="review"
               cols="40"
               rows="10"
@@ -92,7 +111,7 @@ const ReviewForm = () => {
         draggable
         pauseOnHover
         theme="light"
-        />
+      />
     </div>
   );
 };
