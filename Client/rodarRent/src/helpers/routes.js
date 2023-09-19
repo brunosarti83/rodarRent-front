@@ -6,6 +6,7 @@ const routesHelper = {
   login: '/login',
   authGoogle: '/auth/google',
   register: '/register',
+  review: '/review',
   registerGoogle: '/google',
   aboutUs: '/aboutUs',
   contact: '/contact',
