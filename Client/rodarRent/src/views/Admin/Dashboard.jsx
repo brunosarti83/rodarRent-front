@@ -1,4 +1,4 @@
-import{ useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as echarts from "echarts";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
@@ -9,19 +9,18 @@ import { useQuery } from "react-query";
 import Loader from "../../components/Loader/Loader";
 import { GrafInfo } from "./GrafInfo";
 import { InfoAmount } from "./InfoAmount";
-import { FilterStatusCar } from "./filterStatusCar";
+import { FilterStatusCar } from "./FilterStatusCar";
 
 const Dashboard = () => {
-
-function fetchBookings() {
+  function fetchBookings() {
     return fetch("http://localhost:3001/booking/filter").then((res) =>
       res.json()
     );
   }
 
-const queryBookings = useQuery(["bookings"], fetchBookings);
+  const queryBookings = useQuery(["bookings"], fetchBookings);
 
-return (
+  return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="flex p-8 w-full">
         <div className="w-1/3 p-4">
