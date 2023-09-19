@@ -7,14 +7,14 @@ import { BiArrowBack } from "react-icons/bi"
 
 export default function Detail({ saveState }) {
   const [vehicle, setVehicle] = useState({
-    id: '',
-    brand: '',
-    model: '',
-    transmission: '',
-    fuel: '',
-    passengers: '',
-    price: '',
-    image: '',
+    id: "",
+    brand: "",
+    model: "",
+    transmission: "",
+    fuel: "",
+    passengers: "",
+    price: "",
+    image: "",
   });
 
   const { id } = useParams();
@@ -39,14 +39,14 @@ export default function Detail({ saveState }) {
   }, [id]);
 
   return (
-    <div className="bg-gray-100 w-full xl:h-noNavLaptop h-noNavDesktop flex flex-col">
+    <div className="bg-gray-100 w-full h-noNavDesktop flex flex-col">
       {(!vehicle.model && <Loader />) || (
         <div className='h-full px-28 py-8 font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100' >
           <Link className='border flex w-36 justify-evenly items-center border-gray-300 bg-white text-xl drop-shadow-md py-1 rounded-lg font-normal transition duration-300 hover:drop-shadow-none dark:bg-slate-950' to={routesHelper.cars} onClick={() => saveState()}>
             <BiArrowBack />
             Back
           </Link><br />
-          <div className='w-full h-form flex items-center justify-between' >
+          <div className='w-full h-5/6 flex items-center justify-between' >
             <div className=' w-1/2 self-end' >
               <img className='w-full' src={vehicle.image} alt={`${vehicle.brand} ${vehicle.model}`} />
             </div>

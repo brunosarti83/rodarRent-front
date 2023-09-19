@@ -1,4 +1,4 @@
-import Cars from "../../components/CarList/CarList";
+import CarList from "../../components/CarList/CarList";
 import ReservationSearch from "../../components/ReservationSearch/ReservationSearch";
 import { getLocalStorage } from "../../helpers/storage";
 import { useEffect } from "react";
@@ -15,10 +15,16 @@ function Home() {
     }
   }, [isUserOnline]);
 
+  useEffect(() => {
+    if (isUserOnline) {
+      dispatch(rememberLogin());
+    }
+  }, [isUserOnline]);
+
   return (
     <div>
       <ReservationSearch />
-      <Cars />
+      <CarList />
     </div>
   );
 }

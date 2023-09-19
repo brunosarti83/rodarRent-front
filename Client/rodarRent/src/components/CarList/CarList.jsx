@@ -39,6 +39,7 @@ const CarList = () => {
         ...filterObject,
         orderBy,
         direction,
+        offset: 0,
       })
     );
   };
@@ -46,7 +47,9 @@ const CarList = () => {
   return (
     <div>
       {loading ? (
-        <Loader />
+        <div className="flex h-[72vh] justify-center items-center">
+          <Loader />
+        </div>
       ) : (
         <div className="flex w-full justify-between dark:bg-slate-900 dark:text-gray-100 transition duration-300 ">
           <div
