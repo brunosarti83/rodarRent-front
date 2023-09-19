@@ -45,20 +45,14 @@ function App() {
         <Route path={routesHelper.aboutUs} element={<AboutUs />} />
         <Route path={routesHelper.contact} element={<Contact />} />
         <Route path={routesHelper.allCustomers} element={<CustomerList />} />
-        <Route
-          path={routesHelper.dashboardCustomer}
-          element={<CustomerDetail />}
-        />
+        <Route path={routesHelper.dashboardCustomer}element={<CustomerDetail />} />
         <Route path={routesHelper.allBookings} element={<BookingList />} />
         <Route path={routesHelper.googleAuthAux} element={<GoogleAuthAux />} />
         <Route path={routesHelper.admin} element={<Admin />}>
           <Route index element={<Dashboard />} />
           <Route path={routesHelper.admin} element={<Dashboard />} />
           <Route path={routesHelper.adminClients} element={<AdminClients />} />
-          <Route
-            path={routesHelper.adminVehicles}
-            element={<AdminVehicles />}
-          />
+          <Route path={routesHelper.adminVehicles} element={<AdminVehicles />}          />
         </Route>
       </Routes>
     </div>

@@ -5,10 +5,6 @@ const CustomerCard = ({ customer }) => {
   return (
     <div className="border border-gray-300 p-4 rounded-lg my-4">
       <div>
-        <div>
-          {/* Puedes usar la imagen del cliente si está disponible */}
-          {/* <img src={customer.image} alt={`${customer.name} ${customer.lastName}`} className="w-2/3" /> */}
-        </div>
         <div className="ml-4">
           <h2>{`${customer.name} ${customer.lastName}`}</h2>
           <div>
