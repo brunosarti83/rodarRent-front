@@ -1,18 +1,15 @@
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom"; // Importa Link
 import Loader from "../Loader/Loader";
 import DashboardActions from "../DashboardActions/DashboardActions";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
 import EditCustomer from "../EditCustomer/EditCustomer";
-import EditBooking from "../EditBooking/EditBooking";
 import CustomerInfo from "../CustomerInfo/CustomerInfo";
 import WelcomeCustomer from "../WelcomeCustomer/WelcomeCustomer";
 import {
   getCustomerDetailsUrl,
   getBookingsByIdCustomerUrl,
-  getAllVehicles,
 } from "../../helpers/routes";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../redux/actions";
