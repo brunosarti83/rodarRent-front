@@ -48,7 +48,7 @@ const AdminVehicles = () => {
         loading || setLoading(true);
         const limit = 3
         const offset = (currentPage - 1) * 3
-        if (deleteVehicle !== null) {
+        if (deleteVehicle === null) {
             axios
                 .get(`${API_BASE_URL}/vehicles`, {
                     params: { limit, offset },
@@ -61,6 +61,8 @@ const AdminVehicles = () => {
                 .catch((error) => {
                     console.log(error);
                 });
+        } else{
+            setLoading(false)
         }
     }, [deleteVehicle]);
 
@@ -72,6 +74,8 @@ const AdminVehicles = () => {
         if (modalId === 1) {
             setIsDeleteModalOpen(true)
             setDeleteVehicle({ id: vehicleId, domain: vehicleDomain })
+        } else{
+            setIsEditModalOpen(true)
         }
     }
 
@@ -84,7 +88,7 @@ const AdminVehicles = () => {
             const response = await axios.delete(`${API_BASE_URL}/vehicles/${vehicleId}`)
             toast.success(response.data)
             closeModal(1)
-            setDeleteVehicle(undefined)
+            setDeleteVehicle(null)
         } catch (error) {
             console.log(error)
         }
