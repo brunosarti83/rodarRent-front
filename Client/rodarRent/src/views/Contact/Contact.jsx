@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { BiPhone, BiLocationPlus, BiMailSend } from "react-icons/bi";
 import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import axios from 'axios';
+import {API_BASE_URL} from '../../helpers/routes'
 
 
 const Contact = () => {
@@ -20,10 +22,19 @@ const Contact = () => {
         setDataContact({...dataContact,[property]:value})
     }
 
-    const handleSubmit = (event) =>{
+    const handleSubmit = async (event) =>{
         event.preventDefault()
+        const body = {
+            fromName: dataContact.name,
+            toEmailAddress:'rodarrent@outlook.com',
+            replyToEmailAddress: dataContact.email,
+            subject: 'Contact',
+            text: dataContact.message,
+            template: 'normal'
+        }
+        const response = await axios.post(`${API_BASE_URL}/sendemail`,body)
         formRef.current.reset()
-        alert('Message send!')
+        alert(response.data)
     }
 
     return (
