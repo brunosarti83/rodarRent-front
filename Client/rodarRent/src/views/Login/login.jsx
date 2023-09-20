@@ -43,7 +43,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-noNavDesktop  bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
+    <div className="w-full h-[calc(100vh-112px)] bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md border bg-white rounded-l-3xl h-formLaptop  dark:bg-slate-900">
         <form className=" pt-14 px-16 flex flex-col flex-wrap w-full rounded-xl">
           <h1 className="font-poppins font-medium  text-4xl">Welcome back!</h1>

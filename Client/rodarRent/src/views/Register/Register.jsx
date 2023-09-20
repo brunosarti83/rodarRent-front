@@ -92,7 +92,7 @@ function Register() {
   }
 
   return (
-    <div className='w-full h-noNavLaptop  bg-white dark:bg-slate-900 transition duration-300 dark:text-gray-100 flex items-center justify-center'>
+    <div className='w-full h-[calc(100vh-112px)] bg-white dark:bg-slate-900 transition duration-300 dark:text-gray-100 flex items-center justify-center'>
       <div className='drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900'>
         <form className='px-16 pt-10 flex flex-col flex-wrap w-full rounded-xl justify-center'>
           <h1 className='font-poppins p-2 text-3xl'>Welcome to RodarRent!</h1>

@@ -171,3 +171,20 @@ export const logOut = (navigate) => async(dispatch) =>{
     alert('Error during Logout:', error)
   }
 }
+
+//? ADMIN VEHICLES ACTIONS
+
+export const getVehicleAdmin = (pageObject) =>{
+  const queryString = queryMaker(pageObject)
+  return async function(dispatch){
+    try {
+      const response = await axios.get(`${API_BASE_URL}/vehicles`+ queryString)
+      dispatch({
+        type:GET_VEHICLE,
+        payload: response
+      })
+    } catch (error) {
+      alert(error)
+    }
+  }
+}
