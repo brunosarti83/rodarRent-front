@@ -14,7 +14,7 @@ import Pagination from "../../components/AdminComponents/AdminVehicles/Paginatio
 const AdminVehicles = () => {
 
     const [loading, setLoading] = useState(true)
-    //*Renderizado vehiculos y paginacion
+    //*Render, vehicles and pagination states
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(1);
     const [vehicles, setVehicles] = useState({ results: [] })
@@ -46,8 +46,10 @@ const AdminVehicles = () => {
     //*actualiza vehicles post eliminacion
     useEffect(() => {
         loading || setLoading(true);
+
         const limit = 3
         const offset = (currentPage - 1) * 3
+
         if (deleteVehicle === null) {
             axios
                 .get(`${API_BASE_URL}/vehicles`, {
@@ -102,11 +104,11 @@ const AdminVehicles = () => {
                 </div>) :
                 (<div className="w-[calc(100vw-256px)] h-full px-14 py-2" >
                     {/* SearchBar? */}
-                    <div className="w-3/5 h-16 border border-black">
+                    <div className="">
                     </div>
                     <div className="flex justify-evenly">
-                        <div className="w-3/5 flex-grow-0 " >
-                            <div className="border border-black " >
+                        <div className="w-3/5  h-adminCardWrapper" >
+                            <div className=" " >
                                 {vehicles?.results?.map((vehicle, index) => (
                                     <VehicleCard 
                                         key={index} 
@@ -114,7 +116,7 @@ const AdminVehicles = () => {
                                         openModal={openModal} 
                                     />
                                 ))}
-                                <div>
+                                <div className=" flex justify-center" >
                                     <Pagination
                                         currentPage={currentPage}
                                         totalPages={totalPages}

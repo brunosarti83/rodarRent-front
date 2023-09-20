@@ -1,5 +1,5 @@
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    
+
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
             onPageChange(page);
@@ -26,33 +26,72 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         }
     };
 
-    return (
-        <div className="pagination">
-            {currentPage > 1 && (
-                <button onClick={handlePrevPage}>{'<'}</button>
-            )}
+    const handleGoToStart = () => {
+        if (currentPage > 1) {
+            onPageChange(1)
+        }
+    }
 
-            {Array.from({ length: Math.min(totalPages, 3) }, (_, index) => (
+    const handleGoToEnd = () =>{
+        if(currentPage < totalPages){
+            onPageChange(totalPages)
+        }
+    }
+
+    const renderPageButtons = () => {
+        const buttons = [];
+
+        
+        if (currentPage > 1) {
+            buttons.push(
+                <div className="flex gap-1" >
+                    <button key="goToStart" className="cursor-pointer px-3 drop-shadow-lg border border-gray-300 rounded-lg" onClick={handleGoToStart}>{'<<'}</button>
+                    <button key="prev" className="cursor-pointer px-3 drop-shadow-lg border border-gray-300 rounded-lg" onClick={handlePrevPage}>{'<'}</button>
+                </div>
+            );
+        }
+
+
+
+        const start = Math.max(1, currentPage - 1);
+        const end = Math.min(totalPages, start + 2);
+
+
+        for (let page = start; page <= end; page++) {
+            buttons.push(
                 <button
-                    key={index + 1}
-                    onClick={() => handlePageChange(index + 1)}
-                    className={currentPage === index + 1 ? 'active' : ''}
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`cursor-pointer py-1 px-3 drop-shadow-lg border-none rounded-lg ${currentPage === page ? 'font-semibold text-white bg-blue drop-shadow-lg' : 'font-normal'} `}
                 >
-                    {index + 1}
+                    {page}
                 </button>
-            ))}
+            );
+        }
 
-            {currentPage + 3 < totalPages && (
-                <button onClick={handleAdvance}>...</button>
-            )}
+        //* if there's more than 3 pages show elipsis button
+        if (currentPage + 3 < totalPages) {
+            buttons.push(
+                <button key="advance" className="cursor-pointer py-1 px-3 drop-shadow-lg border-none rounded-lg" onClick={handleAdvance}>...</button>
+            );
+        }
 
-            {currentPage < totalPages && (
-                <button onClick={handleNextPage}>{'>'}</button>
-            )}
+        //* Show next button if not last page
+        if (currentPage < totalPages) {
+            buttons.push(
+                <div className="flex gap-1" >
+                    <button key="next" className="cursor-pointer py-1 px-3 drop-shadow-lg border-none rounded-lg" onClick={handleNextPage}>{'>'}</button>
+                    <button key="goToEnd" className="cursor-pointer py-1 px-3 drop-shadow-lg border-none rounded-lg" onClick={handleGoToEnd}>{'>>'}</button>
+                </div>
+            );
+        }
 
-            {currentPage < totalPages && (
-                <button onClick={() => onPageChange(totalPages)}>Última</button>
-            )}
+        return buttons;
+    };
+
+    return (
+        <div className=" w-1/5 pt-5 flex justify-evenly">
+            {renderPageButtons()}
         </div>
     );
 };

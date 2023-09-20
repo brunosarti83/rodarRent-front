@@ -4,8 +4,8 @@ import {BiTrash, BiEdit} from "react-icons/bi"
 function VehicleCard({vehicle, openModal}) {
     return (
         <div className="border border-gray-200 drop-shadow-lg bg-white flex  mt-3 rounded-lg " >
-            <div className="w-2/5 p-5" >
-                <img className="" src={vehicle.image} alt="" />
+            <div className="w-2/5 h-56 p-5" >
+                <img className="w-full h-full" src={vehicle.image} alt="" />
             </div>
             <div className="w-3/5 h-full p-2 font-poppins" >
                 <h2 className="text-4xl font-bold pt-7" >{`${vehicle.brand} ${vehicle.model}`}</h2>
