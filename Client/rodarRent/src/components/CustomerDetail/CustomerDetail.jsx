@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
@@ -9,6 +9,7 @@ import EditCustomer from '../EditCustomer/EditCustomer';
 import EditBooking from '../EditBooking/EditBooking';
 import CustomerInfo from '../CustomerInfo/CustomerInfo';
 import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
+import { BsFillTrash3Fill } from 'react-icons/bs'
 import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl, getAllVehicles } from '../../helpers/routes';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/actions';
@@ -42,9 +43,9 @@ const CustomerDetail = () => {
     };
 
     fetchVehicles();
-  }, []); 
+  }, []);
 
- 
+
   const openEditCustomerModal = () => {
     setIsEditCustomerModalOpen(true);
   };
@@ -219,9 +220,9 @@ const CustomerDetail = () => {
                               <span
                                 className={`${booking.stateBooking === 'completed'
                                   ? 'text-green-500'
-                                  : booking.stateBooking === 'confirmed' 
+                                  : booking.stateBooking === 'confirmed'
                                     ? 'text-yellow-500'
-                                    : booking.stateBooking === 'pending' 
+                                    : booking.stateBooking === 'pending'
                                       ? 'text-cyan-500'
                                       : booking.stateBooking === 'canceled'
                                         ? 'text-red'
@@ -232,19 +233,20 @@ const CustomerDetail = () => {
                               </span>
                               {booking.stateBooking === 'confirmed' && (
                                 <button
-                                  className="bg-yellow-500 text-white px-2 py-1 rounded-md"
+                                  className="text-red px-2 py-1 rounded-md"
                                   onClick={() => handleEditBooking(booking.id)}
                                 >
-                                  Edit
+                                  <BsFillTrash3Fill />
                                 </button>
                               )}
-                              {/* {booking.stateBooking === 'pending' && (
-                                <button 
-                                  className="bg-cyan-500 text-white px-2 py-1 rounded-md"
-                                  onClick={() => navigate(`${routesHelper.booking}?parametro=${booking.VehicleId}`)}>
-                                    Pay
+                              {booking.stateBooking === 'pending' && (
+                                <button
+                                  className="text-red px-2 py-1 rounded-md"
+                                  onClick={() => handleEditBooking(booking.id)}
+                                >
+                                  <BsFillTrash3Fill />
                                 </button>
-                              )} */}
+                              )}
                             </div>
                           </td>
                         </tr>

@@ -73,18 +73,28 @@ function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios
-      .post(`${API_BASE_URL}/customers`, data)
-      .then((response) => {
-        toast.success('Registered user!', { position: 'top-left' });
-        setTimeout(() => {
-          navigate('/login');
-        }, '4000');
-      })
-      .catch((error) => {
-        toast.error(error, { position: 'top-left' });
-      });
+    try {
+      const response = await axios.post(`${API_BASE_URL}/customers`, data);
+      toast.success('Registered user!', { position: 'top-left' });
+  
+      setTimeout(() => {
+        navigate('/login');
+      }, 4000);
+  
+      const body = {
+        userName: response.data.name, 
+        toEmailAddress: response.data.email, 
+        replyToEmailAddress: 'rodarrent@outlook.com',
+        subject: `Welcome ${response.data.name}`, 
+        template: 'register',
+      };
+  
+      await axios.post(`${API_BASE_URL}/sendemail`, body);
+    } catch (error) {
+      toast.error(error.message, { position: 'top-left' });
+    }
   };
+  
 
   const handleGoogleReg = async (event) => {
     event.preventDefault();
@@ -92,7 +102,7 @@ function Register() {
   }
 
   return (
-    <div className='w-full h-noNavLaptop  bg-white dark:bg-slate-900 transition duration-300 dark:text-gray-100 flex items-center justify-center'>
+    <div className='w-full h-[calc(100vh-112px)] bg-white dark:bg-slate-900 transition duration-300 dark:text-gray-100 flex items-center justify-center'>
       <div className='drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900'>
         <form className='px-16 pt-10 flex flex-col flex-wrap w-full rounded-xl justify-center'>
           <h1 className='font-poppins p-2 text-3xl'>Welcome to RodarRent!</h1>
