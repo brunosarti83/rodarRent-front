@@ -6,39 +6,30 @@ import {
   getAllVehicles,
   getAllLocations,
 } from "../../helpers/routes";
+import Loader from '../Loader/Loader'; // Importa el componente Loader
 
 function EditBooking({ bookingId }) {
   const [bookingData, setBookingData] = useState({
-    VehicleId: "",
-    startDate: "",
-    finishDate: "",
-    pickUpLocationId: "",
-    returnLocationId: "",
-    stateBooking: "confirmed"
+    stateBooking: "",
   });
 
-  const [allVehicles, setAllVehicles] = useState([]);
-  const [allLocations, setAllLocations] = useState([]);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Estado para mostrar la carga
 
   useEffect(() => {
-
     axios.get(getBookingById(bookingId)).then((response) => {
       console.log("Booking Data:", response.data);
       const existingBookingData = response.data;
       setBookingData(existingBookingData);
+      setShowConfirmationModal(true); // Mostrar el modal de confirmación al cargar los datos
+      setIsLoading(false); // Ocultar la carga cuando los datos se cargan
     });
-
 
     axios.get(getAllVehicles()).then((response) => {
       console.log("Vehicles Data:", response.data);
-
-
       const vehiclesArray = response.data.results;
-
-
       setAllVehicles(vehiclesArray);
     });
-
 
     axios.get(getAllLocations()).then((response) => {
       console.log("Locations Data:", response.data);
@@ -46,159 +37,64 @@ function EditBooking({ bookingId }) {
     });
   }, [bookingId]);
 
-  const handleUpdate = async (event) => {
-    event.preventDefault();
-  
+  const handleConfirmCancelBooking = async () => {
     try {
-    
       const updatedBookingData = {
         ...bookingData,
-        startDate: addOneDay(bookingData.startDate),
-        finishDate: addOneDay(bookingData.finishDate),
+        stateBooking: "canceled",
       };
-  
+
       const response = await axios.put(
         updateBookingUrl(bookingId),
         updatedBookingData
       );
-  
+
       if (response.status === 200) {
-      
         window.location.reload();
       }
     } catch (error) {
-      console.error("Error fetching booking data:", error);
+      console.error("Error cancelling booking:", error);
     }
-  };
-  
-  const addOneDay = (dateString) => {
-    const date = new Date(dateString);
-    date.setDate(date.getDate() + 1);
-    return date.toISOString().split("T")[0];
+
+    setShowConfirmationModal(false);
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setBookingData({
-      ...bookingData,
-      [name]: value,
-    });
+  const handleCancelConfirmModal = () => {
+    setShowConfirmationModal(false);
   };
-  
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
-      <div className="w-120 drop-shadow-md border bg-white rounded-3xl dark:bg-slate-900">
-        <form onSubmit={handleUpdate} className="w-120 px-16 py-5 flex flex-col rounded-xl justify-center">
-          <h1 className="font-poppins p-2 text-3xl">Edit Booking</h1>
-          <hr className="ml-8 mr-8 p-2 text-gray" />
-
-          <div className="mb-4">
-            <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="VehicleId">
-              Vehicle
-            </label>
-            <select
-              className="w-full font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
-              name="VehicleId"
-              value={bookingData.VehicleId}
-              onChange={handleChange}
-            >
-              <option value="">Select a Vehicle</option>
-              {allVehicles.map((vehicle) => (
-                <option key={vehicle.id} value={vehicle.id}>
-                  {vehicle.brand} - {vehicle.model}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-4 flex">
-            <div className="w-1/2 pr-2">
-              <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="pickUpLocationId">
-                Pick Up Location
-              </label>
-              <div className="flex items-center">
-                <select
-                  className="w-full font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
-                  name="pickUpLocationId"
-                  value={bookingData.pickUpLocationId}
-                  onChange={handleChange}
-                >
-                  <option value="">Select a Location</option>
-                  {allLocations.map((location) => (
-                    <option key={location.id} value={location.id}>
-                      {location.alias}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="w-1/2 pl-2">
-              <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="returnLocationId">
-                Return Location
-              </label>
-              <div className="flex items-center">
-                <select
-                  className="w-full font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
-                  name="returnLocationId"
-                  value={bookingData.returnLocationId}
-                  onChange={handleChange}
-                >
-                  <option value="">Select a Location</option>
-                  {allLocations.map((location) => (
-                    <option key={location.id} value={location.id}>
-                      {location.alias}
-                    </option>
-                  ))}
-                </select>
-              </div>
+      {/* Modal de confirmación */}
+      {showConfirmationModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-30"></div>
+          <div className="bg-white p-4 rounded-lg z-50">
+            <p className="text-lg font-semibold mb-2">Confirm Cancellation</p>
+            <p>Are you sure you want to cancel this booking?</p>
+            <div className="flex justify-end mt-4">
+              <button
+                className="font-poppins bg-red cursor-pointer rounded-lg p-1 m-2 text-white"
+                onClick={handleConfirmCancelBooking}
+              >
+                Yes, Cancel
+              </button>
+              <button
+                className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
+                onClick={handleCancelConfirmModal}
+              >
+                No, Keep
+              </button>
             </div>
           </div>
-
-          <div className="mb-4 flex">
-            <div className="w-1/2 pr-2">
-              <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="startDate">
-                Start Date
-              </label>
-              <div className="flex items-center">
-                <input
-                  className="w-full font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
-                  type="date"
-                  name="startDate"
-                  value={bookingData.startDate}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="w-1/2 pl-2">
-              <label className="font-poppins text-sm flex m-1 mb-0 justify-start" htmlFor="finishDate">
-                Finish Date
-              </label>
-              <div className="flex items-center">
-                <input
-                  className="w-full font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
-                  type="date"
-                  name="finishDate"
-                  value={bookingData.finishDate}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col mt-4 mb-4">
-            <button
-              className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
-              type="submit"
-            >
-              Save
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
+      ) || <Loader/>}
     </div>
   );
-};
+}
 
 export default EditBooking;
