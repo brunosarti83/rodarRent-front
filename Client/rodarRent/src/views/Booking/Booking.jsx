@@ -17,6 +17,7 @@ const Booking = () => {
   const queryParams = new URLSearchParams(location.search);
   const carId = queryParams.get("parametro");
   const filterObject = getSessionStorage("filterObject");
+  console.log(filterObject);
   const [locations, setLocations] = useState([]);
 
   const [vehicle, setVehicle] = useState({
