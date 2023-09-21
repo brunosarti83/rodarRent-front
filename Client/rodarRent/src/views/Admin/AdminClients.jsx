@@ -12,34 +12,44 @@ function AdminClients() {
     dispatch(getAllCustomers());
   }, [dispatch]);
 
-
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
- 
   const handleCustomerSelect = (customerId) => {
     if (selectedCustomers.includes(customerId)) {
-     
       setSelectedCustomers(selectedCustomers.filter(id => id !== customerId));
     } else {
-     
       setSelectedCustomers([...selectedCustomers, customerId]);
     }
   };
 
- 
   const handleSelectAll = () => {
     if (selectAll) {
-     
       setSelectedCustomers([]);
     } else {
-      
-      const allCustomerIds = customers.data.map(customer => customer.id);
+      const allCustomerIds = customers?.data?.map(customer => customer.id) || [];
       setSelectedCustomers(allCustomerIds);
     }
-   
     setSelectAll(!selectAll);
   };
+
+  const filteredCustomers = (customers?.data || []).filter((customer) => {
+    const searchableFields = [
+      customer.name,
+      customer.lastName,
+      customer.personalId,
+      customer.country,
+      customer.city,
+      customer.address,
+      customer.email,
+      customer.isActive ? 'Yes' : 'No',
+    ];
+
+    return searchableFields.some((field) =>
+      field.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   if (!customers.data || customers.data.length === 0) {
     return <Loader />;
@@ -47,7 +57,14 @@ function AdminClients() {
 
   return (
     <div>
-      <table className="border-collapse w-full">
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
+      <table className="border-collapse w-full" >
         <thead>
           <tr>
             <th>
@@ -57,19 +74,19 @@ function AdminClients() {
                 onChange={handleSelectAll}
               />
             </th>
-            <th>Name</th>
-            <th>Last Name</th>
-            <th>Personal ID</th>
-            <th>Country</th>
-            <th>City</th>
-            <th>Address</th>
-            <th>Email</th>
+            <th className="w-60">Name</th>
+            <th className="w-60">Last Name</th>
+            <th className="w-60">Personal ID</th>
+            <th className="w-60">Country</th>
+            <th className="w-60">City</th>
+            <th className="w-60">Address</th>
+            <th className="w-60">Email</th>
             <th>Active</th>
           </tr>
         </thead>
         <tbody>
-          {customers.data.map((customer) => (
-            <tr key={customer.id}>
+          {filteredCustomers.map((customer) => (
+            <tr key={customer.id} style={{ height: "40px" }}>
               <td>
                 <input
                   type="checkbox"
@@ -86,9 +103,9 @@ function AdminClients() {
               <td><a href={`/customer/${customer.id}`}>{customer.email}</a></td>
               <td>
                 {customer.isActive ? (
-                  <FaCheck  />
+                  <FaCheck />
                 ) : (
-                  <FaTimes  />
+                  <FaTimes />
                 )}
               </td>
             </tr>
