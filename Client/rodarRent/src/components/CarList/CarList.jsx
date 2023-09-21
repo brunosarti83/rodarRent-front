@@ -65,7 +65,7 @@ const CarList = () => {
               onChangeOrder={onChangeOrder}
             />
             <div className="w-full flex flex-wrap justify-around gap-y-4">
-              {vehicles.results.map((car) => (
+              {vehicles?.results.map((car) => (
                 <CarCard car={car} key={car.id} />
               ))}
             </div>

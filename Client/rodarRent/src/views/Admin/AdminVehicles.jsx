@@ -144,7 +144,7 @@ const AdminVehicles = () => {
                         </div>
                     </div>
                     <div className="flex justify-between  ">
-                        <div className="w-3/5  flex flex-col justify-between" >
+                        <div className="w-3/5 xl:w-4/6  flex flex-col justify-between" >
                             <div className="" >
                                 {vehicles?.results?.map((vehicle, index) => (
                                     <VehicleCard
