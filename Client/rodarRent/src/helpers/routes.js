@@ -6,6 +6,7 @@ const routesHelper = {
   login: '/login',
   authGoogle: '/auth/google',
   register: '/register',
+  review: '/review',
   registerGoogle: '/google',
   aboutUs: '/aboutUs',
   contact: '/contact',
@@ -20,6 +21,7 @@ const routesHelper = {
   googleAuthAux: '/googleAuthAux',
   editInfo: '/edit-customer/:id',
   bookingByIdCustomer: '/myBookings',
+  changePassword: '/changePassword/:id'
 };
 
 export const API_BASE_URL = 'https://rodarrent-main-server.onrender.com';
@@ -36,6 +38,8 @@ export const updateBookingUrl = (bookingId) => `${API_BASE_URL}/bookings/${booki
 export const getBookingById = (bookingId) => `${API_BASE_URL}/bookings/${bookingId}`;
 export const getAllLocations = () => `${API_BASE_URL}/locations`;
 export const getAllVehicles = () => `${API_BASE_URL}/vehicles`;
+export const getAllCustomersUrl = () => `${API_BASE_URL}/customers`;
 export const getVehicleAvailabilityById = () => `${API_BASE_URL}/available/${VehicleId}/${startDate}/${finishDate}`;
+export const forgotpasswordUrl = () => `${API_BASE_URL}/customers/forgotpassword`;
 
 export default routesHelper;

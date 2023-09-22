@@ -1,21 +1,24 @@
-import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // Importa Link
+import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
 import DashboardActions from "../DashboardActions/DashboardActions";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
 import EditCustomer from "../EditCustomer/EditCustomer";
+import EditBooking from "../EditBooking/EditBooking";
 import CustomerInfo from "../CustomerInfo/CustomerInfo";
 import WelcomeCustomer from "../WelcomeCustomer/WelcomeCustomer";
+import { BiTrash } from "react-icons/bi";
 import {
   getCustomerDetailsUrl,
   getBookingsByIdCustomerUrl,
+  getAllVehicles,
 } from "../../helpers/routes";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../redux/actions";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import routesHelper from "../../helpers/routes";
 
 const CustomerDetail = () => {
   const { id } = useParams();
@@ -241,21 +244,24 @@ const CustomerDetail = () => {
                               >
                                 {booking.stateBooking}
                               </span>
-                              {booking.stateBooking === "confirmed" && (
-                                <button
-                                  className="bg-yellow-500 text-white px-2 py-1 rounded-md"
-                                  onClick={() => handleEditBooking(booking.id)}
-                                >
-                                  Edit
-                                </button>
-                              )}
-                              {/* {booking.stateBooking === 'pending' && (
-                                <button 
-                                  className="bg-cyan-500 text-white px-2 py-1 rounded-md"
-                                  onClick={() => navigate(`${routesHelper.booking}?parametro=${booking.VehicleId}`)}>
-                                    Pay
-                                </button>
-                              )} */}
+                              <div className="flex text-2xl">
+                                {booking.stateBooking === "confirmed" && (
+                                  <BiTrash
+                                    onClick={() =>
+                                      handleEditBooking(booking.id)
+                                    }
+                                    className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200"
+                                  />
+                                )}
+                                {booking.stateBooking === "pending" && (
+                                  <BiTrash
+                                    onClick={() =>
+                                      handleEditBooking(booking.id)
+                                    }
+                                    className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200"
+                                  />
+                                )}
+                              </div>
                             </div>
                           </td>
                         </tr>
@@ -310,14 +316,15 @@ const CustomerDetail = () => {
           onRequestClose={closeEditBookingModal}
           shouldCloseOnOverlayClick={true}
           contentLabel="Edit Booking Modal"
-          className="fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
-          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black"
+          className="w-2/6 p-4 bg-white rounded-lg dark:bg-slate-900"
+          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-40 bg-black"
           ref={modalRefBooking}
           onAfterOpen={closeModalOnClickOutside}
         >
           {selectedBookingId && (
             <EditBooking
               bookingId={selectedBookingId}
+              allVehicles={allVehicles}
               onClose={closeEditBookingModal}
             />
           )}

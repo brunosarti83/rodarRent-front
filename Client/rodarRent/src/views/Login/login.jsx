@@ -1,5 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import React, { useState } from "react";
 import validate from "./validateLogin";
 import formImage from "../../assets/img/loginRegister/login.png";
 import { Link } from "react-router-dom";
@@ -8,13 +7,11 @@ import { ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logIn } from "../../redux/actions";
+import ForgotPassword from "../../components/ForgotPassword/ForgotPassword";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [disabledSubmit, setDisabledSubmit] = useState(true);
-  const btnState = async (err) => {
-    if (Object.keys(err).length === 0) setDisabledSubmit(false);
-  };
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -42,8 +39,19 @@ const Login = () => {
     dispatch(logIn(loginData, navigate));
   };
 
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
+    useState(false);
+
+  const openForgotPasswordModal = () => {
+    setIsForgotPasswordModalOpen(true);
+  };
+
+  const closeForgotPasswordModal = () => {
+    setIsForgotPasswordModalOpen(false);
+  };
+
   return (
-    <div className="w-full h-noNavDesktop  bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
+    <div className="w-full h-[calc(100vh-112px)] bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md border bg-white rounded-l-3xl h-formLaptop  dark:bg-slate-900">
         <form className=" pt-14 px-16 flex flex-col flex-wrap w-full rounded-xl">
           <h1 className="font-poppins font-medium  text-4xl">Welcome back!</h1>
@@ -131,7 +139,11 @@ const Login = () => {
                 <Link to={routesHelper.register}>Sign up for free</Link>
               </p>
             </div>
-            <a className="font-poppins text-gray text-xs" href="#">
+            <a
+              className="font-poppins text-gray text-xs"
+              href="#"
+              onClick={openForgotPasswordModal}
+            >
               Forgot your password?
             </a>
           </div>
@@ -158,6 +170,10 @@ const Login = () => {
         pauseOnHover
         theme="light"
       />
+
+      {isForgotPasswordModalOpen && (
+        <ForgotPassword onClose={closeForgotPasswordModal} />
+      )}
     </div>
   );
 };

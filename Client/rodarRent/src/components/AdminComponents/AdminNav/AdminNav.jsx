@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
-import routesHelper from "../../helpers/routes";
-import { logOut } from "../../redux/actions";
+import routesHelper from "../../../helpers/routes";
+import { logOut } from "../../../redux/actions";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { BiGridAlt, BiCar, BiUser, BiLogOut } from "react-icons/bi";
 

@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
 import { BiPhone, BiLocationPlus, BiMailSend } from "react-icons/bi";
 import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
+import {API_BASE_URL} from '../../helpers/routes'
 
 
 const Contact = () => {
@@ -20,10 +23,19 @@ const Contact = () => {
         setDataContact({...dataContact,[property]:value})
     }
 
-    const handleSubmit = (event) =>{
+    const handleSubmit = async (event) =>{
         event.preventDefault()
+        const body = {
+            userName: dataContact.name,
+            toEmailAddress:'rodarrent@outlook.com',
+            replyToEmailAddress: dataContact.email,
+            subject: 'Contact',
+            text: dataContact.message,
+            template: 'normal'
+        }
+        const response = await axios.post(`${API_BASE_URL}/sendemail`,body)
         formRef.current.reset()
-        alert('Message send!')
+        toast.success(`${response.data}!`, { position: 'top-left' });
     }
 
     return (
@@ -89,6 +101,18 @@ const Contact = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer
+        position='top-left'
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='light'
+      />
         </div>
     )
 }

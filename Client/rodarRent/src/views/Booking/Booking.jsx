@@ -17,6 +17,7 @@ const Booking = () => {
   const queryParams = new URLSearchParams(location.search);
   const carId = queryParams.get("parametro");
   const filterObject = getSessionStorage("filterObject");
+  //console.log(filterObject);
   const [locations, setLocations] = useState([]);
 
   const [vehicle, setVehicle] = useState({
@@ -33,18 +34,18 @@ const Booking = () => {
       });
     });
   }
-
-  function getLocations() {
-    axios.get(`${API_BASE_URL}/locations`).then(({ data }) => {
+  let pickUp = "";
+  async function getLocations () {
+    await axios.get(`${API_BASE_URL}/locations`).then(({ data }) => {
       setLocations(data);
     });
   }
-
+  
   useEffect(() => {
     getVehicleById(carId);
     getLocations();
   }, [carId]);
-
+  
   let today = new Date();
   let año = today.getFullYear();
   let mes = today.getMonth() + 1; // Los meses comienzan desde 0, así que sumamos 1
@@ -81,8 +82,14 @@ const Booking = () => {
     endDate: filterObject?.finishDate || fechaFormateadaEnd,
     pickUpLocationId: filterObject?.pickUpLocationId || "",
     returnLocationId: filterObject?.returnLocationId || "",
-    totalAmount: 0,
+    totalAmount: 0
   });
+
+  pickUp = locations.filter((e)=>e.id === bookingData.pickUpLocationId)[0]
+  console.log(pickUp);
+//console.log(locations);
+  const dropOff = locations.filter((e)=>e.id === bookingData.returnLocationId)[0]
+  //console.log(dropOff);
 
   let days = 0;
   days =
@@ -323,69 +330,21 @@ const Booking = () => {
           </button>
         </div>
       </div>
-      <div className="w-1/4 m-8 flex flex-col p-8 h-full sticky drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
-        <div className="flex justify-center w">
+      <div className="max-h-full w-1/4 m-8 flex flex-col p-8 drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
+        <div className="flex justify-center">
           <img className="w-full" src={vehicle.image} alt="Car Image" />
         </div>
         <div className="font-poppins text-sm border rounded-lg py-3 px-1 my-2 dark:bg-slate-950">
-          <label className="ml-2">
-            Pick up date:{" "}
-            <input
-              type="date"
-              name="startDate"
-              value={
-                !bookingData.startDate
-                  ? fechaFormateadaStart
-                  : bookingData.startDate
-              }
-              onChange={handleChange}
-            />
-          </label>
+          <span className="ml-2">Pick up date: {bookingData.startDate}</span>
         </div>
         <div className="font-poppins text-sm border rounded-lg py-3 px-1 my-2 dark:bg-slate-950">
-          <label className="ml-2">
-            Drop off date:{" "}
-            <input
-              type="date"
-              name="endDate"
-              value={
-                !bookingData.endDate ? fechaFormateadaEnd : bookingData.endDate
-              }
-              onChange={handleChange}
-            />
-          </label>
+        <span className="ml-2">Drop off date: {bookingData.endDate}</span>
         </div>
         <div className="flex flex-col font-poppins border bg-white rounded-lg my-2 p-2 dark:bg-slate-950">
-          <label className="text-sm mb-1 mt-1">Pick Up Location</label>
-          <select
-            className="text-sm border rounded dark:bg-slate-950"
-            name="pickUpLocationId"
-            value={bookingData.pickUpLocationId}
-            onChange={handleChange}
-          >
-            <option value="">Choose pick up location</option>
-            {locations.map((loc) => (
-              <option key={loc.id} value={loc.id}>
-                {`${loc.alias} - ${loc.city}`}
-              </option>
-            ))}
-          </select>
+          <span className="text-sm mb-1 mt-1">Pick Up Location: {pickUp ? pickUp.alias + " - " + pickUp.city : ""}</span>
         </div>
         <div className="flex flex-col font-poppins border bg-white rounded-lg my-2 p-2 dark:bg-slate-950">
-          <label className="text-sm mb-1 mt-1">Return Location</label>
-          <select
-            className="text-sm border rounded dark:bg-slate-950"
-            name="returnLocationId"
-            value={bookingData.returnLocationId}
-            onChange={handleChange}
-          >
-            <option value="">Choose a return location</option>
-            {locations.map((loc) => (
-              <option key={loc.id} value={loc.id}>
-                {`${loc.alias} - ${loc.city}`}
-              </option>
-            ))}
-          </select>
+        <span className="text-sm mb-1 mt-1">Drop Off Location: {dropOff ? dropOff.alias + " - " + dropOff.city : ""}</span>
         </div>
         <div className="flex flex-col border rounded-lg p-1 my-2">
           <div className="flex justify-between font-poppins text-sm p-1 my-2">

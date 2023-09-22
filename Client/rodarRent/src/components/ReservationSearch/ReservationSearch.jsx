@@ -20,10 +20,17 @@ const ReservationSearch = () => {
       .then(({ data }) => {
         setLocations(data);
       })
-      .catch((error) => {
-        window.alert(
-          `An error ocurred retrieving locations from server: ${error.message}`
-        );
+      .catch((err) => {
+        axios
+          .get(`${routesHelper.baseBackUrl}/locations`)
+          .then(({ data }) => {
+            setLocations(data);
+          })
+          .catch((error) => {
+            window.alert(
+              `An error ocurred retrieving locations from server: ${error.message}`
+            );
+          });
       });
   }, []);
 
@@ -40,7 +47,9 @@ const ReservationSearch = () => {
 
   const handleChange = (event) => {
     const property = event.target.name;
-    const value = event.target.value;
+    let value = event.target.value;
+    if (property === 'startDate' && (new Date(value) <= new Date() || new Date(value) >= new Date(search.finishDate))) { value = "" }
+    if (property === 'finishDate' && new Date(value) <= new Date(search.startDate)) { value = "" }
     setSearch({ ...search, [property]: value });
   };
 
@@ -63,7 +72,7 @@ const ReservationSearch = () => {
     !search.finishDate ||
     !search.pickUpLocationId ||
     !search.returnLocationId ||
-    new Date(search.finishDate) < new Date(search.startDate);
+    new Date(search.finishDate) <= new Date(search.startDate);
 
   // * Variable para verificar si el usuario es el admin
   const isAdmin = userData?.id === "fd2daf55-3d6a-4254-ad40-74adc5229cde";
