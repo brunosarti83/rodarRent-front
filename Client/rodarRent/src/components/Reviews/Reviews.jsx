@@ -11,7 +11,7 @@ const Reviews = () => {
   useEffect(() => {
     axios.get(`${API_BASE_URL}/review?order=date`)
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setDataReview(response.data);
       })
       .catch((error) => {
