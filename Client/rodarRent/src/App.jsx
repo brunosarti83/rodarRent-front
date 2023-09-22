@@ -16,8 +16,8 @@ import BookingList from "./components/BookingList/BookingList";
 import Admin from "./views/Admin/Admin";
 import GoogleAuthAux from "./views/googleAuthAux/GoogleAuthAux";
 import Dashboard from './views/Admin/Dashboard';
-import AdminClients  from './views/Admin/AdminClients';
-import AdminVehicles from './views/Admin/AdminVehicles'
+// import AdminClients  from './views/Admin/AdminClients';
+// import AdminVehicles from './views/Admin/AdminVehicles'
 
 function App() {
   const [darkMode, setDarkmode] = useState(true);
@@ -51,8 +51,8 @@ function App() {
         <Route path={routesHelper.admin} element={<Admin/>}>
           <Route  index element={<Dashboard />} />
           <Route  path={routesHelper.admin} element={<Dashboard />} />
-          <Route  path={routesHelper.adminClients} element={<AdminClients />} />
-          <Route  path={routesHelper.adminVehicles} element={<AdminVehicles />} />
+          {/* <Route  path={routesHelper.adminClients} element={<AdminClients />} />
+          <Route  path={routesHelper.adminVehicles} element={<AdminVehicles />} /> */}
         </Route> 
       </Routes>
     </div>

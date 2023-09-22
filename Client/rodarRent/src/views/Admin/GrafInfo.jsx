@@ -10,7 +10,7 @@ export const GrafInfo =()=> {
     const options = {
         grid: {},
         title: {
-            text: "Hired vs Cancel",
+            text: "Info-States",
             textStyle: {
                 fontSize: 24,
                 fontWeight: "bold",
@@ -68,7 +68,7 @@ return () => {
 });
 
 return (
-    <div className="matriz2-1 h-chart rounded-lg bg-white drop-shadow-md border-2">
+    <div className="h-96 rounded-lg bg-white drop-shadow-md border-2 m-8">
     <div id="hireCancel" className="w-full h-full"></div>
   </div>
 )

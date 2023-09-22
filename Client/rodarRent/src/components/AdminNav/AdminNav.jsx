@@ -25,8 +25,10 @@ const AdminNav = () =>{
                 <Link to={routesHelper.adminVehicles} >
                     <button className="border border-gray-300 py-1 w-48 text-xl rounded-full bg-white drop-shadow-lg transition duration-300 active:drop-shadow-none " >Vehicles</button>
                 </Link>
+                <Link >
+                    <button className="border border-gray-300 py-1 w-48 text-xl rounded-full bg-white drop-shadow-lg transition duration-300 active:drop-shadow-none " >Logout</button>
+                </Link>
             </div>
-            <button onClick={handleLogout}>Log Out</button>
         </div>
     );
 };

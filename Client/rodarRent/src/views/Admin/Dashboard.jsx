@@ -1,7 +1,4 @@
-import{ useEffect, useState } from "react";
-import * as echarts from "echarts";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
+
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TableDashboard from "./TableDashboard";
@@ -10,6 +7,7 @@ import Loader from "../../components/Loader/Loader";
 import { GrafInfo } from "./GrafInfo";
 import { InfoAmount } from "./InfoAmount";
 import { FilterStatusCar } from "./filterStatusCar";
+import  StackedBarChart  from "./EstadisticSales";
 
 const Dashboard = () => {
 
@@ -23,13 +21,21 @@ const queryBookings = useQuery(["bookings"], fetchBookings);
 
 return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="flex p-8 w-full">
-        <div className="w-1/3 p-4">
-          <InfoAmount />
-          <GrafInfo />
+      <div className="p-8 w-full grid grid-cols-3 gap-4">
+        <div>
+          <StackedBarChart />
         </div>
-        <div className="flex-1 p-4">
+        <div>
+          <InfoAmount />
+        </div>
+          <div>
           <FilterStatusCar />
+          </div>
+          <div>
+          <GrafInfo />
+          </div>
+          
+        <div className="col-span-2 p-4">
           <div className="border-2 rounded-2xl p-4 ml-8 w-full m-8">
             {queryBookings.isLoading ? <Loader /> : <TableDashboard />}
           </div>

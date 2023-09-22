@@ -60,7 +60,7 @@ function fixedHeaderContent() {
           align={column.numeric || false ? 'right' : 'left'}
           style={{ width: column.width }}
           sx={{
-            backgroundColor: '#1976D2',
+            backgroundColor: '#2e96ff',
             color:"white"
           }}
         >
@@ -103,14 +103,17 @@ export default function TableDashboard() {
 // console.log(data.results)
 
   return (
+    <div className="text-center text-2xl font-semibold mt-2">
+       Vehicles available
     <Paper style={{ height: 400, width: '100%' }}>
       <TableVirtuoso
         data={data}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
         itemContent={rowContent}
-      />
+        />
     </Paper>
+        </div>
   );
 
 }
