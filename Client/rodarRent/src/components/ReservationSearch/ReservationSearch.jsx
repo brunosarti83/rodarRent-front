@@ -20,10 +20,17 @@ const ReservationSearch = () => {
       .then(({ data }) => {
         setLocations(data);
       })
-      .catch((error) => {
-        window.alert(
-          `An error ocurred retrieving locations from server: ${error.message}`
-        );
+      .catch((err) => {
+        axios
+          .get(`${routesHelper.baseBackUrl}/locations`)
+          .then(({ data }) => {
+            setLocations(data);
+          })
+          .catch((error) => {
+            window.alert(
+              `An error ocurred retrieving locations from server: ${error.message}`
+            );
+          });
       });
   }, []);
 
