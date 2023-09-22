@@ -10,6 +10,8 @@ import CarFilter from "../CarFilter/CarFilter";
 import Pagination from "../Pagination/Pagination";
 import Loader from "../Loader/Loader";
 import OrderCars from "../OrderCars/OrderCars";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CarList = () => {
   const [loading, setLoading] = useState(true);
@@ -44,6 +46,10 @@ const CarList = () => {
     );
   };
 
+  const toastAlert = (message)=>{
+    toast.info(message)
+  }
+
   return (
     <div>
       {loading ? (
@@ -66,7 +72,7 @@ const CarList = () => {
             />
             <div className="w-full flex flex-wrap justify-around gap-y-4">
               {vehicles.results.map((car) => (
-                <CarCard car={car} key={car.id} />
+                <CarCard car={car} key={car.id} toastAlert={toastAlert} />
               ))}
             </div>
             <div className="w-full mt-4">
@@ -75,6 +81,18 @@ const CarList = () => {
           </div>
         </div>
       )}
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
