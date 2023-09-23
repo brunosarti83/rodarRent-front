@@ -1,35 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { API_BASE_URL } from "../../helpers/routes";
-import {FaCheck, FaTimes} from "react-icons/fa"
+import { FaCheck, FaTimes } from "react-icons/fa";
 import Loader from "../../components/Loader/Loader";
-import Pagination from "../../components/AdminComponents/AdminVehicles/PaginationAdminVehicle";
+import PaginationAdminCustomer from "../../components/AdminComponents/AdminClients/PaginationAdminCustomer";
 import axios from "axios";
 
 function AdminClients() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(0);
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10; 
+  const pageSize = 10;
 
   useEffect(() => {
     loading || setLoading(true);
-    const limit = pageSize;
-    const offset = (currentPage - 1) * limit;
 
     axios
-      .get(`${API_BASE_URL}/customers`, { params: { limit, offset } })
+      .get(`http://localhost:3001/customers`, {
+        params: { page: currentPage, },
+      })
       .then((response) => {
         setCustomers(response.data.data);
+        setTotalPages(response.data.pagination.totalPages);
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error", error);
         setLoading(false);
       });
-  }, [currentPage]);
+  }, [currentPage, pageSize]);
 
   const handleCustomerSelect = (customerId) => {
     if (selectedCustomers.includes(customerId)) {
@@ -48,7 +49,6 @@ function AdminClients() {
     }
     setSelectAll(!selectAll);
   };
-
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -73,8 +73,6 @@ function AdminClients() {
   if (loading) {
     return <Loader />;
   }
-
-  const totalPages = Math.ceil(filteredCustomers.length / pageSize);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -150,7 +148,7 @@ function AdminClients() {
         </tbody>
       </table>
 
-      <Pagination
+      <PaginationAdminCustomer
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={handlePageChange}

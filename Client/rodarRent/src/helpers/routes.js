@@ -35,6 +35,7 @@ export const updatePasswordUrl = () => `${API_BASE_URL}/customers/updatePassword
 export const createReservationUrl = () => `${API_BASE_URL}/bookings`;
 export const paymentUrl = () => `${API_BASE_URL}/createorder`;
 export const updateBookingUrl = (bookingId) => `${API_BASE_URL}/bookings/${bookingId}`;
+export const cancelBookingUrl = (bookingId) => `${API_BASE_URL}/bookings/cancel/${bookingId}`;
 export const getBookingById = (bookingId) => `${API_BASE_URL}/bookings/${bookingId}`;
 export const getAllLocations = () => `${API_BASE_URL}/locations`;
 export const getAllVehicles = () => `${API_BASE_URL}/vehicles`;
