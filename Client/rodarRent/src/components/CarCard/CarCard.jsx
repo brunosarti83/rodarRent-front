@@ -11,11 +11,14 @@ const CarCard = ({ car, toastAlert }) => {
   const navigate = useNavigate();
   const filterObject = getSessionStorage("filterObject");
   const isLogged = useSelector((state) => state.auth.isLoggedIn);
-  const handlerClick = ()=>{
-    if (!isLogged) toastAlert("Must be login to make a booking");
-    else if (!filterObject)toastAlert("You must filter the available vehicles searching by location, pickup and return date");
-    else navigate(`${routesHelper.booking}?parametro=${car.id}`)
-  }
+  const handlerClick = () => {
+    if (!isLogged) toastAlert("Must be logged in to make a booking");
+    else if (!filterObject)
+      toastAlert(
+        "You must filter the available vehicles searching by location, pickup and return date"
+      );
+    else navigate(`${routesHelper.booking}?parametro=${car.id}`);
+  };
 
   return (
     <div className=" bg-white border border-gray-100 w-card h-card p-4 drop-shadow-md  rounded-xl font-poppins dark:bg-slate-950 dark:text-gray-100  transition duration-300">
@@ -57,12 +60,12 @@ const CarCard = ({ car, toastAlert }) => {
         <p className="text-lg">
           <span className="font-bold">{`$${car.pricePerDay}`}</span> per day
         </p>
-          <button
-            className={'text-white bg-blue py-1 px-4 rounded-xl'}
-            onClick={handlerClick}
-          >
-            Reserve Deal
-          </button>
+        <button
+          className={"text-white bg-blue py-1 px-4 rounded-xl"}
+          onClick={handlerClick}
+        >
+          Reserve Deal
+        </button>
       </div>
     </div>
   );

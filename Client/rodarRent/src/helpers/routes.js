@@ -1,6 +1,6 @@
 const routesHelper = {
   baseFrontUrl: 'http://127.0.0.1:5173',
-  baseBackUrl: 'http://localhost:3001',
+  baseBackUrl: 'https://localhost:3001',
   landing: '/',
   cars: '/cars',
   login: '/login',
@@ -24,7 +24,7 @@ const routesHelper = {
   changePassword: '/changePassword/:id'
 };
 
-export const API_BASE_URL = 'http://localhost:3001';
+export const API_BASE_URL = routesHelper.baseBackUrl;
 
 export const getCustomerDetailsUrl = (customerId) =>
   `${API_BASE_URL}/customers/${customerId}`;
