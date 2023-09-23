@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BiMessageAltCheck, BiMessageAltX } from 'react-icons/bi';
-import { updateBookingUrl, getBookingById, getAllVehicles, getAllLocations } from '../../helpers/routes';
+import { cancelBookingUrl, getBookingById } from '../../helpers/routes';
 import Loader from '../Loader/Loader';
 
 function EditBooking({ bookingId, allVehicles, onClose }) {
   const [bookingData, setBookingData] = useState({
-    stateBooking: '',
   });
 
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -24,26 +23,26 @@ function EditBooking({ bookingId, allVehicles, onClose }) {
 
   const handleConfirmCancelBooking = async () => {
     try {
-      const updatedBookingData = {
+      const cancelBookingData = {
         ...bookingData,
         stateBooking: 'canceled',
       };
-
-      const response = await axios.put(updateBookingUrl(bookingId), updatedBookingData);
-
+  
+      const response = await axios.put(cancelBookingUrl(bookingId), cancelBookingData);
+  
       if (response.status === 200) {
         window.location.reload();
       }
     } catch (error) {
       console.error('Error cancelling booking:', error);
     }
-
+  
     setShowConfirmationModal(false);
   };
 
   const handleCancelConfirmModal = () => {
     setShowConfirmationModal(false);
-    onClose(); // Cierra el modal de edición de reserva
+    onClose(); 
   };
 
   if (isLoading) {
@@ -52,7 +51,7 @@ function EditBooking({ bookingId, allVehicles, onClose }) {
 
   return (
     <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
-      {/* Modal de confirmación */}
+   
       {showConfirmationModal && (
         <div className="w-full h-full bg-white flex flex-col items-center justify-center font-poppins">
           <h3 className="text-2xl font-bold">
