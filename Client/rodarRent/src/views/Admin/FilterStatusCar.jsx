@@ -63,8 +63,8 @@ export const FilterStatusCar = () => {
   };
 
   return (
-    <div className="border-2 rounded-2xl p-4 w-full ">
-          <div className="text-center text-2xl font-semibold mb-4">Find Car Status</div>
+    <div className="p-4 ">
+          <div className="text-center text-2xl font-semibold mb-4">Car Status filtering</div>
 
       <div className="grid grid-cols-3 gap-4">
         <Box sx={{ minWidth: 120 }}>

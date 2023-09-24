@@ -10,11 +10,9 @@ import CarFilter from "../CarFilter/CarFilter";
 import Pagination from "../Pagination/Pagination";
 import Loader from "../Loader/Loader";
 import OrderCars from "../OrderCars/OrderCars";
-// import Chat from "../Chat/Chat";
 
 const CarList = () => {
-  // const [loading, setLoading] = useState(true);
-  // const [isChatVisible, setIsChatVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   const vehicles = useSelector((state) => state.veh.vehicles);
@@ -69,18 +67,6 @@ const CarList = () => {
           <div className="w-full mt-4">
             <Pagination vehicles={vehicles} onPageChange={onPageChange} />
           </div>
-
-          {/* <div className="mt-4">
-            <button
-              className="bg-blue-500 text-black bg-green-500 px-4 py-2 rounded-lg"
-              onClick={() => setIsChatVisible(!isChatVisible)}
-            >
-              Chat
-            </button>
-            {isChatVisible && <Chat />}
-          </div>
-          <Chat /> */}
-
 
         </div>
       </div>

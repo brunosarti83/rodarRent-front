@@ -1,52 +1,97 @@
-import * as React from 'react';
-import { BarChart } from '@mui/x-charts/BarChart';
-import { useQuery } from "react-query";
+import React, { useEffect } from "react";
+import * as echarts from "echarts";
 
+const uData = [4, 7, 2, 2, 1, 2, 3, 5];
+const pData = [24, 23, 18, 29, 18, 18, 23, 26];
+const xLabels = ["Jan-23", "Feb-23", "Mar-23", "Apr-23", "May-23", "Jun-23", "Jul-23", "Aug-23"];
 
-const uData = [40, 30, 20, 27, 18, 23, 34, 55];
-const pData = [24, 13, 98, 39, 48, 38, 43, 66];
-const xLabels = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  "Aug"
-];
+const EstadisticSales = () => {
+  useEffect(() => {
+    const chartContainer = document.getElementById("barChart");
+    const myChart = echarts.init(chartContainer);
 
+    const option = {
+    
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "shadow",
+        },
+      },
+      legend: {
+        data: ["Expected", "Obtained"],
+        top: 10,
+      },
+      grid: {
+        left: "3%",
+        right: "4%",
+        bottom: "3%",
+        containLabel: true,
+      },
+      xAxis: [
+        {
+          type: "category",
+          data: xLabels,
+          axisTick: {
+            alignWithLabel: true,
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: 30,
+          },
+        },
+      ],
+      yAxis: [
+        {
+          type: "value",
+        },
+      ],
+      series: [
+        {
+          name: "Expected",
+          type: "bar",
+          stack: "total",
+          label: {
+            show: true,
+          },
+          data: pData,
+        },
+        {
+          name: "Obtained",
+          type: "bar",
+          stack: "total",
+          label: {
+            show: true,
+          },
+          data: uData,
+          itemStyle: {
+            color: "green",
+          },
+        },
+      ],
+    };
 
+    myChart.setOption(option);
 
-export default function StackedBarChart() {
+    const resizeHandler = () => {
+      myChart.resize();
+    };
 
-//   const queryBooking = useQuery(["Booking"], () =>
-//     fetch("http://localhost:3001/booking/filter").then((res) => res.json())
-//   );
-// const allInfo = queryBooking.data.map((e)=>e.startDate)
+    window.addEventListener("resize", resizeHandler);
 
+    return () => {
+      window.removeEventListener("resize", resizeHandler);
+      myChart.dispose();
+    };
+  }, []);
 
-// const months = allInfo.map(fecha => {
-//   const date = new Date(fecha);
-//   const numeroMes = date.getMonth() + 1;
-//   return numeroMes;
-// });
+  return (
+    <div className="text-center text-2xl font-semibold"
+     style={{ width: "100%", height: "90%" }}>
+Rental Registration
+      <div id="barChart" style={{ width: "100%", height: "100%" }}></div>
+    </div>
+  );
+};
 
-return (
-  <div className="border-2 rounded-2xl pl-4 m-8">
-    <div className="text-center text-2xl font-semibold pt-4">Previous earnings</div>
-    <BarChart
-      style={{ maxWidth: "80%" }}
-      height={300}
-      series={[
-        { data: pData, label: 'Expected', id: 'pvId', stack: 'total' },
-        { data: uData, label: 'Obtained', id: 'uvId', stack: 'total' },
-      ]}
-      xAxis={[{ data: xLabels, scaleType: 'band', tickLabel: {
-        angle: 90} }]} 
-    />
-  </div>
-);
- 
-
-}
+export default EstadisticSales;

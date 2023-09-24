@@ -71,10 +71,10 @@ export const InfoAmount = () => {
   const queryBookings = useQuery(["bookings"], fetchBookings);
 
   return (
-    <div className="ml-8 w-4/5 rounded-2xl border-2 max-h-full">
-          <div className="text-center text-2xl font-semibold pt-4">Select earnings</div>
+    <div>
+          <div className="text-center text-2xl font-semibold">Profit Record</div>
 
-      <div className="flex w-full justify-around pt-10">
+      <div className="flex w-full justify-around pt-5">
         <Box sx={{ minWidth: 120 }}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Income</InputLabel>
