@@ -87,31 +87,16 @@ function AdminClients() {
   const handleDeactivateSelectedCustomer = async (customerIds) => {
     try {
       const deactivateRequests = customerIds.map(async (customerId) => {
-
-        const getResponse = await fetch(`${API_BASE_URL}/customers/${customerId}`);
-        if (!getResponse.ok) {
+        const deleteResponse = await axios.delete(`${API_BASE_URL}/customers/${customerId}`);
+  
+        if (deleteResponse.status === 200) {
+          return { success: true };
+        } else {
           return { success: false };
         }
-
-        const customerData = await getResponse.json();
-  
-
-        customerData.isActive = false;
-
-
-        const putResponse = await fetch(`${API_BASE_URL}/customers/`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(customerData),
-        });
-  
-        return { success: putResponse.status === 200 };
       });
   
       const results = await Promise.all(deactivateRequests);
-  
       const hasError = results.some((result) => !result.success);
   
       if (!hasError) {
@@ -134,6 +119,7 @@ function AdminClients() {
       setError("Error deactivating some customers.");
     }
   };
+  
 
   if (loading) {
     return <Loader />;
