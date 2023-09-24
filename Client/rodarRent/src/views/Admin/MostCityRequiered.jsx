@@ -73,8 +73,8 @@ const MostCityRequiered = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen">
-      <div id="pieChart" className="w-full h-1/2"></div>
+    <div className="w-full h-full">
+      <div id="pieChart" className="w-full h-80"></div>
     </div>
   );
 };

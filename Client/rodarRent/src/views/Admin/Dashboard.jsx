@@ -22,45 +22,38 @@ const Dashboard = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="Container flex p-2 w-full h-full">
-          <div className="border-2 border-slate-200 rounded-2xl bg-gray-100 pl-2 flex-1 m-2 h-72 ">
-            <EstadiscticSales />
-          </div>
-
-          <div className="border-2 border-slate-200 rounded-2xl bg-gray-100 pl-2 flex-1 m-2 h-72">
-            <InfoAmount />
-          </div>
-
-          <div className="border-2 border-slate-200 rounded-2xl bg-gray-100 pl-2 flex-1 m-2 h-72">
-            <GrafInfo />
-          </div>
-
-        {/* 
-
-        <div className="col-start-1 col-span-3">
-          <div className="border-2 rounded-2xl p-4 w-full">
-            {queryBookings.isLoading ? <Loader /> : <TableDashboard />}
-          </div>
+      <div className="Container grid grid-cols-6 gap-2">
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-1 col-span-2">
+          <EstadiscticSales />
         </div>
 
-        <div className="col-start-4 col-span-3 border-2 rounded-2xl h-1/2">
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-3 col-span-2">
+          <InfoAmount />
+        </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-5 col-span-2">
+          <GrafInfo />
+        </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 p-4 m-2 h-full col-start-1 col-span-3">
+          {queryBookings.isLoading ? <Loader /> : <TableDashboard />}
+        </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-full col-start-4 col-span-3">
           <FilterStatusCar />
-        </div>
-
-        <div className="col-start-4 col-span-3 border-2 rounded-2xl pl-4">
+          <hr />
           <MostRequieredBrands />
         </div>
 
 
-        <div className="col-start-1 col-span-4 border-2 rounded-2xl pl-4 h-1/2">
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 col-start- col-span-4">
           <FutureSales />
         </div>
 
-
-         <div className="col-start-5 col-span-2 border-2 rounded-2xl pl-4 h-1/2">
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 col-start-5 col-span-2">
            <MostCityRequiered />
          </div>
-           */}
+
       </div>
     </LocalizationProvider>
   );
