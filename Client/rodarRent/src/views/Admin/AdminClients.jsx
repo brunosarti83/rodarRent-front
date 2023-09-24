@@ -3,6 +3,8 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 import Loader from "../../components/Loader/Loader";
 import PaginationAdminCustomer from "../../components/AdminComponents/AdminClients/PaginationAdminCustomer";
 import axios from "axios";
+import { BiTrash } from 'react-icons/bi';
+import { API_BASE_URL } from "../../helpers/routes";
 
 function AdminClients() {
   const [customers, setCustomers] = useState([]);
@@ -13,24 +15,28 @@ function AdminClients() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    loading || setLoading(true);
+    setLoading(true);
+
 
     axios
-      .get(`http://localhost:3001/customers`, {
-        params: { page: currentPage, },
+      .get(`${API_BASE_URL}/customers`, {
+        params: { page: currentPage, pageSize },
       })
       .then((response) => {
         setCustomers(response.data.data);
         setTotalPages(response.data.pagination.totalPages);
         setLoading(false);
+        setError(null);
       })
       .catch((error) => {
-        console.error("Error", error);
+        setError("Error loading customers.");
         setLoading(false);
       });
   }, [currentPage, pageSize]);
+
 
   const handleCustomerSelect = (customerId) => {
     if (selectedCustomers.includes(customerId)) {
@@ -39,6 +45,7 @@ function AdminClients() {
       setSelectedCustomers([...selectedCustomers, customerId]);
     }
   };
+
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -50,8 +57,10 @@ function AdminClients() {
     setSelectAll(!selectAll);
   };
 
+
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
+
 
   const filteredCustomers = customers.filter((customer) => {
     const searchableFields = [
@@ -70,24 +79,90 @@ function AdminClients() {
     );
   });
 
+  const handlePageChange = (currentPage) => {
+    setCurrentPage(currentPage);
+  };
+
+
+  const handleDeactivateSelectedCustomer = async (customerIds) => {
+    try {
+      const deactivateRequests = customerIds.map(async (customerId) => {
+
+        const getResponse = await fetch(`${API_BASE_URL}/customers/${customerId}`);
+        if (!getResponse.ok) {
+          return { success: false };
+        }
+
+        const customerData = await getResponse.json();
+  
+
+        customerData.isActive = false;
+
+
+        const putResponse = await fetch(`${API_BASE_URL}/customers/`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(customerData),
+        });
+  
+        return { success: putResponse.status === 200 };
+      });
+  
+      const results = await Promise.all(deactivateRequests);
+  
+      const hasError = results.some((result) => !result.success);
+  
+      if (!hasError) {
+        setCustomers((prevCustomers) =>
+          prevCustomers.map((customer) => {
+            if (customerIds.includes(customer.id)) {
+              return {
+                ...customer,
+                isActive: false,
+              };
+            }
+            return customer;
+          })
+        );
+        setSelectedCustomers([]);
+      } else {
+        setError("Error deactivating some customers.");
+      }
+    } catch (error) {
+      setError("Error deactivating some customers.");
+    }
+  };
+
   if (loading) {
     return <Loader />;
   }
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const customersInCurrentPage = filteredCustomers.slice(startIndex, endIndex);
-
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+    <div className="w-[calc(100vw-256px)] h-full px-14 py-2" >
+      <div className="flex w-full">
+        <div className="w-full mb-3">
+          <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-full flex items-center">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-3/4 p-2"
+            />
+          </div>
+        </div>
+        <button
+          className="w-1/4 p-2 flex items-center justify-end"
+          onClick={() => handleDeactivateSelectedCustomer(selectedCustomers)}
+          disabled={selectedCustomers.length === 0} 
+        >
+          <BiTrash className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200 text-2xl" />
+        </button>
+      </div>
+
+      {error && <div className="error-message">{error}</div>}
 
       <table className="border-collapse w-full">
         <thead>
@@ -110,7 +185,7 @@ function AdminClients() {
           </tr>
         </thead>
         <tbody>
-          {customersInCurrentPage.map((customer) => (
+          {filteredCustomers.slice(startIndex, endIndex).map((customer) => (
             <tr key={customer.id} style={{ height: "40px" }}>
               <td>
                 <input
@@ -148,11 +223,13 @@ function AdminClients() {
         </tbody>
       </table>
 
-      <PaginationAdminCustomer
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
+      <div className="flex justify-center">
+        <PaginationAdminCustomer
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 }
