@@ -30,15 +30,15 @@ export const GrafInfo =()=> {
             trigger: "item",
         },
         legend: {
-            orient: "horizontal",
-            left: "0",
-            bottom: "0",
+            orient: "vertical",
+            left: "25",
+            bottom: "80",
         },
         series: [
             {
                 name: "Access From",
                 type: "pie",
-                radius: ["25%", "50%"],
+                radius: ["40%", "80%"],
                 avoidLabelOverlap: true,
                 height: "250px",
                 itemStyle: {
@@ -46,6 +46,8 @@ export const GrafInfo =()=> {
                     borderColor: "#fff",
                     borderWidth: 2,
                 },
+                left:85,
+                top:40,
                 label: {
                     show: false,
                     position: "center",
@@ -78,8 +80,8 @@ return () => {
 });
 
 return (
-    <div className="h-96">
-    <div id="hireCancel" className=" h-56"></div>
+    <div className="h-full">
+    <div id="hireCancel" className=" h-72"></div>
   </div>
 )
 }

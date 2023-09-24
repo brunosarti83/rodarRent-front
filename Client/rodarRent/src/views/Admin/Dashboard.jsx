@@ -22,19 +22,20 @@ const Dashboard = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="Container grid grid-cols-6 gap-4 m-4">
+      <div className="Container flex p-2 w-full h-full">
+          <div className="border-2 border-slate-200 rounded-2xl bg-gray-100 pl-2 flex-1 m-2 h-72 ">
+            <EstadiscticSales />
+          </div>
 
-        <div className="border-2 rounded-2xl pl-4 col-start-1 col-span-2 h-3/5 ">
-          <EstadiscticSales />
-        </div>
+          <div className="border-2 border-slate-200 rounded-2xl bg-gray-100 pl-2 flex-1 m-2 h-72">
+            <InfoAmount />
+          </div>
 
-        <div className="border-2 rounded-2xl pl-4 col-start-3 col-span-2 h-3/5 ">
-          <InfoAmount />
-        </div>
+          <div className="border-2 border-slate-200 rounded-2xl bg-gray-100 pl-2 flex-1 m-2 h-72">
+            <GrafInfo />
+          </div>
 
-        <div className="col-start-5 col-span-2 border-2 rounded-2xl pl-4 h-3/5">
-          <GrafInfo />
-        </div>
+        {/* 
 
         <div className="col-start-1 col-span-3">
           <div className="border-2 rounded-2xl p-4 w-full">
@@ -59,7 +60,7 @@ const Dashboard = () => {
          <div className="col-start-5 col-span-2 border-2 rounded-2xl pl-4 h-1/2">
            <MostCityRequiered />
          </div>
-          
+           */}
       </div>
     </LocalizationProvider>
   );
