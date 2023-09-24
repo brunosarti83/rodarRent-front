@@ -25,10 +25,11 @@ const Login = () => {
   const handleChange = (event) => {
     const property = event.target.name;
     const value = event.target.value;
-    validate({ ...loginData, [property]: value });
+    const validationErrors = validate({ ...loginData, [property]: value });
+    const hasErrors = Object.values(validationErrors).some((error) => error !== '');
+    setDisabledSubmit(hasErrors);
     setLoginData({ ...loginData, [property]: value });
-    setErrors(validate({ ...loginData, [property]: value }));
-    btnState(validate({ ...loginData, [property]: value }));
+    setErrors(validationErrors);
   };
 
   const dispatch = useDispatch();
