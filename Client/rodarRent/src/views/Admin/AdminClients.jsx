@@ -22,7 +22,7 @@ function AdminClients() {
 
 
     axios
-      .get(`${API_BASE_URL}/customers`, {
+      .get(`${API_BASE_URL}/customers/filter`, {
         params: { page: currentPage, pageSize },
       })
       .then((response) => {
@@ -185,7 +185,7 @@ function AdminClients() {
           </tr>
         </thead>
         <tbody>
-          {filteredCustomers.slice(startIndex, endIndex).map((customer) => (
+          {filteredCustomers.map((customer) => (
             <tr key={customer.id} style={{ height: "40px" }}>
               <td>
                 <input
