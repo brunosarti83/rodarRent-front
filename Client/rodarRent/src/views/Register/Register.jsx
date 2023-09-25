@@ -91,7 +91,7 @@ function Register() {
   
       await axios.post(`${API_BASE_URL}/sendemail`, body);
     } catch (error) {
-      toast.error(error.message, { position: 'top-left' });
+      toast.error(error.response.data.error, { position: 'top-left' });
     }
   };
   

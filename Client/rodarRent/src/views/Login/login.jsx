@@ -1,45 +1,53 @@
-/* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
-import validate from "./validateLogin";
-import formImage from '../../assets/img/loginRegister/login.png'
-import { Link } from "react-router-dom";
-import routesHelper from "../../helpers/routes";
-import { ToastContainer} from 'react-toastify';
-import {useDispatch} from 'react-redux';
-import { useNavigate } from "react-router-dom";
-import {logIn} from '../../redux/actions'
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState } from 'react';
+import validate from './validateLogin';
+import formImage from '../../assets/img/loginRegister/login.png';
+import { Link } from 'react-router-dom';
+import routesHelper from '../../helpers/routes';
+import { ToastContainer } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logIn } from '../../redux/actions';
+import ForgotPassword from '../../components/ForgotPassword/ForgotPassword';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [disabledSubmit, setDisabledSubmit] = useState(true);
-  const btnState = async (err) => {
-    if (Object.keys(err).length === 0) setDisabledSubmit(false);
-  };
 
   const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleChange = (event) => {
     const property = event.target.name;
     const value = event.target.value;
-    validate({ ...loginData, [property]: value });
+    const validationErrors = validate({ ...loginData, [property]: value });
+    const hasErrors = Object.values(validationErrors).some((error) => error !== '');
+    setDisabledSubmit(hasErrors);
     setLoginData({ ...loginData, [property]: value });
-    setErrors(validate({ ...loginData, [property]: value }));
-    btnState(validate({ ...loginData, [property]: value }))
+    setErrors(validationErrors);
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    dispatch(logIn(loginData,navigate))
+    dispatch(logIn(loginData, navigate));
+  };
+
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
+
+  const openForgotPasswordModal = () => {
+    setIsForgotPasswordModalOpen(true);
+  };
+
+  const closeForgotPasswordModal = () => {
+    setIsForgotPasswordModalOpen(false);
   };
 
   return (
@@ -95,7 +103,7 @@ const Login = () => {
             </button>
             <a
               className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
-              href={routesHelper.baseBackUrl+routesHelper.authGoogle}
+              href={routesHelper.baseBackUrl + routesHelper.authGoogle}
             >
               <img
                 className="relative w-6 m-1"
@@ -119,7 +127,7 @@ const Login = () => {
               </Link>
             </p>
           </div>
-            <a className="font-poppins text-gray text-xs" href="#">
+            <a className="font-poppins text-gray text-xs" href="#" onClick={openForgotPasswordModal}>
               Forgot your password?
             </a>
           </div>
@@ -145,7 +153,9 @@ const Login = () => {
         draggable
         pauseOnHover
         theme="light"
-        />
+      />
+      
+      {isForgotPasswordModalOpen && <ForgotPassword onClose={closeForgotPasswordModal} />}
     </div>
   );
 };

@@ -1,41 +1,43 @@
-import React from "react";
-import { getLocalStorage } from "../../helpers/storage";
-import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { API_BASE_URL } from "../../helpers/routes";
+import React from 'react';
+import { getLocalStorage } from '../../helpers/storage';
+import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { API_BASE_URL } from '../../helpers/routes';
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import axios from 'axios';
 
 const ReviewForm = () => {
   const navigate = useNavigate();
-  const customer = getLocalStorage("loginData");
+  const customer = getLocalStorage('loginData');
   //console.log(customer.id);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-  const [review, setReview] = useState("");
+  const [review, setReview] = useState('');
 
   const handleChange = (event) => {
     const value = event.target.value;
     setReview(value);
   };
-  
+
   const reviewData = {
-    "CustomerId": customer.id,
-    "rating": rating,
-    "review": review,
+    CustomerId: customer.id,
+    rating: rating,
+    review: review,
   };
-//console.log(reviewData);
+  //console.log(reviewData);
   const handlerSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${API_BASE_URL}/reviews`, reviewData).then(response=>{
-        console.log(response);
-        toast.success(`Sent review!, tanks ${customer.name}`);
-        setTimeout(() => {
-          navigate("/aboutUs");
-        }, 4000);
-      });
+      const response = await axios
+        .post(`${API_BASE_URL}/reviews`, reviewData)
+        .then((response) => {
+          console.log(response);
+          toast.success(`Sent review!, tanks ${customer.name}`);
+          setTimeout(() => {
+            navigate('/aboutUs');
+          }, 4000);
+        });
 
       /*if (response.status === 201) {
         
@@ -43,6 +45,13 @@ const ReviewForm = () => {
         console.log("Error en la solicitud:", response.statusText);
       }*/
     } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        // Display the error message from the backend
+        toast.error(error.response.data.error);
+      } else {
+        // Display a generic error message
+        toast.error('An error occurred while submitting your review.');
+      }
       console.log(error);
     }
   };
@@ -60,8 +69,8 @@ const ReviewForm = () => {
                   key={index}
                   className={
                     index <= (hover || rating)
-                      ? "w-6 h-6 text-yellow-300"
-                      : "w-6 h-6 text-gray-300 dark:text-white"
+                      ? 'w-6 h-6 text-yellow-300'
+                      : 'w-6 h-6 text-gray-300 dark:text-white'
                   }
                   onClick={() => setRating(index)}
                   onMouseEnter={() => setHover(index)}
