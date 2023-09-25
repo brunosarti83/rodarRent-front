@@ -140,10 +140,12 @@ const CreateVehicle = () => {
   /////////////////////
 
   return loading ? (
-    <Loader />
+    <div className="my-auto">
+      <Loader />
+    </div>
   ) : (
     <div className="font-poppins text-sm px-1">
-      <h3 className="text-lg font-semibold">Load New Vehicle Details:</h3>
+      <h3 className="text-lg font-semibold my-3">Load New Vehicle Details:</h3>
       {/* this should be a Form with a Submmit and validations */}
       <form>
         <div className="flex w-full my-2">
