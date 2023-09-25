@@ -196,7 +196,7 @@ const AdminVehicles = () => {
                         )}
                     </Modal>
                     <Modal
-                        className="w-2/6 p-4 bg-white rounded-lg dark:bg-slate-900"
+                        className="w-4/6 p-4 bg-white rounded-lg dark:bg-slate-900"
                         overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-40 bg-black"
                         isOpen={isEditModalOpen}
                         onRequestClose={() => closeModal(2)}

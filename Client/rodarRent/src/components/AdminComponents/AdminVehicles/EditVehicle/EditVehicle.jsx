@@ -3,6 +3,7 @@ import { API_BASE_URL } from "../../../../helpers/routes"
 import { useEffect, useState } from "react"
 //Components
 import Loader from "../../../Loader/Loader"
+import ImageUpload from "../../ImageUpload/ImageUpload"
 
 const EditVehicle = ({ selectedVehicle }) => {
 
@@ -30,6 +31,7 @@ const EditVehicle = ({ selectedVehicle }) => {
         }
         fetchVehicleData()
     }, [id])
+
 
     return (
         <div>
@@ -86,11 +88,11 @@ const EditVehicle = ({ selectedVehicle }) => {
                                 <label htmlFor="">Price per Day</label>
                                 <input type="text" defaultValue={`$ ${vehicle?.pricePerDay}.00`} />
                             </div>
-                            <div>
+                            <div className="flex h-32" >
                                 <img src={vehicle?.image} alt={`${vehicle?.brand} ${vehicle?.model}`} />
                                 <div>
                                     <div>
-                                        
+                                        <ImageUpload />
                                     </div>
                                 </div>
                             </div>
