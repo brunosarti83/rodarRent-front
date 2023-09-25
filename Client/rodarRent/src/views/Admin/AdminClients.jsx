@@ -14,28 +14,40 @@ function AdminClients() {
   const [selectAll, setSelectAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const [pageSize] = useState(10);
   const [error, setError] = useState(null);
+  const [filterCriteria, setFilterCriteria] = useState({
+    name: "",
+    orderVar: "lastName",
+    orderMode: "ASC", 
+  });
+
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.get(`${API_BASE_URL}/customers/filter`, {
+        params: {
+          ...filterCriteria, 
+          page: currentPage,
+          pageSize,
+        },
+      });
+
+      setCustomers(response.data.data);
+      setTotalPages(response.data.pagination.totalPages);
+      setLoading(false);
+      setError(null);
+    } catch (error) {
+      setError("Error loading customers.");
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-
-
-    axios
-      .get(`${API_BASE_URL}/customers/filter`, {
-        params: { page: currentPage, pageSize },
-      })
-      .then((response) => {
-        setCustomers(response.data.data);
-        setTotalPages(response.data.pagination.totalPages);
-        setLoading(false);
-        setError(null);
-      })
-      .catch((error) => {
-        setError("Error loading customers.");
-        setLoading(false);
-      });
-  }, [currentPage, pageSize]);
+    fetchData();
+  }, [currentPage, filterCriteria]);
 
 
   const handleCustomerSelect = (customerId) => {
@@ -88,17 +100,17 @@ function AdminClients() {
     try {
       const deactivateRequests = customerIds.map(async (customerId) => {
         const deleteResponse = await axios.delete(`${API_BASE_URL}/customers/${customerId}`);
-  
+
         if (deleteResponse.status === 200) {
           return { success: true };
         } else {
           return { success: false };
         }
       });
-  
+
       const results = await Promise.all(deactivateRequests);
       const hasError = results.some((result) => !result.success);
-  
+
       if (!hasError) {
         setCustomers((prevCustomers) =>
           prevCustomers.map((customer) => {
@@ -119,34 +131,70 @@ function AdminClients() {
       setError("Error deactivating some customers.");
     }
   };
-  
+
 
   if (loading) {
     return <Loader />;
   }
 
+  const handleFilterChange = (key, value) => {
+    setFilterCriteria({
+      ...filterCriteria,
+      [key]: value,
+    });
+  };
+
   return (
-    <div className="w-[calc(100vw-256px)] h-full px-14 py-2" >
-      <div className="flex w-full">
-        <div className="w-full mb-3">
+    <div className="w-[calc(100vw-256px)] h-full justify-between px-14 py-2">
+
+      <div className="flex w-full justify-between">
+        <div className="w-2/4 mb-3">
           <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-full flex items-center">
             <input
               type="text"
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-3/4 p-2"
+              className="w-2/4 p-2"
             />
           </div>
         </div>
+      <div className="w-1/4 flex justify-between mb-3">
+        <div className="w-full bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg flex items-center" >
+          <select
+            className="w-full"
+            value={filterCriteria.orderVar}
+            onChange={(e) => handleFilterChange("orderVar", e.target.value)}
+          >
+            <option value="lastName">Last Name</option>
+            <option value="name">Name</option>
+            <option value="city">City</option>
+            <option value="country">Country</option>
+            <option value="isActive">Status</option>
+          </select>
+        </div>
+        <div className="w-full bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg flex items-center justify-end" >
+          <select
+            value={filterCriteria.orderMode}
+            onChange={(e) => handleFilterChange("orderMode", e.target.value)}
+          >
+            
+            <option value="ASC">ASC</option>
+
+
+            <option value="DESC">DESC</option>
+          </select>
+        </div>
+      </div>
         <button
           className="w-1/4 p-2 flex items-center justify-end"
           onClick={() => handleDeactivateSelectedCustomer(selectedCustomers)}
-          disabled={selectedCustomers.length === 0} 
+          disabled={selectedCustomers.length === 0}
         >
           <BiTrash className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200 text-2xl" />
         </button>
       </div>
+    
 
       {error && <div className="error-message">{error}</div>}
 
