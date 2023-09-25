@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const CarList = () => {
   const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const vehicles = useSelector((state) => state.veh.vehicles);
   const filterObject = useSelector((state) => state.veh.filterObject);
@@ -46,41 +47,33 @@ const CarList = () => {
     );
   };
 
-  const toastAlert = (message)=>{
-    toast.info(message)
-  }
+  const toastAlert = (message) => {
+    toast.info(message);
+  };
 
   return (
     <div>
-      {loading ? (
-        <div className="flex h-[72vh] justify-center items-center">
-          <Loader />
+    {loading ? (
+      <div className="flex h-[72vh] justify-center items-center">
+        <Loader />
+      </div>
+    ) : (
+      <div className="flex w-full justify-between dark:bg-slate-900 dark:text-gray-100 transition duration-300">
+        <div className="w-1/5 p-2 dark:bg-slate-900" style={{ height: '827px' }}>
+          <h1 className="text-xl font-bold mb-2">Filter By</h1>
+          <CarFilter />
         </div>
-      ) : (
-        <div className="flex w-full justify-between dark:bg-slate-900 dark:text-gray-100 transition duration-300 ">
-          <div
-            className=" w-1/5 p-2 dark:bg-slate-900"
-            style={{ height: "827px" }}
-          >
-            <h1 className="text-xl font-bold mb-2">Filter By</h1>
-            <CarFilter />
+        <div className="w-4/5 flex flex-col p-7">
+          <OrderCars filterObject={filterObject} onChangeOrder={onChangeOrder} />
+          <div className="w-full flex flex-wrap justify-around gap-y-4">
+            {vehicles.results.map((car) => (
+              <CarCard car={car} key={car.id} toastAlert={toastAlert}/>
+            ))}
           </div>
-          <div className=" w-4/5 flex flex-col p-7">
-            <OrderCars
-              filterObject={filterObject}
-              onChangeOrder={onChangeOrder}
-            />
-            <div className="w-full flex flex-wrap justify-around gap-y-4">
-              {vehicles.results.map((car) => (
-                <CarCard car={car} key={car.id} toastAlert={toastAlert} />
-              ))}
-            </div>
-            <div className="w-full mt-4">
-              <Pagination vehicles={vehicles} onPageChange={onPageChange} />
-            </div>
+          <div className="w-full mt-4">
+            <Pagination vehicles={vehicles} onPageChange={onPageChange} />
           </div>
         </div>
-      )}
       <ToastContainer
         position="top-left"
         autoClose={3000}
@@ -94,6 +87,8 @@ const CarList = () => {
         theme="light"
       />
     </div>
+  )}
+  </div>
   );
 };
 
