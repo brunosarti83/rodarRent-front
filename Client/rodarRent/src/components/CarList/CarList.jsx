@@ -46,9 +46,9 @@ const CarList = () => {
     );
   };
 
-  const toastAlert = (message)=>{
-    toast.info(message)
-  }
+  const toastAlert = (message) => {
+    toast.info(message);
+  };
 
   return (
     <div>

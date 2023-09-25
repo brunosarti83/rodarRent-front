@@ -25,7 +25,7 @@ const routesHelper = {
   forgotpasswordUrl: '/customers/forgotpassword'
 };
 
-export const API_BASE_URL = 'http://localhost:3001';
+export const API_BASE_URL = routesHelper.baseBackUrl;
 
 export const getCustomerDetailsUrl = (customerId) =>
   `${API_BASE_URL}/customers/${customerId}`;
