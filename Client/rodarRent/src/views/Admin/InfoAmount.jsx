@@ -1,38 +1,111 @@
 import { useQuery } from "react-query";
 import Loader from "../../components/Loader/Loader";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
+export const InfoAmount = () => {
+  const [income, setIncome] = React.useState('');
+  const [ytdIncome, setYtdIncome] = React.useState(null);
+  const [mtdIncome, setMtdIncome] = React.useState(null);
+  const [todayIncome, setTodayIncome] = React.useState(null);
 
-export const InfoAmount = ()=>{
+  const handleChange = (event) => {
+    setIncome(event.target.value);
+  };
 
-    function fetchBookings() {
-        return fetch("http://localhost:3001/booking/filter").then((res) =>
-          res.json()
-        );
+  const calculateIncomes = (bookings) => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1; // Los meses son base 0
+
+    const ytd = bookings.reduce((total, booking) => {
+      const bookingYear = new Date(booking.startDate).getFullYear();
+      if (bookingYear === currentYear) {
+        return total + booking.amount;
       }
-      const queryBookings = useQuery(["bookings"], fetchBookings);
+      return total;
+    }, 0);
 
+    const mtd = bookings.reduce((total, booking) => {
+      const bookingYear = new Date(booking.startDate).getFullYear();
+      const bookingMonth = new Date(booking.startDate).getMonth() + 1; // Meses base 0
+      if (bookingYear === currentYear && bookingMonth === currentMonth) {
+        return total + booking.amount;
+      }
+      return total;
+    }, 0);
 
-  // const incomeToday = queryBookings.isSuccess ? queryBookings?.data
-  //   ?.map((e) => e.amount)
-  //   .reduce((a, b) => a + b) : 0;
+    const today = bookings.reduce((total, booking) => {
+      const bookingDate = new Date(booking.startDate);
+      const bookingYear = bookingDate.getFullYear();
+      const bookingMonth = bookingDate.getMonth() + 1; // Meses base 0
+      const bookingDay = bookingDate.getDate();
+      if (
+        bookingYear === currentYear &&
+        bookingMonth === currentMonth &&
+        bookingDay === currentDate.getDate()
+      ) {
+        return total + booking.amount;
+      }
+      return total;
+    }, 0);
 
-return (
-    <div className="col-span-1 md:col-span-1 mb-8">
-      <div className="flex-col w-auto rounded-2xl border-2 drop-shadow-md">
-        <div className="flex w-full justify-around pt-6">
-          <div className="font-semibold text-lg">INCOME</div>
-          <div className="font-semibold text-lg">TODAY</div>
-        </div>
-        <Loader />
-        {/* <div className="text-center mt-10">
-          {!incomeToday ? (
-            <Loader />
-          ) : (
-            <div className="text-5xl">${incomeToday}</div>
-          )}
-          <hr className="border-t-2 border-gray-300 w-3/4 mx-auto my-6" />
-        </div> */}
+    setYtdIncome(ytd);
+    setMtdIncome(mtd);
+    setTodayIncome(today);
+  };
+
+  function fetchBookings() {
+    return fetch("http://localhost:3001/booking/filter")
+      .then((res) => res.json())
+      .then((data) => {
+        calculateIncomes(data);
+        return data;
+      });
+  }
+
+  const queryBookings = useQuery(["bookings"], fetchBookings);
+
+  return (
+    <div>
+          <div className="text-center text-2xl font-semibold">Profit Record</div>
+
+      <div className="flex w-full justify-around pt-5">
+        <Box sx={{ minWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Income</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={income}
+              label="Income"
+              onChange={handleChange}
+            >
+              <MenuItem value="ytd">YTD</MenuItem>
+              <MenuItem value="mtd">MTD</MenuItem>
+              <MenuItem value="today">Today</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
       </div>
-    </div>
-)
+      <div className="text-center mt-10">
+        {income === "ytd" && ytdIncome !== null ? (
+          <div className="text-5xl">${ytdIncome}</div>
+        ) : income === "mtd" && mtdIncome !== null ? (
+          <div className="text-5xl">${mtdIncome}</div>
+        ) : income === "today" && todayIncome !== null ? (
+          <div className="text-5xl">${todayIncome}</div>
+        ) : (
+          <Loader />
+        )}
+        <hr className="border-t-2 border-gray-300 w-3/4 mx-auto my-6" />
+      </div>
+      </div>
+
+  );
+  
 }

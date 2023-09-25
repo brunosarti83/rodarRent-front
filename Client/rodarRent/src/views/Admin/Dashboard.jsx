@@ -1,7 +1,3 @@
-import{ useEffect, useState } from "react";
-import * as echarts from "echarts";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TableDashboard from "./TableDashboard";
@@ -10,30 +6,54 @@ import Loader from "../../components/Loader/Loader";
 import { GrafInfo } from "./GrafInfo";
 import { InfoAmount } from "./InfoAmount";
 import { FilterStatusCar } from "./filterStatusCar";
+import EstadiscticSales from "./EstadisticSales";
+import { FutureSales } from "./FutureSales";
+import MostRequieredBrands from "./MostRequiredBrands";
+import MostCityRequiered from "./MostCityRequiered";
 
 const Dashboard = () => {
-
-function fetchBookings() {
+  function fetchBookings() {
     return fetch("http://localhost:3001/booking/filter").then((res) =>
       res.json()
     );
   }
 
-const queryBookings = useQuery(["bookings"], fetchBookings);
+  const queryBookings = useQuery(["bookings"], fetchBookings);
 
-return (
+  return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="flex p-8 w-full">
-        <div className="w-1/3 p-4">
+      <div className="Container grid grid-cols-6 gap-2">
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-1 col-span-2">
+          <EstadiscticSales />
+        </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-3 col-span-2">
           <InfoAmount />
+        </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-5 col-span-2">
           <GrafInfo />
         </div>
-        <div className="flex-1 p-4">
-          <FilterStatusCar />
-          <div className="border-2 rounded-2xl p-4 ml-8 w-full m-8">
-            {queryBookings.isLoading ? <Loader /> : <TableDashboard />}
-          </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 p-4 m-2 h-full col-start-1 col-span-3">
+          {queryBookings.isLoading ? <Loader /> : <TableDashboard />}
         </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-full col-start-4 col-span-3">
+          <FilterStatusCar />
+          <hr />
+          <MostRequieredBrands />
+        </div>
+
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 col-start- col-span-4">
+          <FutureSales />
+        </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 col-start-5 col-span-2">
+           <MostCityRequiered />
+         </div>
+
       </div>
     </LocalizationProvider>
   );
