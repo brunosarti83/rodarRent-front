@@ -126,13 +126,17 @@ const CreateVehicle = () => {
       image: "",
       LocationId: "",
     });
+    setThisModelImages([])
+    setNowShowing("")
   };
   ///////////////////////
   // image Changer
-  const onImageChange = (imageN, e) => {
-    e.preventDefault();
-    setNowShowing(thisModelImages[imageN - 1]);
-  };
+  const handleImgNext = () => {
+    setNowShowing(thisModelImages[thisModelImages.indexOf(nowShowing)+1])
+  }
+  const handleImgPrev = () => {
+    setNowShowing(thisModelImages[thisModelImages.indexOf(nowShowing)-1])
+  }
   /////////////////////
 
   return loading ? (
@@ -279,10 +283,10 @@ const CreateVehicle = () => {
             onChange={onChange}
           />
         </div>
-        <div className="flex-col w-full my-2">
-          <label className="mr-auto">Location:</label>
+        <div className="flex flex-col w-full my-2">
+          <label className="mr-auto mb-1 font-semibold">Location:</label>
           <select
-            className="ml-4 bg-slate-100 text-center"
+            className="mx-auto bg-slate-100 text-center max-w-[500px]"
             id="LocationId"
             name="LocationId"
             value={newVehicle.LocationId}
@@ -315,11 +319,16 @@ const CreateVehicle = () => {
                 </div>
               </div>
               {thisModelImages.length > 1 && (
-                <Pagination
-                  currentPage={1}
-                  totalPages={thisModelImages.length}
-                  onPageChange={onImageChange}
-                />
+                <div className="flex justify-center">
+                  {thisModelImages.indexOf(nowShowing) < thisModelImages.length-1 && (
+                    <div className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer" 
+                    onClick={handleImgNext}>⇒</div>
+                  )}
+                  {thisModelImages.indexOf(nowShowing) > 0 && (
+                    <div className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer" 
+                    onClick={handleImgPrev}>⇐</div>
+                  )}
+                </div>
               )}
             </div>
           ) : (
@@ -373,21 +382,25 @@ const CreateVehicle = () => {
             </div>
           )}
         </div>
-        <div className="flex">
+        <div className="flex justify-around">
+          <div>
           <button
             onClick={handleSubmit}
             disabled={disable}
-            className="bg-blue text-white h-10 px-10 mr-auto ml-4 rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
+            className="bg-blue text-white h-10 px-10 mr-auto rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
           >
             Accept
           </button>
+          </div>
+          <div>
           <button
             onClick={handleClear}
             disabled={disable}
-            className="bg-white text-gray-500 h-10 px-10 mr-auto ml-4 rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
+            className="bg-white text-gray-500 h-10 px-10 mr-auto rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
           >
             Clear
           </button>
+          </div>
         </div>
       </form>
     </div>
