@@ -3,12 +3,12 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { Fullscreen } from "@mui/icons-material";
 
 const data = [
-  { label: "Tesla", value: 400 },
-  { label: "BMW", value: 300 },
-  { label: "Mercedes Benz", value: 300 },
-  { label: "Audi", value: 200 },
-  { label: "Toyota", value: 278 },
-  { label: "Jeep", value: 189 },
+  { label: "Tesla", value: 4 },
+  { label: "BMW", value: 5 },
+  { label: "Mercedes Benz", value: 3 },
+  { label: "Audi", value: 2 },
+  { label: "Toyota", value: 2 },
+  { label: "Jeep", value: 1 },
 ];
 
 export default function MostRequiredBrands() {

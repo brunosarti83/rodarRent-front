@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableVirtuoso } from 'react-virtuoso';
 import { useQuery } from "react-query";
-
 
 const columns = [
   {
@@ -36,7 +35,6 @@ const columns = [
   },
 ];
 
-
 const VirtuosoTableComponents = {
   Scroller: React.forwardRef((props, ref) => (
     <TableContainer component={Paper} {...props} ref={ref} />
@@ -49,8 +47,11 @@ const VirtuosoTableComponents = {
   TableBody: React.forwardRef((props, ref) => <TableBody {...props} ref={ref} />),
 };
 
+function fixedHeaderContent({ handleSort }) {
+  const handleColumnClick = (column) => {
+    handleSort(column.dataKey);
+  };
 
-function fixedHeaderContent() {
   return (
     <TableRow>
       {columns.map((column) => (
@@ -61,8 +62,12 @@ function fixedHeaderContent() {
           style={{ width: column.width }}
           sx={{
             backgroundColor: '#2e96ff',
-            color:"white"
+            color: 'white',
+            cursor: 'pointer',
           }}
+          onClick={() => handleColumnClick(column)}
+          className="hover:scale-110 transform transition-transform cursor-pointer"
+
         >
           {column.label}
         </TableCell>
@@ -70,7 +75,6 @@ function fixedHeaderContent() {
     </TableRow>
   );
 }
-
 
 function rowContent(index, row) {
   const isEvenRow = index % 2 === 0; // Determina si la fila es par o impar
@@ -80,12 +84,11 @@ function rowContent(index, row) {
         <TableCell
           key={column.dataKey}
           align={column.numeric || false ? 'right' : 'left'}
-          className={`${isEvenRow ? 'bg-gray-200' : 'bg-white'} ${column.dataKey === 'finishDate' ? '' : row[column.dataKey]}`}
+          className={`${isEvenRow ? 'bg-gray-200' : 'bg-white'} ${
+            column.dataKey === 'finishDate' ? '' : row[column.dataKey]
+          }`}
         >
-          {
-            column.dataKey === 'finishDate' ? row[column.dataKey].slice(0, 10)
-            : row[column.dataKey]
-          }
+          {column.dataKey === 'finishDate' ? row[column.dataKey].slice(0, 10) : row[column.dataKey]}
         </TableCell>
       ))}
     </React.Fragment>
@@ -93,27 +96,36 @@ function rowContent(index, row) {
 }
 
 export default function TableDashboard() {
-
   const queryVehicles = useQuery(["vehicles"], () =>
-  fetch("http://localhost:3001/vehicles").then((res) => res.json())
+    fetch("http://localhost:3001/vehicles").then((res) => res.json())
   );
-  
 
-  const data = queryVehicles.data?.results
-// console.log(data.results)
+  const [tableData, setTableData] = useState(queryVehicles.data?.results || []);
+  const [sortColumn, setSortColumn] = useState(null);
+
+  const handleSort = (column) => {
+    if (column === sortColumn) {
+      setTableData([...tableData].reverse());
+    } else {
+      const sortedData = [...tableData].sort((a, b) => {
+        return a[column] < b[column] ? -1 : a[column] > b[column] ? 1 : 0;
+      });
+      setTableData(sortedData);
+    }
+    setSortColumn(column);
+  };
 
   return (
     <div className="text-center text-2xl font-semibold mt-2">
-       Vehicles available
-    <Paper style={{ height: 400, width: '100%' }}>
-      <TableVirtuoso
-        data={data}
-        components={VirtuosoTableComponents}
-        fixedHeaderContent={fixedHeaderContent}
-        itemContent={rowContent}
+      Vehicles available
+      <Paper style={{ height: 400, width: '100%' }}>
+        <TableVirtuoso
+          data={tableData}
+          components={VirtuosoTableComponents}
+          fixedHeaderContent={() => fixedHeaderContent({ handleSort })}
+          itemContent={rowContent}
         />
-    </Paper>
-        </div>
+      </Paper>
+    </div>
   );
-
 }

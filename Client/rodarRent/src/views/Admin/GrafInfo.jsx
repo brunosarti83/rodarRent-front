@@ -63,10 +63,10 @@ export const GrafInfo =()=> {
             show: false,
         },
           data: [
-              { value: 735, name: "Cancel", itemStyle: { color: "red" } },
-              { value: 1048, name: "Hired", itemStyle: { color: "green" } },
-            { value: 580, name: "Pending", itemStyle: { color: "yellow" } },
-            { value: 480, name: "Aprobed", itemStyle: { color: "blue" } },
+              { value: 5, name: "Cancel", itemStyle: { color: "red" } },
+              { value: 8, name: "Hired", itemStyle: { color: "green" } },
+            { value: 5, name: "Pending", itemStyle: { color: "yellow" } },
+            { value: 4, name: "Aprobed", itemStyle: { color: "blue" } },
 
         ],
     },

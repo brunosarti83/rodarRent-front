@@ -5,10 +5,10 @@ const MostCityRequiered = () => {
   useEffect(() => {
     // Datos de población de 4 ciudades (ejemplo)
     const data = [
-      { name: "Aiport Mendoza", value: 1200, color: "blue" },
-      { name: "Oficce Mendoza", value: 800, color: "green" },
-      { name: "MainOficce Bs As", value: 600, color: "red" },
-      { name: "Aeroparque Bs As", value: 400, color: "yellow" },
+      { name: "Aiport Mendoza", value: 4, color: "blue" },
+      { name: "Oficce Mendoza", value: 8, color: "green" },
+      { name: "MainOficce Bs As", value: 6, color: "red" },
+      { name: "Aeroparque Bs As", value: 2, color: "yellow" },
     ];
 
     const chartContainer = document.getElementById("pieChart");
