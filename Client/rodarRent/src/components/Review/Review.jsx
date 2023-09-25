@@ -32,7 +32,7 @@ const Review = ({ review }) => {
     return stars;
   };
   return (
-    <div className="font-poppins text-sm p-4 m-4 bg-slate-50 rounded-lg drop-shadow-md border border-gray dark:bg-slate-900 duration-300 text-gray-900 dark:text-white">
+    <div data-aos="fade-left" className="font-poppins text-sm p-4 m-4 bg-slate-50 rounded-lg drop-shadow-md border border-gray dark:bg-slate-900 duration-300 text-gray-900 dark:text-white">
       <h3>{review.Customer.name}</h3>
       <br />
       <p>{fechaFormateada}</p>
