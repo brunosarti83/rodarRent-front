@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import Loader from "../../components/Loader/Loader";
 import { GrafInfo } from "./GrafInfo";
 import { InfoAmount } from "./InfoAmount";
-import { FilterStatusCar } from "./filterStatusCar";
+import { FilterStatusCar } from "./FilterStatusCar";
 import EstadiscticSales from "./EstadisticSales";
 import { FutureSales } from "./FutureSales";
 import MostRequieredBrands from "./MostRequiredBrands";
