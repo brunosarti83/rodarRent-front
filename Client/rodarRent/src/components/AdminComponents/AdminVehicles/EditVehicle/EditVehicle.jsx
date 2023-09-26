@@ -51,6 +51,16 @@ const EditVehicle = ({ selectedVehicle }) => {
             try {
                 const response = await axios.get(`${API_BASE_URL}/vehicles/${id}`)
                 setVehicle(response.data)
+                setEditedFields({
+                    brand: vehicle.brand,
+                    model: vehicle.model,
+                    domain: vehicle.domain,
+                    type: vehicle.type,
+                    capacity: vehicle.passengers,
+                    transmission: vehicle.transmission,
+                    typeOfFuel: vehicle.fuel,
+                    pricePerDay: vehicle.pricePerDay,
+                });
                 setLoading(false)
             } catch (error) {
                 console.log(error)
@@ -59,6 +69,7 @@ const EditVehicle = ({ selectedVehicle }) => {
         fetchVehicleData()
     }, [id])
 
+
     const handleImageUpload = (imageUrl) => {
         setImage(imageUrl)
     }
@@ -66,13 +77,18 @@ const EditVehicle = ({ selectedVehicle }) => {
     const handleChange = (event) => {
         const { name, value } = event.target
         setEditedFields({ ...editedFields, [name]: value })
-        setErrors(validate({ ...editedFields, [name]: value }))
+        const validationErrors = validate({
+            ...editedFields,
+            [name]:value
+        })
+        setErrors(validationErrors)
     }
 
     const handleSubmit = () => {
         console.log('submiteado')
     }
 
+    console.log(editedFields)
     console.log(errors)
     return (
         <div>
@@ -96,10 +112,10 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         <div onMouseEnter={() => setShowError(true)}
                                             onMouseLeave={() => setShowError(false)}
                                         >
-                                            <BiErrorCircle className=" text-red text-xl cursor-pointer" />
+                                            <BiErrorCircle className="text-red text-xl cursor-pointer" />
                                         </div>)}
                                         {showError &&(
-                                                <div className=" bg-white text-red absolute -bottom-8 transform -translate-x-1/2 z-20 p-2" >
+                                                <div className=" bg-white text-red absolute -bottom-10 transform -translate-x-1/2 z-20 p-2" >
                                                     {errors.brand}
                                                 </div>
                                         )}
@@ -132,7 +148,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                             </div>
                             <div className="flex justify-between pt-3" >
                                 <label htmlFor="">Type of Fuel:</label>
-                                <select onChange={handleChange} name="typeOfFuel" id="" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={vehicle?.transmission}>
+                                <select onChange={handleChange} name="typeOfFuel" id="" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={vehicle?.fuel}>
                                     {carEnums.fuel.map((el, index) => (
                                         <option key={index} value={el}>{el}</option>
                                     ))}
