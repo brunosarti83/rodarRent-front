@@ -9,6 +9,7 @@ import ImageUpload from "../../ImageUpload/ImageUpload"
 import { toast } from "react-toastify"
 import validate from './validateEditedVehicle'
 
+
 const EditVehicle = ({ selectedVehicle }) => {
 
     const [vehicle, setVehicle] = useState(null)
@@ -223,6 +224,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                         </form>
                     </div>
                 </div>
+
             )}
         </div>
     )

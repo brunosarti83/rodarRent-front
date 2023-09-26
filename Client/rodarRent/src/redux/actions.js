@@ -48,7 +48,7 @@ export function getVehicle(filterObject) {
 export function getAllCustomers() {
   return function (dispatch) {
     return axios
-      .get(`${API_BASE_URL}/customers/`)
+      .get(`${API_BASE_URL}/customers`)
       .then((response) => {
         dispatch({
           type: GET_CUSTOMERS,

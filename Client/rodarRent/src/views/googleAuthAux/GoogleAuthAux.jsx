@@ -2,7 +2,7 @@ import  { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { successLogin } from '../../helpers/Log';
 import Loader from '../../components/Loader/Loader';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer} from 'react-toastify';
 
 const GoogleAuthAux = () => {
   const navigate = useNavigate();
