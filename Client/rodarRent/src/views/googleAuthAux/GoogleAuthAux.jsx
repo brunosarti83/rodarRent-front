@@ -14,7 +14,7 @@ const GoogleAuthAux = () => {
   const userData = userParam ? JSON.parse(userParam) : null;
 
   useEffect(() => {
-    if (!hasEffectRun.current){  
+    if (!hasEffectRun.current){   
     successLogin(userData, navigate);
     hasEffectRun.current = true  
   }
