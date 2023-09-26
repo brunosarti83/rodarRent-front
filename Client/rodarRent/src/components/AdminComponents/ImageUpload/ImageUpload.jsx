@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { cloudinaryConfig } from '../../../helpers/cloudinaryConfig';
 
-const ImageUpload = () => {
-  const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
+const ImageUpload = ({ newImage, toast }) => {
+
+
 
   const onDrop = async (acceptedFiles) => {
     const formData = new FormData();
@@ -17,10 +18,10 @@ const ImageUpload = () => {
         formData
       );
       const imageUrl = response.data.secure_url;
-      setUploadedImageUrl(imageUrl); 
-      alert('Imagen subida a Cloudinary:', imageUrl);
+      newImage(imageUrl); 
+      toast.success('Image correctly uploaded');
     } catch (error) {
-      alert('Error al subir la imagen a Cloudinary:', error);
+      toast.error('Error uploading the image', error);
     }
   };
 
@@ -28,18 +29,10 @@ const ImageUpload = () => {
 
   return (
     <div>
-      <div {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center' }}>
+      <div {...getRootProps()} className=' p-5 text-center border-dashed border-2 border-gray-600 cursor-pointer'>
         <input {...getInputProps()} />
         <p>Drag and drop an image, or click to upload</p>
       </div>
-      {uploadedImageUrl && (
-        <div className=' flex'>
-          <p>New Image:</p>
-          <div className=' w-1/6 h-52 '>
-            <img src={uploadedImageUrl} alt="Uploaded" style={{ Width: '100%' }} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-//Hooks & Tools
+//*Hooks & Tools
 import { useEffect, useState, useRef } from "react";
 import { BiMessageAltCheck, BiMessageAltX, BiSearch } from "react-icons/bi";
 import Modal from 'react-modal';
@@ -6,7 +6,7 @@ import axios from 'axios';
 import { API_BASE_URL } from "../../helpers/routes";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-//Components
+//*Components
 import Loader from "../../components/Loader/Loader"
 import VehicleCard from "../../components/AdminComponents/AdminVehicles/VehicleCard";
 import Pagination from "../../components/AdminComponents/AdminVehicles/PaginationAdminVehicle";
@@ -99,6 +99,7 @@ const AdminVehicles = () => {
             setSelectedVehicle(null)
         } catch (error) {
             console.log(error)
+            toast.error(error)
         }
     }
 
@@ -111,7 +112,7 @@ const AdminVehicles = () => {
         if (domain) {
             try {
                 const response = await axios.get(`${API_BASE_URL}/vehicles`, { params: { domain } })
-                setIsSearching(true)
+                setIsSearching(true) //* doesn't show pagination buttons when the user searchs a domain
                 setDomain('')
                 setVehicles({ results: [] })
                 setVehicles(response.data)
@@ -196,12 +197,12 @@ const AdminVehicles = () => {
                         )}
                     </Modal>
                     <Modal
-                        className="w-4/6 p-4 bg-white rounded-lg dark:bg-slate-900"
+                        className="w-2/6 p-4 bg-white rounded-lg dark:bg-slate-900"
                         overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-40 bg-black"
                         isOpen={isEditModalOpen}
                         onRequestClose={() => closeModal(2)}
                     >
-                        <EditVehicle selectedVehicle={selectedVehicle} />
+                        <EditVehicle selectedVehicle={selectedVehicle} toast={toast} />
                     </Modal>
                     <ToastContainer
                         position="top-left"
