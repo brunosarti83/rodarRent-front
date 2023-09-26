@@ -19,19 +19,26 @@ const EditVehicle = ({ selectedVehicle }) => {
         model: '',
         domain: '',
         type: '',
-        capacity: '',
+        passengers: '',
         transmission: '',
         typeOfFuel: '',
         pricePerDay: ''
     })
 
-    const[showError,setShowError] = useState(false)
+    const[showError,setShowError] = useState({
+        brand:false,
+        model:false,
+        domain:false,
+        passengers:false,
+        pricePerDay:false
+    })
+
     const [errors, setErrors] = useState({
         brand: '',
         model: '',
         domain: '',
         type: '',
-        capacity: '',
+        passengers: '',
         transmission: '',
         typeOfFuel: '',
         pricePerDay: ''
@@ -51,16 +58,7 @@ const EditVehicle = ({ selectedVehicle }) => {
             try {
                 const response = await axios.get(`${API_BASE_URL}/vehicles/${id}`)
                 setVehicle(response.data)
-                setEditedFields({
-                    brand: vehicle.brand,
-                    model: vehicle.model,
-                    domain: vehicle.domain,
-                    type: vehicle.type,
-                    capacity: vehicle.passengers,
-                    transmission: vehicle.transmission,
-                    typeOfFuel: vehicle.fuel,
-                    pricePerDay: vehicle.pricePerDay,
-                });
+
                 setLoading(false)
             } catch (error) {
                 console.log(error)
@@ -68,6 +66,15 @@ const EditVehicle = ({ selectedVehicle }) => {
         }
         fetchVehicleData()
     }, [id])
+
+    useEffect(()=>{
+        if(vehicle){
+            setEditedFields({
+                ...vehicle,
+                passengers: (vehicle.passengers).toString()
+            })
+        }
+    },[vehicle])
 
 
     const handleImageUpload = (imageUrl) => {
@@ -77,25 +84,23 @@ const EditVehicle = ({ selectedVehicle }) => {
     const handleChange = (event) => {
         const { name, value } = event.target
         setEditedFields({ ...editedFields, [name]: value })
-        const validationErrors = validate({
-            ...editedFields,
-            [name]:value
-        })
-        setErrors(validationErrors)
+        console.log(editedFields)
+        setErrors(validate({...editedFields,[name]:value}))
+        console.log(errors)
     }
 
     const handleSubmit = () => {
         console.log('submiteado')
     }
 
-    console.log(editedFields)
     console.log(errors)
+
     return (
         <div>
             {loading ? (
                 <Loader />
             ) : (
-                <div className="font-poppins p-2" >
+                <div className="font-poppins px-2" >
                     <div className="font-bold text-xl" >
                         <h2>Edit Your Vehicle</h2>
                     </div>
@@ -103,60 +108,108 @@ const EditVehicle = ({ selectedVehicle }) => {
                         <form action="">
                             <div className="flex justify-between pt-3 " >
                                 <label htmlFor="">Brand:</label>
-                                <input name="brand" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={vehicle?.brand} />
+                                <div className="w-2/5 flex justify-between items-center relative" >
+                                {errors.brand && (
+                                        <div onMouseEnter={() => setShowError({...showError,brand:true})}
+                                            onMouseLeave={() => setShowError({...showError,brand:false})}
+                                        >
+                                            <BiErrorCircle className="text-red text-xl cursor-pointer" />
+                                        </div>)}
+                                        {showError.brand &&(
+                                                <div className=" bg-white border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-2" >
+                                                    {errors.brand}
+                                                </div>
+                                        )}
+                                    <input name="brand" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 ml-auto text-end w-5/6 rounded-lg" defaultValue={vehicle?.brand} />
+                                </div>
                             </div>
                             <div className="flex justify-between pt-3 " >
                                 <label htmlFor="">Model:</label>
                                 <div className="w-2/5 flex justify-between items-center relative">
-                                    {errors.brand && (
-                                        <div onMouseEnter={() => setShowError(true)}
-                                            onMouseLeave={() => setShowError(false)}
+                                    {errors.model && (
+                                        <div onMouseEnter={() => setShowError({...showError,model:true})}
+                                            onMouseLeave={() => setShowError({...showError,model:false})}
                                         >
                                             <BiErrorCircle className="text-red text-xl cursor-pointer" />
                                         </div>)}
-                                        {showError &&(
-                                                <div className=" bg-white text-red absolute -bottom-10 transform -translate-x-1/2 z-20 p-2" >
-                                                    {errors.brand}
+                                        {showError.model &&(
+                                                <div className=" bg-white border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-2" >
+                                                    {errors.model}
                                                 </div>
                                         )}
-                                    <input name="model" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end rounded-lg w-5/6" defaultValue={vehicle?.model} />
+                                    <input name="model" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto rounded-lg w-5/6" defaultValue={vehicle?.model} />
                                 </div>
                             </div>
                             <div className="flex justify-between pt-3 " >
                                 <label htmlFor="">Domain:</label>
-                                <input name="domain" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={vehicle?.domain} />
+                                <div className="w-2/5 flex justify-between items-center relative" >
+                                    {errors.domain && (
+                                        <div onMouseEnter={() => setShowError({...showError,domain:true})}
+                                            onMouseLeave={() => setShowError({...showError,domain:false})}
+                                        >
+                                            <BiErrorCircle className="text-red text-xl cursor-pointer" />
+                                        </div>)}
+                                        {showError.domain &&(
+                                                <div className=" bg-white border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-2" >
+                                                    {errors.domain}
+                                                </div>
+                                        )}
+                                <input name="domain" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg" defaultValue={vehicle?.domain} />
+                                </div>
                             </div>
                             <div className="flex justify-between pt-3 " >
                                 <label htmlFor="">Type:</label>
-                                <select onChange={handleChange} name="type" id="" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={vehicle?.type} >
-                                    {carEnums.type.map((el, index) => (
-                                        <option key={index} value={el}>{el}</option>
-                                    ))}
-                                </select>
+                                <div className="w-2/5 flex" >
+                                    <select onChange={handleChange} name="type" id="" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg" defaultValue={vehicle?.type} >
+                                        {carEnums.type.map((el, index) => (
+                                            <option key={index} value={el}>{el}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                             <div className="flex justify-between pt-3 " >
                                 <label htmlFor="">Capacity:</label>
-                                <input name="capacity" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={vehicle?.passengers} />
+                                <div className="w-2/5 flex justify-between items-center relative" >
+                                {errors.passengers && (
+                                        <div onMouseEnter={() => setShowError({...showError,passengers:true})}
+                                            onMouseLeave={() => setShowError({...showError,passengers:false})}
+                                        >
+                                            <BiErrorCircle className="text-red text-xl cursor-pointer" />
+                                        </div>)}
+                                        {showError.passengers &&(
+                                                <div className=" bg-white border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-2" >
+                                                    {errors.passengers}
+                                                </div>
+                                )}
+                                    <input name="passengers" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg" defaultValue={vehicle?.passengers} />
+                                </div>
                             </div>
                             <div className="flex justify-between pt-3 " >
                                 <label htmlFor="">Transmission:</label>
-                                <select onChange={handleChange} name="transmission" id="" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={vehicle?.transmission} >
-                                    {carEnums.transmission.map((el, index) => (
-                                        <option key={index} value={el}>{el}</option>
-                                    ))}
-                                </select>
+                                <div className="w-2/5 flex" >
+                                    <select onChange={handleChange} name="transmission" id="" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg" defaultValue={vehicle?.transmission} >
+                                        {carEnums.transmission.map((el, index) => (
+                                            <option key={index} value={el}>{el}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                             <div className="flex justify-between pt-3" >
                                 <label htmlFor="">Type of Fuel:</label>
-                                <select onChange={handleChange} name="typeOfFuel" id="" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={vehicle?.fuel}>
-                                    {carEnums.fuel.map((el, index) => (
-                                        <option key={index} value={el}>{el}</option>
-                                    ))}
-                                </select>
+                                <div className="w-2/5 flex" >
+                                    <select onChange={handleChange} name="typeOfFuel" id="" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg" defaultValue={vehicle?.fuel}>
+                                        {carEnums.fuel.map((el, index) => (
+                                            <option key={index} value={el}>{el}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                             <div className="flex justify-between pt-3" >
                                 <label htmlFor="">Price per Day:</label>
-                                <input name="pricePerDay" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={`$ ${vehicle?.pricePerDay}.00`} />
+                                <div>
+
+                                    <input name="pricePerDay" onChange={handleChange} type="text" className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end w-2/5 rounded-lg" defaultValue={`$ ${vehicle?.pricePerDay}.00`} />
+                                </div>
                             </div>
                             <div className="flex flex-col justify-between pt-5" >
                                 <div className="h-40">
