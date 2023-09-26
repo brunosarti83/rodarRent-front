@@ -20,7 +20,7 @@ const ReservationSearch = () => {
       .then(({ data }) => {
         setLocations(data);
       })
-      .catch((err) => {
+      .catch(() => {
         axios
           .get(`${routesHelper.baseBackUrl}/locations`)
           .then(({ data }) => {
@@ -48,8 +48,19 @@ const ReservationSearch = () => {
   const handleChange = (event) => {
     const property = event.target.name;
     let value = event.target.value;
-    if (property === 'startDate' && (new Date(value) <= new Date() || new Date(value) >= new Date(search.finishDate))) { value = "" }
-    if (property === 'finishDate' && new Date(value) <= new Date(search.startDate)) { value = "" }
+    if (
+      property === "startDate" &&
+      (new Date(value) <= new Date() ||
+        new Date(value) >= new Date(search.finishDate))
+    ) {
+      value = "";
+    }
+    if (
+      property === "finishDate" &&
+      new Date(value) <= new Date(search.startDate)
+    ) {
+      value = "";
+    }
     setSearch({ ...search, [property]: value });
   };
 

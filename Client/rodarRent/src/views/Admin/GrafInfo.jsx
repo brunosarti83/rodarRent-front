@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import * as echarts from "echarts";
+import { useQuery } from "react-query";
+
 
 export const GrafInfo =()=> {
+
+//     const querySummary = useQuery(["summary"], () =>
+//     fetch("http://localhost:3001/booking/summary").then((res) => res.json())
+//   );
+
+//   const dataSummary = querySummary.data
 
     useEffect(() => {
         const chartContainer = document.getElementById("hireCancel");
@@ -10,34 +18,36 @@ export const GrafInfo =()=> {
     const options = {
         grid: {},
         title: {
-            text: "Hired vs Cancel",
+            text: "State Registry",
             textStyle: {
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: "bold",
             },
             left: "center",
-            top: "5%",
+            top: "10",
         },
         tooltip: {
             trigger: "item",
         },
         legend: {
             orient: "vertical",
-            left: "0%",
-            bottom: "0%",
+            left: "25",
+            bottom: "80",
         },
         series: [
             {
                 name: "Access From",
                 type: "pie",
-                radius: ["40%", "70%"],
+                radius: ["40%", "80%"],
                 avoidLabelOverlap: true,
-                height: "420px",
+                height: "250px",
                 itemStyle: {
                     borderRadius: 10,
                     borderColor: "#fff",
                     borderWidth: 2,
                 },
+                left:85,
+                top:40,
                 label: {
                     show: false,
                     position: "center",
@@ -53,9 +63,11 @@ export const GrafInfo =()=> {
             show: false,
         },
           data: [
-              { value: 1048, name: "Hired", itemStyle: { color: "green" } },
-            { value: 735, name: "Cancel", itemStyle: { color: "red" } },
-            { value: 580, name: "Pending", itemStyle: { color: "yellow" } },
+              { value: 5, name: "Cancel", itemStyle: { color: "red" } },
+              { value: 8, name: "Hired", itemStyle: { color: "green" } },
+            { value: 5, name: "Pending", itemStyle: { color: "yellow" } },
+            { value: 4, name: "Aprobed", itemStyle: { color: "blue" } },
+
         ],
     },
 ],
@@ -68,8 +80,8 @@ return () => {
 });
 
 return (
-    <div className="matriz2-1 h-chart rounded-lg bg-white drop-shadow-md border-2">
-    <div id="hireCancel" className="w-full h-full"></div>
+    <div className="h-full">
+    <div id="hireCancel" className=" h-72"></div>
   </div>
 )
 }

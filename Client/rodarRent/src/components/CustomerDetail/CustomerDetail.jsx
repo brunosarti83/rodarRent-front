@@ -48,6 +48,14 @@ const CustomerDetail = () => {
     fetchVehicles();
   }, []);
 
+  const sortBookingsByStartDate = (bookings) => {
+    return bookings.sort((a, b) => {
+      const dateA = new Date(a.startDate);
+      const dateB = new Date(b.startDate);
+      return dateA - dateB;
+    });
+  };
+
   const openEditCustomerModal = () => {
     setIsEditCustomerModalOpen(true);
   };
@@ -132,7 +140,9 @@ const CustomerDetail = () => {
               booking.finishDate
             ).toLocaleDateString(),
           }));
-          setCustomerBookings(formattedData);
+
+          const sortedBookings = sortBookingsByStartDate(formattedData);
+          setCustomerBookings(sortedBookings);
         }
       } catch (error) {
         console.error("Error", error);
