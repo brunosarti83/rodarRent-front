@@ -33,7 +33,7 @@ const ReviewForm = () => {
         .post(`${API_BASE_URL}/reviews`, reviewData)
         .then((response) => {
           console.log(response);
-          toast.success(`Sent review!, tanks ${customer.name}`);
+          toast.success(`Sent review!, thanks ${customer.name}`);
           setTimeout(() => {
             navigate('/aboutUs');
           }, 4000);

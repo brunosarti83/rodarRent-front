@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import mercadoPagoImg from "../../assets/img/mercado-pago.png";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getLocalStorage, getSessionStorage } from "../../helpers/storage";
@@ -14,6 +14,7 @@ import {
 const Booking = () => {
   const customer = getLocalStorage("loginData");
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const carId = queryParams.get("parametro");
   const filterObject = getSessionStorage("filterObject");
@@ -322,6 +323,12 @@ const Booking = () => {
           </div>
         </form>
         <div className="flex justify-end">
+        <button
+            className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+            onClick={()=>navigate(-1)}
+          >
+            Cancel
+          </button>
           <button
             className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
             onClick={handleSubmit}
