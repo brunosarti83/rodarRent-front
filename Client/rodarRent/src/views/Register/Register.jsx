@@ -73,18 +73,28 @@ function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios
-      .post(`${API_BASE_URL}/customers`, data)
-      .then((response) => {
-        toast.success('Registered user!', { position: 'top-left' });
-        setTimeout(() => {
-          navigate('/login');
-        }, '4000');
-      })
-      .catch((error) => {
-        toast.error(error, { position: 'top-left' });
-      });
+    try {
+      const response = await axios.post(`${API_BASE_URL}/customers`, data);
+      toast.success('Registered user!', { position: 'top-left' });
+  
+      setTimeout(() => {
+        navigate('/login');
+      }, 4000);
+  
+      const body = {
+        userName: response.data.name, 
+        toEmailAddress: response.data.email, 
+        replyToEmailAddress: 'rodarrent@outlook.com',
+        subject: `Welcome ${response.data.name}`, 
+        template: 'register',
+      };
+  
+      await axios.post(`${API_BASE_URL}/sendemail`, body);
+    } catch (error) {
+      toast.error(error.response.data.error, { position: 'top-left' });
+    }
   };
+  
 
   const handleGoogleReg = async (event) => {
     event.preventDefault();

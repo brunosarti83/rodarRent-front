@@ -12,6 +12,7 @@ const ImageUpload = ({ newImage, toast }) => {
     formData.append('file', acceptedFiles[0]);
     formData.append('upload_preset', 'rodarRent');
 
+
     try {
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/image/upload`,
@@ -22,6 +23,7 @@ const ImageUpload = ({ newImage, toast }) => {
       toast.success('Image correctly uploaded');
     } catch (error) {
       toast.error('Error uploading the image', error);
+
     }
   };
 

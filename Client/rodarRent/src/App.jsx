@@ -19,6 +19,7 @@ import GoogleAuthAux from "./views/googleAuthAux/GoogleAuthAux";
 import Dashboard from "./views/Admin/Dashboard";
 import AdminClients from "./views/Admin/AdminClients";
 import AdminVehicles from "./views/Admin/AdminVehicles";
+import ChangePassword from "./components/EditCustomer/ChangePassword";
 
 function App() {
   const [darkMode, setDarkmode] = useState(true);
@@ -50,6 +51,7 @@ function App() {
         <Route path={routesHelper.dashboardCustomer}element={<CustomerDetail />} />
         <Route path={routesHelper.allBookings} element={<BookingList />} />
         <Route path={routesHelper.googleAuthAux} element={<GoogleAuthAux />} />
+        <Route path={routesHelper.changePassword} element={<ChangePassword/>} />
         <Route path={routesHelper.admin} element={<Admin />}>
           <Route index element={<Dashboard />} />
           <Route path={routesHelper.admin} element={<Dashboard />} />
