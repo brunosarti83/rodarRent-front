@@ -2,22 +2,22 @@ import { LOGIN,LOGOUT } from "../constants";
 
 const initialState = {
     isLoggedIn: false,
-    customer:[]
+    customer: {}
 }
 
-const authReducer = (state = initialState, {type,payload}) =>{
+const authReducer = (state = initialState, {type, payload}) =>{
     switch (type) {
         case LOGIN:
             return{
                 ...state,
                 isLoggedIn : true,
-                customer:[...state.customer,payload]
+                customer:{...payload}
             }
         case LOGOUT:
             return{
                 ...state,
                 isLoggedIn: false,
-                customer: []
+                customer: {}
             }
         default:
             return state

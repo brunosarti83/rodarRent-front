@@ -11,17 +11,16 @@ import ForgotPassword from '../../components/ForgotPassword/ForgotPassword';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiErrorCircle } from "react-icons/bi";
 
-
 const Login = () => {
   const [disabledSubmit, setDisabledSubmit] = useState(true);
 
   const [loginData, setLoginData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [showError, setShowError] = useState({
@@ -33,7 +32,9 @@ const Login = () => {
     const property = event.target.name;
     const value = event.target.value;
     const validationErrors = validate({ ...loginData, [property]: value });
-    const hasErrors = Object.values(validationErrors).some((error) => error !== '');
+    const hasErrors = Object.values(validationErrors).some(
+      (error) => error !== ""
+    );
     setDisabledSubmit(hasErrors);
     setLoginData({ ...loginData, [property]: value });
     setErrors(validationErrors);
@@ -47,7 +48,8 @@ const Login = () => {
     dispatch(logIn(loginData, navigate));
   };
 
-  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
+    useState(false);
 
   const openForgotPasswordModal = () => {
     setIsForgotPasswordModalOpen(true);
