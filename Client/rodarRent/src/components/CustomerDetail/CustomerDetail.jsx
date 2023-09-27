@@ -74,11 +74,6 @@ const CustomerDetail = () => {
 
   const closeEditPasswordCustomerModal = () => {
     setIsEditPasswordCustomerModalOpen(false);
-
-    toast.success('Customer Password updated successfully', {
-      position: 'top-left',
-      autoClose: 3000,
-    });
   };
 
   const openEditBookingModal = () => {
