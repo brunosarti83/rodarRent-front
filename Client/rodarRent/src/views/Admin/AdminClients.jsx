@@ -153,7 +153,11 @@ function AdminClients() {
   };
 
   if (loading) {
-    return <Loader />;
+    return(
+      <div className="w-[calc(100vw-256px)] min-h-[calc(100vh-112px)] flex justify-center items-center" >
+        <Loader />
+      </div>
+      ) 
   }
 
   const handleFilterChange = (key, value) => {
@@ -200,7 +204,7 @@ function AdminClients() {
   };
 
   return (
-    <div className="w-[calc(100vw-256px)] h-full justify-between px-14 py-2">
+    <div className="w-[calc(100vw-256px)] min-h-[calc(100vh-112px)] justify-between px-14 py-2 dark:bg-slate-900 dark:text-gray-100">
       <div className="flex w-full justify-between">
       <div className="w-1/4 mb-3 relative">
           <input
@@ -208,7 +212,7 @@ function AdminClients() {
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`w-3/4 p-2 outline-none border rounded ${searchTerm ? 'border-gray-300': 'border-gray-900'}`}
+            className={`w-3/4 p-2 outline-none border rounded dark:bg-slate-950 ${searchTerm ? 'border-gray-300': 'border-gray-900'}`}
           />
           {showClearButton && (
             <button
@@ -230,7 +234,7 @@ function AdminClients() {
         <div className="w-1/4 flex justify-between mb-3 border-gray-900 " >
           <div className="w-full border-gray-900 flex items-center">
             <select
-              className="w-full border-gray-900"
+              className="w-full border-gray-900 dark:bg-slate-950"
               value={filterCriteria.orderVar}
               onChange={(e) => handleFilterChange("orderVar", e.target.value)}
             >

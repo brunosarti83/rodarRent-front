@@ -89,7 +89,7 @@ const ReservationSearch = () => {
   const isAdmin = userData?.UserId === 1;
 
   return (
-    <div className=" h-18 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
+    <div className=" h-24 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
       <div className="flex h-full ml-5">
         <form className="flex w-full h-full items-center" action="">
           <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
@@ -156,16 +156,16 @@ const ReservationSearch = () => {
         </form>
       </div>
       {isLoggedIn ? (
-        <div className="flex w-1/3 justify-center">
+        <div className="flex w-1/4 justify-center">
           <Link
-            className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
+            className="text-md text-white bg-blue font-semibold py-3 px-10 rounded-lg"
             to={isAdmin ? "/admin" : `/customer/${userData.id}`}
           >
             {isAdmin ? "Admin" : "My profile"}
           </Link>
         </div>
       ) : (
-        <div className="flex w-1/3 justify-evenly">
+        <div className="flex w-1/4 justify-around">
           <Link
             className="text-md py-3 px-10 rounded-lg transition duration-300 hover:bg-black hover:text-white"
             to={routesHelper.register}

@@ -39,7 +39,7 @@ const validateRegister = (data) => {
     errors.password = "(*)";
   }
   else if (!regexPass.test(data.password)) {
-    errors.passwordMsj = "The password must have at least 6 characters, an uppercase letter, a lowercase letter and a number";
+    errors.passwordMsj = "The password must have: At least 6 characters, An uppercase letter and a number";
   }
   if (!data.repeatPass) {
     errors.repeatPass = "(*)";
