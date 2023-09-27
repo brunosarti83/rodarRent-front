@@ -4,8 +4,6 @@ const validate = (data) =>{
     const regexNumbers = /^[0-9]+$/
     const errors = {}
 
-    console.log(data)
-
     if (!data.brand) {
         errors.brand = 'Please Complete this field'
     }else if(!regexSpecialCharacters.test(data.brand)){
