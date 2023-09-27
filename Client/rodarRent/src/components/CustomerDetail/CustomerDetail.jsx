@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
@@ -281,7 +281,7 @@ const CustomerDetail = () => {
         </div>
 
         <div className="row-start-1 row-end-4 col-start-3 flex justify-center">
-          <DashboardActions openEditModal={openEditCustomerModal} />
+          <DashboardActions openEditModal={openEditCustomerModal} toast={toast} />
         </div>
 
         <Modal
