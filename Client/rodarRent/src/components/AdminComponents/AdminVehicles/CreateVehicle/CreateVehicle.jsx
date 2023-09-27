@@ -149,7 +149,7 @@ const CreateVehicle = () => {
         <div className="flex w-full my-2">
           <label className="mr-auto">Brand:</label>
           <input
-            className="ml-auto bg-slate-100"
+            className="ml-auto bg-slate-100 dark:bg-slate-950"
             type="text"
             list="brand"
             name="brand"

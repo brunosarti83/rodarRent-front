@@ -11,18 +11,18 @@ import kia from "../../assets/img/brandsLogos/kia.svg";
 import ferrari from "../../assets/img/brandsLogos/ferrari.svg";
 
 function Landing() {
-  let brandLogos = [
-    { name: "ford", src: ford },
-    { name: "bentley", src: bentley },
-    { name: "bmw", src: bmw },
-    { name: "bugatti", src: bugatti },
-    { name: "jeep", src: jeep },
-    { name: "lambo", src: lambo },
-    { name: "land-rover", src: landRover },
-    { name: "nissan", src: nissan },
-    { name: "kia", src: kia },
-    { name: "ferrari", src: ferrari },
-  ];
+    let brandLogos = [
+        { name: "ford", src: ford },
+        { name: "bentley", src: bentley },
+        { name: "bmw", src: bmw },
+        { name: "bugatti", src: bugatti },
+        { name: "jeep", src: jeep },
+        { name: "lambo", src: lambo },
+        { name: "land-rover", src: landRover },
+        { name: "nissan", src: nissan },
+        { name: "kia", src: kia },
+        { name: "ferrari", src: ferrari },
+    ];
 
     return (
         <div className=' bg-white transition duration-300 dark:bg-slate-900 text-black dark:text-gray-100 min-h-[calc(100vh-112px)] flex flex-col justify-between' >
