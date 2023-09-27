@@ -3,7 +3,7 @@ import { FaCheck, FaTimes, FaSortAmountDown, FaSortAmountUpAlt } from "react-ico
 import Loader from "../../components/Loader/Loader";
 import PaginationAdminCustomer from "../../components/AdminComponents/AdminClients/PaginationAdminCustomer";
 import axios from "axios";
-import { BiTrash, BiSearchAlt } from 'react-icons/bi';
+import { BiTrash, BiSearchAlt, BiX } from 'react-icons/bi';
 import { API_BASE_URL } from "../../helpers/routes";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,10 +16,11 @@ function AdminClients() {
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [selectedCustomers, setSelectedCustomers] = useState([]);
+  const [showClearButton, setShowClearButton] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(17);
+  const [pageSize] = useState(15);
   const [error, setError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [sortOrder, setSortOrder] = useState("ASC");
@@ -102,7 +103,9 @@ function AdminClients() {
   const endIndex = startIndex + pageSize;
 
   const handlePageChange = (currentPage) => {
-    setCurrentPage(1);
+    if (!searching) {
+      setCurrentPage(currentPage);
+    }
   };
 
   const handleDeactivateSelectedCustomer = async (customerIds) => {
@@ -163,6 +166,7 @@ function AdminClients() {
   const handleSearchButtonClick = () => {
     setSearching(true);
     setCurrentPage(1);
+    setShowClearButton(true);
     fetchData();
   };
 
@@ -182,35 +186,51 @@ function AdminClients() {
         autoClose: 3000,
       });
     } else {
-      // Mostrar el modal de confirmación
+
       setShowDeleteModal(true);
     }
+  };
+
+  const handleClearButtonClick = () => {
+    fetchData();
+    setSearching(false);
+    setSearchTerm("");
+    setCurrentPage(1);
+    setShowClearButton(false);
   };
 
   return (
     <div className="w-[calc(100vw-256px)] h-full justify-between px-14 py-2">
       <div className="flex w-full justify-between">
-        <div className="w-2/4 mb-3">
-          <div className=" w-full flex items-center">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-2/4 p-2"
-            />
+      <div className="w-1/4 mb-3 relative">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`w-3/4 p-2 outline-none border rounded ${searchTerm ? 'border-gray-300': 'border-gray-900'}`}
+          />
+          {showClearButton && (
             <button
-              onClick={handleSearchButtonClick}
-              className="p-2 bg-blue-500 rounded-r-lg"
+              onClick={handleClearButtonClick}
+              className="p-2 bg-red-500 rounded-full"
             >
-              <BiSearchAlt className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />
+              <BiX className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200 text-2xl" />
             </button>
-          </div>
+          )}
+          {
+          <button
+            onClick={handleSearchButtonClick}
+            className={`absolute top-0 p-2 bg-blue-500 rounded-r-lg ${!searchTerm && 'disabled:opacity-50 cursor-not-allowed'}`}
+            disabled={!searchTerm}
+          >
+            <BiSearchAlt className="cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />
+          </button>}
         </div>
-        <div className="w-1/4 flex justify-between mb-3">
-          <div className="w-full flex items-center">
+        <div className="w-1/4 flex justify-between mb-3 border-gray-900 " >
+          <div className="w-full border-gray-900 flex items-center">
             <select
-              className="w-full"
+              className="w-full border-gray-900"
               value={filterCriteria.orderVar}
               onChange={(e) => handleFilterChange("orderVar", e.target.value)}
             >
@@ -226,18 +246,23 @@ function AdminClients() {
               onClick={handleToggleSortOrder}
               className="p-2 bg-blue-500 rounded-r-lg"
             >
-              {sortOrder === <FaSortAmountUpAlt className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" /> ?
-                <FaSortAmountDown className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" /> :
-                <FaSortAmountUpAlt className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />}
+              {sortOrder === "ASC" ? (
+                <FaSortAmountUpAlt className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />
+              ) : (
+                <FaSortAmountDown className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />
+              )}
             </button>
             <button
               onClick={handleToggleSortOrder}
               className="p-2 bg-blue-500 rounded-l-lg"
             >
-              {sortOrder === <FaSortAmountDown className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />
-                ? <FaSortAmountUpAlt className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" /> :
-                <FaSortAmountDown className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />}
+              {sortOrder === "DESC" ? (
+                <FaSortAmountUpAlt className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />
+              ) : (
+                <FaSortAmountDown className="ml-2 cursor-pointer hover:scale-125 hover:text-blue transition-all duration-200 text-2xl" />
+              )}
             </button>
+
           </div>
         </div>
         <button
