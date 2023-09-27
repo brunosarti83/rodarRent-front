@@ -84,7 +84,7 @@ function Register() {
       const body = {
         userName: response.data.name, 
         toEmailAddress: response.data.email, 
-        replyToEmailAddress: 'rodarrent@outlook.com',
+        replyToEmailAddress: 'rodarrentadm@outlook.com',
         subject: `Welcome ${response.data.name}`, 
         template: 'register',
       };

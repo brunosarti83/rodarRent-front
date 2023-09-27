@@ -27,7 +27,7 @@ const Contact = () => {
         event.preventDefault()
         const body = {
             userName: dataContact.name,
-            toEmailAddress:'rodarrent@outlook.com',
+            toEmailAddress:'rodarrentadm@outlook.com',
             replyToEmailAddress: dataContact.email,
             subject: 'Contact',
             text: dataContact.message,
