@@ -421,7 +421,7 @@ const EditCustomer = () => {
             </button>
           </div>
         </form>
-        <ToastContainer
+        {/* <ToastContainer
           position="top-left"
           autoClose={3000}
           hideProgressBar={false}
@@ -432,7 +432,7 @@ const EditCustomer = () => {
           draggable
           pauseOnHover
           theme="light"
-        />
+        /> */}
       </div>
     </div>
   );
