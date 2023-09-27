@@ -18,6 +18,7 @@ const MostCityRequiered = () => {
       title: {
         text: "Most Requested Cities",
         left: "center",
+        top:20
       },
       tooltip: {
         trigger: "item",
@@ -26,7 +27,7 @@ const MostCityRequiered = () => {
       legend: {
         orient: "horizontal",
         left: 10,
-        top:30,
+        top:50,
         // bottom: 90,
         data: data.map((item) => item.name),
       },
