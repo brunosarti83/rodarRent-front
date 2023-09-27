@@ -27,7 +27,7 @@ const ForgotPassword = ({ onClose }) => {
       const body = {
         userName: response.data.name,
         toEmailAddress: email,
-        replyToEmailAddress: 'rodarrent@outlook.com',
+        replyToEmailAddress: 'rodarrentadm@outlook.com',
         text: response.data.password,
         subject: 'Password reset',
         template: 'resetPassword',
