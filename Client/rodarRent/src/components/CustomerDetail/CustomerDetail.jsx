@@ -322,7 +322,7 @@ const CustomerDetail = () => {
           onRequestClose={closeEditCustomerModal}
           shouldCloseOnOverlayClick={true}
           contentLabel="Edit Customer Modal"
-          className=" outline-none fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
+          className="outline-none fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
           overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black"
           ref={modalRefCustomer}
           onAfterOpen={closeModalOnClickOutside}
