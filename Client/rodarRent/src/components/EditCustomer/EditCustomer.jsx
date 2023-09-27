@@ -113,7 +113,6 @@ const EditCustomer = () => {
       setButtonText('Save');
       handleSaveAndBack();
 
-
       if (response.ok) {
         setPasswordError(null);
         console.log("Actualizada");
