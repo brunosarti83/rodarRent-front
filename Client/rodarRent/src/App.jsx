@@ -20,10 +20,11 @@ import Dashboard from "./views/Admin/Dashboard";
 import AdminClients from "./views/Admin/AdminClients";
 import AdminVehicles from "./views/Admin/AdminVehicles";
 import EditPasswordCustomer from "./components/EditCustomer/EditPasswordCustomer";
+import Modal from 'react-modal';
 
 function App() {
   const [darkMode, setDarkmode] = useState(true);
-
+  Modal.setAppElement('#root')
   const toggleDarkMode = () => {
     const element = document.documentElement;
     setDarkmode(!darkMode);

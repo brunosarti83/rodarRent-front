@@ -40,9 +40,6 @@ const EditCustomer = () => {
     zipCode: '',
     phoneNumber: '',
     email: '',
-    currentPassword: '',
-    password: '',
-    repeatPass: '',
   });
 
 
@@ -53,6 +50,7 @@ const EditCustomer = () => {
         const data = await response.json();
         setCustomer(data);
         setIsLoading(false);
+        
       } catch (error) {
         console.error('Error', error);
         setIsLoading(false);
@@ -67,6 +65,7 @@ const EditCustomer = () => {
       setEditedFields({
         ...customer,
       });
+      setErrors(validateEdit(editedFields));
     }
   }, [customer]);
 
@@ -116,7 +115,7 @@ const EditCustomer = () => {
   };
 
   return (
-    <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
+    <div className=" w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="w-120 drop-shadow-md border bg-white rounded-3xl dark:bg-slate-900">
         <form className=" w-120 px-16 py-5 flex flex-col flex-wrap  rounded-xl justify-center">
           <h1 className="font-poppins p-2 text-3xl">Edit your info</h1>
