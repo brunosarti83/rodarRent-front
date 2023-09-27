@@ -10,7 +10,7 @@ import { setFilters } from "../../redux/actions";
 const ReservationSearch = () => {
   const dispatch = useDispatch();
   const filterObject = useSelector((state) => state.veh.filterObject);
-  const userData = useSelector((state) => state.auth.customer[0]);
+  const userData = useSelector((state) => state.auth.customer);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [locations, setLocations] = useState([]);
 
@@ -86,7 +86,7 @@ const ReservationSearch = () => {
     new Date(search.finishDate) <= new Date(search.startDate);
 
   // * Variable para verificar si el usuario es el admin
-  const isAdmin = userData?.id === "fd2daf55-3d6a-4254-ad40-74adc5229cde";
+  const isAdmin = userData?.UserId === 1;
 
   return (
     <div className=" h-24 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
@@ -161,7 +161,7 @@ const ReservationSearch = () => {
             className="text-md text-white bg-blue font-semibold py-3 px-10 rounded-lg"
             to={isAdmin ? "/admin" : `/customer/${userData.id}`}
           >
-            My profile
+            {isAdmin ? "Admin" : "My profile"}
           </Link>
         </div>
       ) : (

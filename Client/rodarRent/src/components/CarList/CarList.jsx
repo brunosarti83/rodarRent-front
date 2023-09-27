@@ -63,34 +63,22 @@ const CarList = () => {
             <h1 className="text-xl font-bold mb-2">Filter By</h1>
             <CarFilter />
           </div>
-          <div className=" w-4/5 flex flex-col p-7">
-            <OrderCars
-              filterObject={filterObject}
-              onChangeOrder={onChangeOrder}
-            />
-            <div className="w-full flex flex-wrap justify-around gap-y-4">
-              {vehicles?.results.map((car) => (
-                <CarCard car={car} key={car.id} toastAlert={toastAlert} />
-              ))}
-            </div>
             <div className="w-full mt-4">
               <Pagination vehicles={vehicles} onPageChange={onPageChange} />
             </div>
           </div>
-          <ToastContainer
-            position="top-left"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        </div>
-      )}
+        <ToastContainer
+          position="top-left"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
     </div>
   );
 };
