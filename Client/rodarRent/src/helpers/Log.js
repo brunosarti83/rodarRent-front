@@ -4,6 +4,13 @@ import "react-toastify/dist/ReactToastify.css";
 import revalidateCustomerData from './revalidateCustomerData';
 
 export const successLogin = async (customerData, navigate) => {
+  
+  let needToOpenModal = false
+  const {address, zipCode, phoneNumber,city, country} = customerData
+  if (address==='n/a' || zipCode==='n/a' || phoneNumber==='n/a' || city==='n/a' || country==='n/a') {
+    needToOpenModal=true
+  } 
+  
   const newData = await revalidateCustomerData(customerData)
   setLocalStorage('isLoggedIn', true)
   setLocalStorage('loginData', newData);
@@ -11,8 +18,11 @@ export const successLogin = async (customerData, navigate) => {
   customerData.given_name? name = customerData.given_name:name = customerData.name
   toast.success('Welcome!, ' + name, { position: 'top-left' }); //Mensaje al inicio en vista de usuario
   setTimeout(() => {
+    if(needToOpenModal) {
+      navigate('/customer/'+ newData.id)
+    } else {
     navigate('/cars');
-  }, '4000');
+  }}, '4000');
 };
 
 export const logOutSession = async (navigate) =>{
