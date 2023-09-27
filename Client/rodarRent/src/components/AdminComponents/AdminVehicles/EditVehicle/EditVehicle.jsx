@@ -144,7 +144,7 @@ const EditVehicle = ({ selectedVehicle }) => {
             {loading ? (
                 <Loader />
             ) : (
-                <div className="font-poppins px-2">
+                <div className="font-poppins px-2 dark:text-gray-100">
                     <div className="font-bold text-xl">
                         <h2>Edit Your Vehicle</h2>
                     </div>
@@ -174,7 +174,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         name="brand"
                                         onChange={handleChange}
                                         type="text"
-                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 ml-auto text-end w-5/6 rounded-lg"
+                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 ml-auto text-end w-5/6 rounded-lg dark:bg-slate-950"
                                         defaultValue={vehicle?.brand}
                                     />
                                 </div>
@@ -203,7 +203,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         name="model"
                                         onChange={handleChange}
                                         type="text"
-                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto rounded-lg w-5/6"
+                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto rounded-lg w-5/6 dark:bg-slate-950 "
                                         defaultValue={vehicle?.model}
                                     />
                                 </div>
@@ -232,7 +232,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         name="domain"
                                         onChange={handleChange}
                                         type="text"
-                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg"
+                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg dark:bg-slate-950 "
                                         defaultValue={vehicle?.domain}
                                     />
                                 </div>
@@ -244,7 +244,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         onChange={handleChange}
                                         name="type"
                                         id=""
-                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg"
+                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg dark:bg-slate-950 "
                                         defaultValue={vehicle?.type}
                                     >
                                         {carEnums.type.map((el, index) => (
@@ -279,7 +279,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         name="passengers"
                                         onChange={handleChange}
                                         type="text"
-                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg"
+                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg dark:bg-slate-950 "
                                         defaultValue={vehicle?.passengers}
                                     />
                                 </div>
@@ -291,7 +291,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         onChange={handleChange}
                                         name="transmission"
                                         id=""
-                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg"
+                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg dark:bg-slate-950 "
                                         defaultValue={vehicle?.transmission}
                                     >
                                         {carEnums.transmission.map((el, index) => (
@@ -309,7 +309,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         onChange={handleChange}
                                         name="fuel"
                                         id=""
-                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg"
+                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg dark:bg-slate-950 "
                                         defaultValue={vehicle?.fuel}
                                     >
                                         {carEnums.fuel.map((el, index) => (
@@ -344,7 +344,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                                         name="pricePerDay"
                                         onChange={handleChange}
                                         type="text"
-                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg"
+                                        className="border border-gray-200 drop-shadow-lg px-3 py-1 text-end ml-auto w-5/6 rounded-lg dark:bg-slate-950 "
                                         defaultValue={`$ ${vehicle?.pricePerDay}.00`}
                                     />
                                 </div>

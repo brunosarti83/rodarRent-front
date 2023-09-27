@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BiErrorCircle } from "react-icons/bi";
+
 
 function Register() {
   const navigate = useNavigate();
@@ -28,6 +30,12 @@ function Register() {
     password: '',
     repeatPass: '',
   });
+
+  const [showError, setShowError] = useState({
+    email: false,
+    password: false,
+    repeatPass: false
+  })
 
   const [errors, setErrors] = useState({
     name: '',
@@ -76,431 +84,385 @@ function Register() {
     try {
       const response = await axios.post(`${API_BASE_URL}/customers`, data);
       toast.success('Registered user!', { position: 'top-left' });
-  
+
       setTimeout(() => {
         navigate('/login');
       }, 4000);
-  
+
       const body = {
-        userName: response.data.name, 
-        toEmailAddress: response.data.email, 
+        userName: response.data.name,
+        toEmailAddress: response.data.email,
         replyToEmailAddress: 'rodarrent@outlook.com',
-        subject: `Welcome ${response.data.name}`, 
+        subject: `Welcome ${response.data.name}`,
         template: 'register',
       };
-  
+
       await axios.post(`${API_BASE_URL}/sendemail`, body);
     } catch (error) {
       toast.error(error.response.data.error, { position: 'top-left' });
     }
   };
-  
+
 
   const handleGoogleReg = async (event) => {
     event.preventDefault();
-    window.location.href = routesHelper.baseBackUrl+routesHelper.authGoogle
+    window.location.href = routesHelper.baseBackUrl + routesHelper.authGoogle
   }
 
   return (
     <div className='w-full h-[calc(100vh-112px)] bg-white dark:bg-slate-900 transition duration-300 dark:text-gray-100 flex items-center justify-center'>
-      <div className='drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900'>
-        <form className='px-16 pt-10 flex flex-col flex-wrap w-full rounded-xl justify-center'>
-          <h1 className='font-poppins p-2 text-3xl'>Welcome to RodarRent!</h1>
-          <h6 className='font-poppins p-2 text-gray'>Please enter your info</h6>
-          <hr className='ml-8 mr-8 p-2 text-gray' />
-          <div className='flex'>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='name'
-              >
-                Name
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray '
-                  type='text'
-                  name='name'
-                  value={userData.name}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.name
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
+      <div className='h-register flex' >
+        <div className='drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900'>
+          <form className='px-16 pt-10 flex flex-col flex-wrap w-full rounded-xl justify-center'>
+            <h1 className='font-poppins p-2 text-3xl'>Welcome to RodarRent!</h1>
+            <h6 className='font-poppins p-2 text-gray'>Please enter your info</h6>
+            <hr className='ml-8 mr-8 p-2 text-gray' />
+            <div className='flex'>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='name'
                 >
-                  {errors.name}
-                </span>
+                  Name
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray '
+                    type='text'
+                    name='name'
+                    value={userData.name}
+                    onChange={handleChange}
+                  />
+                  {errors.name && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='lastName'
+                >
+                  Last Name
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='text'
+                    name='lastName'
+                    value={userData.lastName}
+                    onChange={handleChange}
+                  />
+                  {errors.lastName && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='lastName'
-              >
-                Last Name
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='text'
-                  name='lastName'
-                  value={userData.lastName}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.lastName
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
+            <div className='flex'>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='email'
                 >
-                  {errors.lastName}
-                </span>
+                  E-mail
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='text'
+                    name='email'
+                    value={userData.email}
+                    onChange={handleChange}
+                  />
+                  {(errors.email || errors.emailMsj) && (
+                    <div
+                      className='relative'
+                      onMouseEnter={() => setShowError({ ...showError, email: true })}
+                      onMouseLeave={() => setShowError({ ...showError, email: false })}
+                    >
+                      <BiErrorCircle className={`text-red text-xl ${errors.emailMsj ? "cursor-pointer" : ""}`} />
+                      {showError.email && errors.emailMsj && (
+                        <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                          {errors.emailMsj}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='phoneNumber'
+                >
+                  Phone Number
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='text'
+                    name='phoneNumber'
+                    value={userData.phoneNumber}
+                    onChange={handleChange}
+                  />
+                  {errors.phoneNumber && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div className='flex'>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='email'
-              >
-                E-mail
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='text'
-                  name='email'
-                  value={userData.email}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.email
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
+            <div className='flex'>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='personalId'
                 >
-                  {errors.email}
-                </span>
+                  PersonalID
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='text'
+                    name='personalId'
+                    value={userData.personalId}
+                    onChange={handleChange}
+                  />
+                  {errors.personalId && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
               </div>
-              <span
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='birthDate'
+                >
+                  Birth Date
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='date'
+                    name='birthDate'
+                    value={userData.birthDate}
+                    onChange={handleChange}
+                  />
+                  {errors.birthDate && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className='flex'>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='country'
+                >
+                  Country
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='text'
+                    name='country'
+                    value={userData.country}
+                    onChange={handleChange}
+                  />
+                  {errors.country && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='city'
+                >
+                  City
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='text'
+                    name='city'
+                    value={userData.city}
+                    onChange={handleChange}
+                  />
+                  {errors.city && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className='flex'>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='address'
+                >
+                  Address
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='text'
+                    name='address'
+                    value={userData.address}
+                    onChange={handleChange}
+                  />
+                  {errors.address && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='zipCode'
+                >
+                  Zip Code
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='text'
+                    name='zipCode'
+                    value={userData.zipCode}
+                    onChange={handleChange}
+                  />
+                  {errors.zipCode && (
+                    <div>
+                      <BiErrorCircle className="text-red text-xl" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className='flex'>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 mb-0 justify-start'
+                  htmlFor='password'
+                >
+                  Password
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='password'
+                    name='password'
+                    value={userData.password}
+                    onChange={handleChange}
+                  />
+                  {(errors.password || errors.passwordMsj) && (
+                    <div
+                      className='relative'
+                      onMouseEnter={() => setShowError({ ...showError, password: true })}
+                      onMouseLeave={() => setShowError({ ...showError, password: false })}
+                    >
+                      <BiErrorCircle className={`text-red text-xl ${errors.passwordMsj ? "cursor-pointer" : ""}`} />
+                      {showError.password && errors.passwordMsj && (
+                        <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                          {errors.passwordMsj}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className='w-2/4'>
+                <label
+                  className='font-poppins text-sm flex m-1 justify-start'
+                  htmlFor='repeatPass'
+                >
+                  Repeat Password
+                </label>
+                <div className='flex items-center'>
+                  <input
+                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    type='password'
+                    name='repeatPass'
+                    value={userData.repeatPass}
+                    onChange={handleChange}
+                  />
+                  {(errors.repeatPass || errors.repeatPassMsj) && (
+                    <div
+                      className='relative'
+                      onMouseEnter={() => setShowError({ ...showError, repeatPass: true })}
+                      onMouseLeave={() => setShowError({ ...showError, repeatPass: false })}
+                    >
+                      <BiErrorCircle className={`text-red text-xl ${errors.repeatPassMsj ? "cursor-pointer" : ""}`} />
+                      {showError.repeatPass && errors.repeatPassMsj && (
+                        <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                          {errors.repeatPassMsj}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className='flex flex-col mt-4 mb-4'>
+              <button
                 className={
-                  errors.emailMsj
-                    ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                    : null
+                  disabledSubmit
+                    ? 'font-poppins bg-blue cursor-not-allowed rounded-lg p-1 m-2 text-white'
+                    : 'font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white'
                 }
+                onClick={handleSubmit}
+                disabled={disabledSubmit}
               >
-                {errors.emailMsj}
-              </span>
+                Sign Up
+              </button>
+              <button
+                onClick={handleGoogleReg}
+                className='font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray'
+              >
+                <img
+                  className='relative w-6 m-1'
+                  src="https://res.cloudinary.com/daiztctac/image/upload/v1694553181/pogqgaencfemfipzu7xo.png" //"../../src/assets/img/google_logo.png"
+                  alt='Google img'
+                ></img>
+                Sign up with google
+              </button>
             </div>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='phoneNumber'
-              >
-                Phone Number
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='text'
-                  name='phoneNumber'
-                  value={userData.phoneNumber}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.phoneNumber
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.phoneNumber}
-                </span>
-              </div>
+            <hr className='ml-8 mr-8 text-gray' />
+            <div className='flex justify-center items-center m-5'>
+              <p className='font-poppins text-gray text-xs m-2'>
+                Already have an account?
+              </p>
+              <p className='text-sm underline decoration-solid font-poppins'>
+                <Link to={routesHelper.login}>Sign in</Link>
+              </p>
             </div>
-          </div>
-          <div className='flex'>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='personalId'
-              >
-                PersonalID
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='text'
-                  name='personalId'
-                  value={userData.personalId}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.personalId
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.personalId}
-                </span>
-              </div>
-            </div>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='birthDate'
-              >
-                Birth Date
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='date'
-                  name='birthDate'
-                  value={userData.birthDate}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.birthDate
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.birthDate}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className='flex'>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='country'
-              >
-                Country
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='text'
-                  name='country'
-                  value={userData.country}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.country
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.country}
-                </span>
-              </div>
-            </div>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='city'
-              >
-                City
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='text'
-                  name='city'
-                  value={userData.city}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.city
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.city}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className='flex'>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='address'
-              >
-                Address
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='text'
-                  name='address'
-                  value={userData.address}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.address
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.address}
-                </span>
-              </div>
-            </div>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='zipCode'
-              >
-                Zip Code
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='text'
-                  name='zipCode'
-                  value={userData.zipCode}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.zipCode
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.zipCode}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className='flex'>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='password'
-              >
-                Password
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='password'
-                  name='password'
-                  value={userData.password}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.password
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.password}
-                </span>
-              </div>
-              <span
-                className={
-                  errors.passwordMsj
-                    ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                    : null
-                }
-              >
-                {errors.passwordMsj}
-              </span>
-            </div>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 justify-start'
-                htmlFor='repeatPass'
-              >
-                Repeat Password
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='password'
-                  name='repeatPass'
-                  value={userData.repeatPass}
-                  onChange={handleChange}
-                />
-                <span
-                  className={
-                    errors.repeatPass
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.repeatPass}
-                </span>
-              </div>
-              <span
-                className={
-                  errors.repeatPassMsj
-                    ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                    : null
-                }
-              >
-                {errors.repeatPassMsj}
-              </span>
-            </div>
-          </div>
-          <div className='flex flex-col mt-4 mb-4'>
-            <button
-              className={
-                disabledSubmit
-                  ? 'font-poppins bg-blue cursor-not-allowed rounded-lg p-1 m-2 text-white'
-                  : 'font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white'
-              }
-              onClick={handleSubmit}
-              disabled={disabledSubmit}
-            >
-              Sign Up
-            </button>
-            <button
-              onClick={handleGoogleReg}
-              className='font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray'
-            >
-              <img
-                className='relative w-6 m-1'
-                src="https://res.cloudinary.com/daiztctac/image/upload/v1694553181/pogqgaencfemfipzu7xo.png" //"../../src/assets/img/google_logo.png"
-                alt='Google img'
-              ></img>
-              Sign up with google
-            </button>
-          </div>
-          <hr className='ml-8 mr-8 text-gray' />
-          <div className='flex justify-center items-center m-5'>
-            <p className='font-poppins text-gray text-xs m-2'>
-              Already have an account?
-            </p>
-            <p className='text-sm underline decoration-solid font-poppins'>
-              <Link to={routesHelper.login}>Sign in</Link>
-            </p>
-          </div>
-        </form>
-      </div>
-      <div className=' h-register drop-shadow-md rounded-r-3xl flex flex-col justify-evenly items-center bg-blue'>
-        <div className='text-4xl text-center font-semibold pb-6 text-white'>
-          <h1>One step closer to</h1>
-          <h1>your dream car!</h1>
+          </form>
         </div>
-        <div className='w-100 h-auto'>
-          <img className='w-max ' src={formImage} alt='side-login-car-image' />
+        <div className='drop-shadow-md rounded-r-3xl flex flex-col justify-evenly items-center bg-blue'>
+          <div className='text-4xl text-center font-semibold pb-6 text-white'>
+            <h1>One step closer to</h1>
+            <h1>your dream car!</h1>
+          </div>
+          <div className='w-100 h-auto'>
+            <img className='w-max ' src={formImage} alt='side-login-car-image' />
+          </div>
         </div>
       </div>
       <ToastContainer

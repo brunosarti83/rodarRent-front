@@ -1,8 +1,14 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import DashboardActionsImg from '../../assets/img/dashboardClient.webp';
 
-const DashboardActions = ({ openEditModal, openEditPasswordModal }) => {
+
+const DashboardActions = ({ openEditModal, openEditPasswordModal, toast }) => {
+
+  const handleClick  = () =>{
+    toast.success('Thank you for suscribing to our newsletter!')
+  }
+
+
   return (
     <div className="w-96 h-form rounded-t-lg p-4 flex flex-col items-center">
       <div className="w-full h-2/3">
@@ -12,12 +18,8 @@ const DashboardActions = ({ openEditModal, openEditPasswordModal }) => {
         <h2 className="text-lg font-bold text-left">Actions</h2>
         <hr className="border border-gray-300" />
         <ul className="flex flex-col space-y-2 items-center h-3/4 mt-6 justify-evenly">
-
           <li className="w-full">
-            <Link to="/subscribe"
-              className="w-full py-0.5 px-8 rounded-lg bg-white drop-shadow-lg text-blue-600 border border-gray-300 dark:bg-slate-950 hover:drop-shadow-none block">
-              Subscribe to our newsletter
-            </Link>
+            <button onClick={handleClick} className="text-blue-600 py-1 px-8 rounded-lg bg-white drop-shadow-lg border border-gray-300 dark:bg-slate-950 hover:drop-shadow-none">Subscribe to our newsletter</button>
           </li>
           <li className="w-full">
             <Link to="/review"

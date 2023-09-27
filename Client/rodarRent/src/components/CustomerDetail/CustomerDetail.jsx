@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import DashboardActions from '../DashboardActions/DashboardActions';
@@ -33,9 +33,11 @@ const CustomerDetail = () => {
   const modalRefCustomer = useRef(null);
   const modalRefPasswordCustomer = useRef(null);
   const modalRefBooking = useRef(null);
-
+  const [isWarningShown, setIsWarningShown] = useState(false);
+  
 
   useEffect(() => {
+    
     const fetchVehicles = async () => {
       try {
         const response = await axios.get(getAllVehicles());
@@ -137,9 +139,17 @@ const CustomerDetail = () => {
         setIsLoading(false);
       }
     };
-
     fetchCustomerDetails();
-  },[]);
+    if(customer) {
+    const {address, zipCode, phoneNumber,city, country} = customer
+    if (address==='n/a' || zipCode==='n/a' || phoneNumber==='n/a' || city==='n/a' || country==='n/a' && !isWarningShown) {
+    openEditCustomerModal()
+    // toast.warning('Please complete your personal data', {
+    //   autoClose: 3000,
+    // })
+    setIsWarningShown(true)
+  } 
+  }}, [id,customer]);
 
   useEffect(() => {
     const fetchCustomerBookings = async () => {
