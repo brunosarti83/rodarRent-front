@@ -194,7 +194,7 @@ const EditPasswordCustomer = () => {
             </button>
           </div>
         </form>
-        <ToastContainer
+        {/* <ToastContainer
           position="top-left"
           autoClose={3000}
           hideProgressBar={false}
@@ -204,8 +204,8 @@ const EditPasswordCustomer = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="light"
-        />
+          theme="light" */}
+        {/* /> */}
       </div>
     </div>
   );
