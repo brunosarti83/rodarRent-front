@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import validateEdit from './validateEdit';
-import validatePass from './validatePass';
+
 import { getCustomerDetailsUrl, updateCustomerInfoUrl, updatePasswordUrl } from '../../helpers/routes';
 // Toastify
 import { ToastContainer, toast } from 'react-toastify';
@@ -27,7 +27,6 @@ const EditCustomer = () => {
     email: '',
   });
 
-
   const [errors, setErrors] = useState({
     id: '',
     name: '',
@@ -42,6 +41,7 @@ const EditCustomer = () => {
     email: '',
   });
 
+  const [isSaving, setIsSaving] = useState(false); 
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
@@ -49,7 +49,7 @@ const EditCustomer = () => {
         const response = await fetch(getCustomerDetailsUrl(id));
         const data = await response.json();
         setCustomer(data);
-        setErrors(validateEdit(data))
+        setErrors(validateEdit(data));
         setIsLoading(false);
         
       } catch (error) {
@@ -77,7 +77,11 @@ const EditCustomer = () => {
   };
 
   const handleSaveAndBack = async () => {
+    if (isSaving) {
+      return;
+    }
 
+    setIsSaving(true); 
 
     try {
       const response = await fetch(updateCustomerInfoUrl(id), {
@@ -89,17 +93,23 @@ const EditCustomer = () => {
       });
 
       if (response.status === 200) {
-      
         toast.success('Customer information updated successfully', {
-          autoClose: 3000
+          autoClose: 3000,
         });
 
+       
+        setTimeout(() => {
+          window.location.reload();
+          setIsSaving(false); 
+        }, 3000);
+      } else {
+        setIsSaving(false);
       }
     } catch (error) {
       console.error('Error', error);
       toast.error('Error inesperado');
+      setIsSaving(false); 
     }
-
   };
 
   if (isLoading) {
@@ -405,16 +415,14 @@ const EditCustomer = () => {
             <button
               className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
               onClick={handleSaveAndBack}
-              disabled={hasErrors()}
+              disabled={hasErrors() || isSaving}
             >
               Save
             </button>
-
           </div>
-
         </form>
         <ToastContainer
-          position='top-left'
+          position="top-left"
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
@@ -423,7 +431,8 @@ const EditCustomer = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme='light' />
+          theme="light"
+        />
       </div>
     </div>
   );
