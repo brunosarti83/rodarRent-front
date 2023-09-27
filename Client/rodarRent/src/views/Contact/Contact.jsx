@@ -3,7 +3,7 @@ import { BiPhone, BiLocationPlus, BiMailSend } from "react-icons/bi";
 import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
-import {API_BASE_URL} from '../../helpers/routes'
+import { API_BASE_URL } from '../../helpers/routes'
 
 
 const Contact = () => {
@@ -13,33 +13,33 @@ const Contact = () => {
     const [dataContact, setDataContact] = useState({
         name: "",
         email: "",
-        phone:"",
-        message : ""
+        phone: "",
+        message: ""
     })
 
-    const handleChange = (event) =>{
+    const handleChange = (event) => {
         const property = event.target.name
         const value = event.target.value
-        setDataContact({...dataContact,[property]:value})
+        setDataContact({ ...dataContact, [property]: value })
     }
 
-    const handleSubmit = async (event) =>{
+    const handleSubmit = async (event) => {
         event.preventDefault()
         const body = {
             userName: dataContact.name,
-            toEmailAddress:'rodarrent@outlook.com',
+            toEmailAddress: 'rodarrent@outlook.com',
             replyToEmailAddress: dataContact.email,
             subject: 'Contact',
             text: dataContact.message,
             template: 'normal'
         }
-        const response = await axios.post(`${API_BASE_URL}/sendemail`,body)
+        const response = await axios.post(`${API_BASE_URL}/sendemail`, body)
         formRef.current.reset()
         toast.success(`${response.data}!`, { position: 'top-left' });
     }
 
     return (
-        <div className="2xl:h-noNavDesktop lg:h-noNavLaptop px-20 py-10 transiotion duration-300 dark:bg-slate-900 dark:text-gray-100" >
+        <div className="min-h-[calc(100vh-112px)] px-20 py-10 transition duration-300 dark:bg-slate-900 dark:text-gray-100" >
             <h1 className=" text-4xl font-normal" >Get in Touch!</h1>
             <div className="flex border drop-shadow-md bg-white rounded-lg w-2/3 mx-auto mt-14 transition duration-300 dark:bg-slate-900 dark:text-gray-100" >
                 <form ref={formRef} className="basis-3/4 p-5 relative" action="">
@@ -102,17 +102,17 @@ const Contact = () => {
                 </div>
             </div>
             <ToastContainer
-        position='top-left'
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='light'
-      />
+                position='top-left'
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme='light'
+            />
         </div>
     )
 }
