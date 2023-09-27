@@ -1,11 +1,11 @@
 // Hooks & tools
-import routesHelper from "../../helpers/routes";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import routesHelper from '../../helpers/routes';
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 // Actions
-import { setFilters } from "../../redux/actions";
+import { setFilters } from '../../redux/actions';
 
 const ReservationSearch = () => {
   const dispatch = useDispatch();
@@ -28,38 +28,38 @@ const ReservationSearch = () => {
           })
           .catch((error) => {
             window.alert(
-              `An error ocurred retrieving locations from server: ${error.message}`
+              `An error ocurred retrieving locations from server: ${error.message}`,
             );
           });
       });
   }, []);
 
   const [search, setSearch] = useState({
-    startDate: filterObject.startDate ? filterObject.startDate : "",
-    finishDate: filterObject.finishDate ? filterObject.finishDate : "",
+    startDate: filterObject.startDate ? filterObject.startDate : '',
+    finishDate: filterObject.finishDate ? filterObject.finishDate : '',
     pickUpLocationId: filterObject.pickUpLocationId
       ? filterObject.pickUpLocationId
-      : "",
+      : '',
     returnLocationId: filterObject.returnLocationId
       ? filterObject.returnLocationId
-      : "",
+      : '',
   });
 
   const handleChange = (event) => {
     const property = event.target.name;
     let value = event.target.value;
     if (
-      property === "startDate" &&
+      property === 'startDate' &&
       (new Date(value) <= new Date() ||
         new Date(value) >= new Date(search.finishDate))
     ) {
-      value = "";
+      value = '';
     }
     if (
-      property === "finishDate" &&
+      property === 'finishDate' &&
       new Date(value) <= new Date(search.startDate)
     ) {
-      value = "";
+      value = '';
     }
     setSearch({ ...search, [property]: value });
   };
@@ -74,7 +74,7 @@ const ReservationSearch = () => {
         pickUpLocationId: search.pickUpLocationId,
         returnLocationId: search.returnLocationId,
         offset: 0,
-      })
+      }),
     );
   };
 
@@ -86,7 +86,7 @@ const ReservationSearch = () => {
     new Date(search.finishDate) <= new Date(search.startDate);
 
   // * Variable para verificar si el usuario es el admin
-  const isAdmin = userData?.id === "fd2daf55-3d6a-4254-ad40-74adc5229cde";
+  const isAdmin = userData?.UserId === 1;
 
   return (
     <div className=" h-18 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
@@ -99,7 +99,7 @@ const ReservationSearch = () => {
               className="text-xs border rounded dark:bg-slate-950"
               type="date"
               name="startDate"
-              value={search.startDate || ""}
+              value={search.startDate || ''}
               id=""
             />
           </div>
@@ -110,7 +110,7 @@ const ReservationSearch = () => {
               className="text-xs border rounded dark:bg-slate-950"
               type="date"
               name="finishDate"
-              value={search.finishDate || ""}
+              value={search.finishDate || ''}
               id=""
             />
           </div>
@@ -119,7 +119,7 @@ const ReservationSearch = () => {
             <select
               className="text-xs border rounded dark:bg-slate-950"
               name="pickUpLocationId"
-              value={search.pickUpLocationId || ""}
+              value={search.pickUpLocationId || ''}
               onChange={handleChange}
             >
               <option value="">Choose pick up location</option>
@@ -135,7 +135,7 @@ const ReservationSearch = () => {
             <select
               className="text-xs border rounded dark:bg-slate-950"
               name="returnLocationId"
-              value={search.returnLocationId || ""}
+              value={search.returnLocationId || ''}
               onChange={handleChange}
             >
               <option value="">Choose a return location</option>
@@ -159,9 +159,9 @@ const ReservationSearch = () => {
         <div className="flex w-1/3 justify-center">
           <Link
             className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
-            to={isAdmin ? "/admin" : `/customer/${userData.id}`}
+            to={isAdmin ? '/admin' : `/customer/${userData.id}`}
           >
-            My profile
+            {isAdmin ? 'Admin' : 'My profile'}
           </Link>
         </div>
       ) : (

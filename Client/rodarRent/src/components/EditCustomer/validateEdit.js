@@ -36,7 +36,6 @@ const validateEdit = (data) => {
   }
 
 
-
   return errors;
 };
 

@@ -1,31 +1,40 @@
+/* eslint-disable react/prop-types */
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { cloudinaryConfig } from '../../../helpers/cloudinaryConfig';
 
-const ImageUpload = () => {
+const ImageUpload = ({ newImage, toast }) => {
+
+
+
   const onDrop = async (acceptedFiles) => {
     const formData = new FormData();
     formData.append('file', acceptedFiles[0]);
-    formData.append('upload_preset', 'TU_UPLOAD_PRESET'); // Define un preset de Cloudinary
+    formData.append('upload_preset', 'rodarRent');
+
 
     try {
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/image/upload`,
         formData
       );
-
-      console.log('Imagen subida a Cloudinary:', response.data);
+      const imageUrl = response.data.secure_url;
+      newImage(imageUrl); 
+      toast.success('Image correctly uploaded');
     } catch (error) {
-      console.error('Error al subir la imagen a Cloudinary:', error);
+      toast.error('Error uploading the image', error);
+
     }
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <div {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center' }}>
-      <input {...getInputProps()} />
-      <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar una.</p>
+    <div>
+      <div {...getRootProps()} className=' p-5 text-center border-dashed border-2 border-gray-600 cursor-pointer'>
+        <input {...getInputProps()} />
+        <p>Drag and drop an image, or click to upload</p>
+      </div>
     </div>
   );
 };
