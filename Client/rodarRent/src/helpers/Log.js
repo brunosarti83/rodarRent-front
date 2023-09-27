@@ -5,7 +5,6 @@ import revalidateCustomerData from './revalidateCustomerData';
 
 export const successLogin = async (customerData, navigate) => {
   const newData = await revalidateCustomerData(customerData)
-  console.log(newData)
   setLocalStorage('isLoggedIn', true)
   setLocalStorage('loginData', newData);
   let name = ''
