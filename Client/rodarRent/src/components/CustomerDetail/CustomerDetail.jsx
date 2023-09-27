@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import DashboardActions from '../DashboardActions/DashboardActions';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import EditCustomer from '../EditCustomer/EditCustomer';
+import EditPasswordCustomer from '../EditCustomer/EditPasswordCustomer';
 import EditBooking from '../EditBooking/EditBooking';
 import CustomerInfo from '../CustomerInfo/CustomerInfo';
 import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
@@ -25,10 +27,13 @@ const CustomerDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [isEditCustomerModalOpen, setIsEditCustomerModalOpen] = useState(false);
+  const [isEditPasswordCustomerModalOpen, setIsEditPasswordCustomerModalOpen] = useState(false);
   const [isEditBookingModalOpen, setIsEditBookingModalOpen] = useState(false);
   const [allVehicles, setAllVehicles] = useState([]);
-  const modalRefCustomer = useRef();
-  const modalRefBooking = useRef();
+  const modalRefCustomer = useRef(null);
+  const modalRefPasswordCustomer = useRef(null);
+  const modalRefBooking = useRef(null);
+
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -59,7 +64,16 @@ const CustomerDetail = () => {
   const closeEditCustomerModal = () => {
     setIsEditCustomerModalOpen(false);
 
-    toast.success('Customer information updated successfully', {
+  };
+
+  const openEditPasswordCustomerModal = () => {
+    setIsEditPasswordCustomerModalOpen(true);
+  };
+
+  const closeEditPasswordCustomerModal = () => {
+    setIsEditPasswordCustomerModalOpen(false);
+
+    toast.success('Customer Password updated successfully', {
       position: 'top-left',
       autoClose: 3000,
     });
@@ -76,6 +90,8 @@ const CustomerDetail = () => {
   const handleOverlayClick = (e) => {
     if (modalRefCustomer.current && e.target === modalRefCustomer.current) {
       closeEditCustomerModal();
+    } else if (modalRefPasswordCustomer.current && e.target === modalRefPasswordCustomer.current) {
+      closeEditPasswordCustomerModal();
     } else if (modalRefBooking.current && e.target === modalRefBooking.current) {
       closeEditBookingModal();
     }
@@ -84,9 +100,11 @@ const CustomerDetail = () => {
   const closeModalOnClickOutside = (e) => {
     if (
       (modalRefCustomer.current && !modalRefCustomer.current.contains(e.target)) ||
+      (modalRefPasswordCustomer.current && !modalRefPasswordCustomer.current.contains(e.target)) ||
       (modalRefBooking.current && !modalRefBooking.current.contains(e.target))
     ) {
       closeEditCustomerModal();
+      closeEditPasswordCustomerModal();
       closeEditBookingModal();
     }
   };
@@ -123,29 +141,33 @@ const CustomerDetail = () => {
         if (id) {
           const response = await fetch(getBookingsByIdCustomerUrl(id));
           const data = await response.json();
-          const formattedData = data.map((booking) => ({
-            ...booking,
-            formattedStartDate: new Date(booking.startDate).toLocaleDateString(),
-            formattedFinishDate: new Date(booking.finishDate).toLocaleDateString(),
-          }));
-          
-          const sortedBookings = sortBookingsByStartDate(formattedData);
-          setCustomerBookings(sortedBookings);
+
+          if (Array.isArray(data)) {
+            const formattedData = data.map((booking) => ({
+              ...booking,
+              formattedStartDate: new Date(booking.startDate).toLocaleDateString(),
+              formattedFinishDate: new Date(booking.finishDate).toLocaleDateString(),
+            }));
+
+            const sortedBookings = sortBookingsByStartDate(formattedData);
+            setCustomerBookings(sortedBookings);
+          } else {
+            console.error('Data is not an array:', data);
+          }
         }
       } catch (error) {
         console.error('Error', error);
       }
     };
-  
+
     fetchCustomerBookings();
   }, [id]);
-  
+
 
   const handleEditBooking = (bookingId) => {
     setSelectedBookingId(bookingId);
     openEditBookingModal();
   };
-
 
   const handleLogout = () => {
     dispatch(logOut(navigate));
@@ -179,7 +201,7 @@ const CustomerDetail = () => {
 
   return (
     <div className="h-noNavDesktop font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100">
-      <div className="w-full h-16">
+      <div className="w-full h-16 rounded-t-lg p-6 flex flex-col justify-evenly ">
         <WelcomeCustomer customer={customer} onLogout={handleLogout} />
       </div>
       <div className="grid grid-cols-3 grid-row-3 h-customerDetail">
@@ -240,18 +262,12 @@ const CustomerDetail = () => {
                               >
                                 {booking.stateBooking}
                               </span>
-                              <div className="flex text-2xl" >
-                                {booking.stateBooking === 'confirmed' && (
-
-                                  <BiTrash onClick={() => handleEditBooking(booking.id)} className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200" />
-
-                                )}
-                                {booking.stateBooking === 'pending' && (
-
-
-
-                                  <BiTrash onClick={() => handleEditBooking(booking.id)} className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200" />
-
+                              <div className="flex text-2xl">
+                                {(booking.stateBooking === 'confirmed' || booking.stateBooking === 'pending') && (
+                                  <BiTrash
+                                    onClick={() => handleEditBooking(booking.id)}
+                                    className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200"
+                                  />
                                 )}
                               </div>
                             </div>
@@ -281,7 +297,8 @@ const CustomerDetail = () => {
         </div>
 
         <div className="row-start-1 row-end-4 col-start-3 flex justify-center">
-          <DashboardActions openEditModal={openEditCustomerModal} />
+          <DashboardActions openEditModal={openEditCustomerModal}
+          openEditPasswordModal={openEditPasswordCustomerModal} />
         </div>
 
         <Modal
@@ -296,6 +313,19 @@ const CustomerDetail = () => {
         >
           <EditCustomer closeEditModal={closeEditCustomerModal} />
         </Modal>
+   
+        <Modal
+          isOpen={isEditPasswordCustomerModalOpen}
+          onRequestClose={closeEditPasswordCustomerModal}
+          shouldCloseOnOverlayClick={true}
+          contentLabel="Edit Password Modal"
+          className="fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
+          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black"
+          ref={modalRefPasswordCustomer}
+          onAfterOpen={closeModalOnClickOutside}
+          >
+          <EditPasswordCustomer closeEditPasswordModal={closeEditPasswordCustomerModal} />
+          </Modal>
 
         <Modal
           isOpen={isEditBookingModalOpen}
@@ -308,8 +338,7 @@ const CustomerDetail = () => {
           onAfterOpen={closeModalOnClickOutside}
         >
           {selectedBookingId && (
-           <EditBooking bookingId={selectedBookingId} allVehicles={allVehicles} onClose={closeEditBookingModal} />
-
+            <EditBooking bookingId={selectedBookingId} allVehicles={allVehicles} onClose={closeEditBookingModal} />
           )}
         </Modal>
       </div>
