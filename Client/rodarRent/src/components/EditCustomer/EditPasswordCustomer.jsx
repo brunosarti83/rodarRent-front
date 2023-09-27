@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom'; // Importa useParams correctamente
 import Loader from '../Loader/Loader';
 import validatePass from './validatePass';
 import { updatePasswordUrl } from '../../helpers/routes';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ChangePassword = (useParams) => {
-  const { id } = useParams();
-  console.log(useParams);
+const EditPasswordCustomer = () => {
+  const { id } = useParams(); // Usa useParams correctamente
   const [passwordFields, setPasswordFields] = useState({
     currentPassword: '',
     password: '',
@@ -54,6 +53,7 @@ const ChangePassword = (useParams) => {
 
       if (response.ok) {
         setPasswordError(null);
+        
         toast.success('Password updated successfully');
 
       } else {
@@ -201,4 +201,4 @@ const ChangePassword = (useParams) => {
   );
 };
 
-export default ChangePassword;
+export default EditPasswordCustomer;
