@@ -1,6 +1,5 @@
 // Components
 import Loader from "../../../Loader/Loader";
-import Pagination from "../PaginationAdminVehicle";
 // hooks & libraries
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
@@ -10,7 +9,7 @@ import loadImage from "../../../../helpers/loadImage";
 import useLocations from "../../../../helpers/useLocations";
 
 const CreateVehicle = () => {
-  const locations = useLocations(); // custom hook
+  const locations = useLocations();
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState({}); //this could be a custom hook - leave for later
   const [images, setImages] = useState({});
@@ -75,12 +74,11 @@ const CreateVehicle = () => {
     );
   }, []);
 
-  const { fileRejections, getRootProps, getInputProps, isDragActive } =
-    useDropzone({
-      onDrop,
-      accept: "image/jpeg,image/jpg,image/png,image/webp",
-      maxFiles: 1,
-    });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: "image/jpeg,image/jpg,image/png,image/webp",
+    maxFiles: 1,
+  });
 
   const onUseImage = async () => {
     const secureURL = await loadImage(files[0]);
@@ -101,7 +99,7 @@ const CreateVehicle = () => {
     e.preventDefault();
     axios
       .post(`${API_BASE_URL}/vehicles`, [newVehicle])
-      .then((response) => {
+      .then(() => {
         window.alert("New Vehicle Loaded"); // change to Toast
       })
       .catch((err) => {
@@ -126,24 +124,26 @@ const CreateVehicle = () => {
       image: "",
       LocationId: "",
     });
-    setThisModelImages([])
-    setNowShowing("")
+    setThisModelImages([]);
+    setNowShowing("");
   };
   ///////////////////////
   // image Changer
   const handleImgNext = () => {
-    setNowShowing(thisModelImages[thisModelImages.indexOf(nowShowing)+1])
-  }
+    setNowShowing(thisModelImages[thisModelImages.indexOf(nowShowing) + 1]);
+  };
   const handleImgPrev = () => {
-    setNowShowing(thisModelImages[thisModelImages.indexOf(nowShowing)-1])
-  }
+    setNowShowing(thisModelImages[thisModelImages.indexOf(nowShowing) - 1]);
+  };
   /////////////////////
 
   return loading ? (
-    <Loader />
+    <div className="my-auto">
+      <Loader />
+    </div>
   ) : (
     <div className="font-poppins text-sm px-1">
-      <h3 className="text-lg font-semibold">Load New Vehicle Details:</h3>
+      <h3 className="text-lg font-semibold my-3">Load New Vehicle Details:</h3>
       {/* this should be a Form with a Submmit and validations */}
       <form>
         <div className="flex w-full my-2">
@@ -320,13 +320,22 @@ const CreateVehicle = () => {
               </div>
               {thisModelImages.length > 1 && (
                 <div className="flex justify-center">
-                  {thisModelImages.indexOf(nowShowing) < thisModelImages.length-1 && (
-                    <div className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer" 
-                    onClick={handleImgNext}>⇒</div>
+                  {thisModelImages.indexOf(nowShowing) <
+                    thisModelImages.length - 1 && (
+                    <div
+                      className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer"
+                      onClick={handleImgNext}
+                    >
+                      ⇒
+                    </div>
                   )}
                   {thisModelImages.indexOf(nowShowing) > 0 && (
-                    <div className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer" 
-                    onClick={handleImgPrev}>⇐</div>
+                    <div
+                      className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer"
+                      onClick={handleImgPrev}
+                    >
+                      ⇐
+                    </div>
                   )}
                 </div>
               )}
@@ -384,22 +393,22 @@ const CreateVehicle = () => {
         </div>
         <div className="flex justify-around">
           <div>
-          <button
-            onClick={handleSubmit}
-            disabled={disable}
-            className="bg-blue text-white h-10 px-10 mr-auto rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
-          >
-            Accept
-          </button>
+            <button
+              onClick={handleSubmit}
+              disabled={disable}
+              className="bg-blue text-white h-10 px-10 mr-auto rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
+            >
+              Accept
+            </button>
           </div>
           <div>
-          <button
-            onClick={handleClear}
-            disabled={disable}
-            className="bg-white text-gray-500 h-10 px-10 mr-auto rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
-          >
-            Clear
-          </button>
+            <button
+              onClick={handleClear}
+              disabled={disable}
+              className="bg-white text-gray-500 h-10 px-10 mr-auto rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
+            >
+              Clear
+            </button>
           </div>
         </div>
       </form>
