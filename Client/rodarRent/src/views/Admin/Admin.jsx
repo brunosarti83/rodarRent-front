@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom"
 
 const Admin = () =>{
     return(
-        <div className="h-noNavDesktop w-full flex p-4 ">
+        <div className="min-h-[calc(100vh-112px)] w-full flex  ">
             <AdminNav/>
             <Outlet /> 
         </div>

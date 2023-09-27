@@ -145,14 +145,14 @@ const AdminVehicles = () => {
   return (
     <>
       {loading ?
-        (<div className="h-full w-[calc(100vw-256px)] flex items-center justify-center " >
+        (<div className="h-[calc(100vh-112px)] w-[calc(100vw-256px)] flex items-center justify-center dark:bg-slate-900 dark:text-gray-100 " >
           <Loader />
         </div>) :
-        (<div className="w-[calc(100vw-256px)] h-full px-14 py-2" >
+        (<div className="w-[calc(100vw-256px)] min-h-[calc(100vh-112px)] px-14 py-2 dark:bg-slate-900 dark:text-gray-100 " >
           {/* SearchBar */}
           <div className="mb-3">
-            <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/6 flex items-center">
-              <input ref={searchRef} onChange={handleChange} className="px-3 py-2 w-4/5" type="text" placeholder="Type a car domain" />
+            <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/6 flex items-center dark:bg-slate-950 dark:border-none">
+              <input ref={searchRef} onChange={handleChange} className="px-3 py-2 w-4/5 dark:bg-slate-950" type="text" placeholder="Type a car domain" />
               <button onClick={handleSubmit} className="w-1/5 py-3 px-3 flex justify-center items-center hover:scale-125 transition-transform duration-300" >
                 <BiSearch />
               </button>
@@ -181,13 +181,13 @@ const AdminVehicles = () => {
               </div>
             </div>
             {/* Actions Panel */}
-            <div className="w-1/5 bg-white border border-gray-200 drop-shadow-lg rounded-lg font-poppins p-4" >
+            <div className="w-1/5 bg-white border border-gray-200 drop-shadow-lg rounded-lg font-poppins p-4 dark:bg-slate-950 dark:border-none" >
               <div className="text-4xl font-normal border-b border-b-gray-300" >
                 <h1>Actions</h1>
               </div>
               <br></br>
               <div
-                className="w-full bg-white border-gray-200 drop-shadow-lg rounded-lg font-poppins p-2 text-sm text-center hover:cursor-pointer"
+                className="w-full bg-white border-gray-200 drop-shadow-lg rounded-lg font-poppins p-2 text-sm text-center hover:cursor-pointer dark:bg-slate-900"
                 onClick={() => openModal(3)}
               >
                 <h4>Create New Vehicle</h4>
@@ -201,15 +201,15 @@ const AdminVehicles = () => {
             onRequestClose={() => closeModal(1)}
           >
             {selectedVehicle && (
-              <div className="w-full h-full bg-white flex flex-col items-center justify-center font-poppins" >
+              <div className="w-full h-full bg-white flex flex-col items-center justify-center font-poppins dark:bg-slate-900 dark:text-gray-100" >
                 <h3 className="text-2xl font-bold" >Are you sure you want to delete this vehicle?</h3>
                 <h2 className="pt-5 text-lg  " >Domain: <span className="font-semibold" >{selectedVehicle.domain}</span></h2>
                 <div className="flex justify-evenly w-full pt-5 " >
-                  <button onClick={() => handleDelete(selectedVehicle.id)} className=" w-1/5 py-1 flex justify-evenly items-center text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-green-700 hover:text-white transition-all duration-300">
+                  <button onClick={() => handleDelete(selectedVehicle.id)} className=" w-1/5 py-1 flex justify-evenly items-center text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-green-700 hover:text-white transition-all duration-300 dark:bg-slate-950 dark:hover:bg-green-700">
                     Yes
                     <BiMessageAltCheck />
                   </button>
-                  <button onClick={() => closeModal(1)} className=" w-1/5 py-1 flex items-center justify-evenly text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-red hover:text-white transition-all duration-300 " >
+                  <button onClick={() => closeModal(1)} className=" w-1/5 py-1 flex items-center justify-evenly text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-red hover:text-white transition-all duration-300 dark:bg-slate-950 dark:hover:bg-red " >
                     No
                     <BiMessageAltX />
                   </button>
