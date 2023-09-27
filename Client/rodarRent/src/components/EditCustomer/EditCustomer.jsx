@@ -40,9 +40,6 @@ const EditCustomer = () => {
     zipCode: '',
     phoneNumber: '',
     email: '',
-    currentPassword: '',
-    password: '',
-    repeatPass: '',
   });
 
 
@@ -54,6 +51,7 @@ const EditCustomer = () => {
         setCustomer(data);
         setErrors(validateEdit(data))
         setIsLoading(false);
+        
       } catch (error) {
         console.error('Error', error);
         setIsLoading(false);
@@ -68,6 +66,7 @@ const EditCustomer = () => {
       setEditedFields({
         ...customer,
       });
+      setErrors(validateEdit(editedFields));
     }
   }, [customer]);
 
