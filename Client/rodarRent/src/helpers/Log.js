@@ -13,7 +13,7 @@ export const successLogin = (customerData, navigate) => {
   }, '4000');
 };
 
-export const logOutSession = (navigate) =>{
+export const logOutSession = async (navigate) =>{
   setLocalStorage('isLoggedIn', false)
   removeLocalStorage('loginData')
   toast.success('Logged Out Succesfuly',{position:'top-left'})
