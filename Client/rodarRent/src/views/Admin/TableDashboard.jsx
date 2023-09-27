@@ -7,9 +7,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableVirtuoso } from 'react-virtuoso';
-import { useQuery } from "react-query";
 
 const columns = [
+
   {
     width: 120,
     label: 'Domain',
@@ -58,12 +58,13 @@ function fixedHeaderContent({ handleSort }) {
         <TableCell
           key={column.dataKey}
           variant="head"
-          align={column.numeric || false ? 'right' : 'left'}
+          align={"center"}
           style={{ width: column.width }}
           sx={{
             backgroundColor: '#2e96ff',
             color: 'white',
             cursor: 'pointer',
+            
           }}
           onClick={() => handleColumnClick(column)}
           className="hover:scale-110 transform transition-transform cursor-pointer"
@@ -77,13 +78,13 @@ function fixedHeaderContent({ handleSort }) {
 }
 
 function rowContent(index, row) {
-  const isEvenRow = index % 2 === 0; // Determina si la fila es par o impar
+  const isEvenRow = index % 2 === 0; 
   return (
     <React.Fragment>
       {columns.map((column) => (
         <TableCell
           key={column.dataKey}
-          align={column.numeric || false ? 'right' : 'left'}
+          align={column.numeric ? 'center' : 'center'}
           className={`${isEvenRow ? 'bg-gray-200' : 'bg-white'} ${
             column.dataKey === 'finishDate' ? '' : row[column.dataKey]
           }`}
@@ -95,12 +96,9 @@ function rowContent(index, row) {
   );
 }
 
-export default function TableDashboard() {
-  const queryVehicles = useQuery(["vehicles"], () =>
-    fetch("http://localhost:3001/vehicles").then((res) => res.json())
-  );
+export default function TableDashboard({data}) {
 
-  const [tableData, setTableData] = useState(queryVehicles.data?.results || []);
+  const [tableData, setTableData] = useState(data);
   const [sortColumn, setSortColumn] = useState(null);
 
   const handleSort = (column) => {

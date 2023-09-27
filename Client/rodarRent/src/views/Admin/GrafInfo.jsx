@@ -1,87 +1,97 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import * as echarts from "echarts";
 import { useQuery } from "react-query";
 
+export const GrafInfo = () => {
+  const querySummary = useQuery(["booking", "summary"], () =>
+    fetch("http://localhost:3001/booking/summary").then((res) => res.json())
+  );
 
-export const GrafInfo =()=> {
+  useEffect(() => {
+    if (querySummary.isLoading || querySummary.isError) return;
 
-//     const querySummary = useQuery(["summary"], () =>
-//     fetch("http://localhost:3001/booking/summary").then((res) => res.json())
-//   );
-
-//   const dataSummary = querySummary.data
-
-    useEffect(() => {
-        const chartContainer = document.getElementById("hireCancel");
+    const chartContainer = document.getElementById("hireCancel");
     const hireCancel = echarts.init(chartContainer);
-    
+
+    const colorMappings = {
+      verde: "blue",
+      rojo: "red",
+      amarillo: "yellow",
+      azul: "green",
+    };
+
+    const data = querySummary?.data?.map((e) => ({
+      name: e.stateBooking,
+      value: e.count,
+      itemStyle: {
+        color: colorMappings[e.color] || "gray",
+      },
+    }));
+
     const options = {
-        grid: {},
-        title: {
-            text: "State Registry",
-            textStyle: {
-                fontSize: 20,
-                fontWeight: "bold",
-            },
-            left: "center",
-            top: "10",
+      grid: {},
+      title: {
+        text: "State Registry",
+        textStyle: {
+          fontSize: 20,
+          fontWeight: "bold",
+          color:"black",
+          textAlign:"center"
         },
-        tooltip: {
-            trigger: "item",
-        },
-        legend: {
-            orient: "vertical",
-            left: "25",
-            bottom: "80",
-        },
-        series: [
-            {
-                name: "Access From",
-                type: "pie",
-                radius: ["40%", "80%"],
-                avoidLabelOverlap: true,
-                height: "250px",
-                itemStyle: {
-                    borderRadius: 10,
-                    borderColor: "#fff",
-                    borderWidth: 2,
-                },
-                left:85,
-                top:40,
-                label: {
-                    show: false,
-                    position: "center",
-                },
+        left: "center",
+        top: "10",
+      },
+      tooltip: {
+        trigger: "item",
+      },
+      legend: {
+        orient: "vertical",
+        left: "25",
+        bottom: "80",
+      },
+      series: [
+        {
+          name: "Access From",
+          type: "pie",
+          radius: ["40%", "80%"],
+          avoidLabelOverlap: true,
+          height: "250px",
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: "#fff",
+            borderWidth: 2,
+          },
+          left: 85,
+          top: 40,
+          label: {
+            show: false,
+            position: "center",
+          },
           emphasis: {
             label: {
               show: true,
               fontSize: 20,
               fontWeight: "bold",
             },
-        },
+          },
           labelLine: {
             show: false,
+          },
+          data: data,
         },
-          data: [
-              { value: 5, name: "Cancel", itemStyle: { color: "red" } },
-              { value: 8, name: "Hired", itemStyle: { color: "green" } },
-            { value: 5, name: "Pending", itemStyle: { color: "yellow" } },
-            { value: 4, name: "Aprobed", itemStyle: { color: "blue" } },
+      ],
+    };
 
-        ],
-    },
-],
-};
+    hireCancel.setOption(options);
 
-hireCancel.setOption(options);
-return () => {
-    hireCancel.dispose();
-};
-});
+    return () => {
+      hireCancel.dispose();
+    };
+  }, [querySummary?.data]);
 
-return (
+  return (
     <div className="h-full">
-    <div id="hireCancel" className=" h-72"></div>
-  </div>
-)
-}
+      <div id="hireCancel" className=" h-72"></div>
+    </div>
+  );
+};
