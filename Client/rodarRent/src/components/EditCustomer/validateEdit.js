@@ -40,4 +40,3 @@ const validateEdit = (data) => {
 };
 
 export default validateEdit;
-

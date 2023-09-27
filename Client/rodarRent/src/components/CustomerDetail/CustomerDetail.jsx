@@ -74,11 +74,6 @@ const CustomerDetail = () => {
 
   const closeEditPasswordCustomerModal = () => {
     setIsEditPasswordCustomerModalOpen(false);
-
-    toast.success('Customer Password updated successfully', {
-      position: 'top-left',
-      autoClose: 3000,
-    });
   };
 
   const openEditBookingModal = () => {
@@ -128,6 +123,12 @@ const CustomerDetail = () => {
         const data = await response.json();
         setCustomer(data);
         setIsLoading(false);
+        const {address, zipCode, phoneNumber, city, country} = data
+    if (address === 'n/a' || zipCode === 'n/a' || phoneNumber === 'n/a' || city === 'n/a' || country === 'n/a'){
+        //toast.info("Please complete your personal data")
+        openEditCustomerModal()
+      //console.log("Please complete your personal data");
+    }
       } catch (error) {
         console.error('Error', error);
         setIsLoading(false);
@@ -316,7 +317,7 @@ const CustomerDetail = () => {
           onRequestClose={closeEditCustomerModal}
           shouldCloseOnOverlayClick={true}
           contentLabel="Edit Customer Modal"
-          className="fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
+          className="outline-none fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
           overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black"
           ref={modalRefCustomer}
           onAfterOpen={closeModalOnClickOutside}
