@@ -85,8 +85,8 @@ const ReservationSearch = () => {
     !search.returnLocationId ||
     new Date(search.finishDate) <= new Date(search.startDate);
 
-  // verify if user isAdmin
-  const isAdmin = userData?.UserId === "1";
+  // * Variable para verificar si el usuario es el admin
+  const isAdmin = userData?.UserId === 1;
 
   return (
     <div className=" h-18 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
@@ -156,25 +156,14 @@ const ReservationSearch = () => {
         </form>
       </div>
       {isLoggedIn ? (
-        isAdmin ? (
-          <div className="flex w-1/3 justify-center">
-            <Link
-              className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
-              to={"/admin"}
-            >
-              Dashboard
-            </Link>
-          </div>
-        ) : (
-          <div className="flex w-1/3 justify-center">
-            <Link
-              className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
-              to={`/customer/${userData.id}`}
-            >
-              My profile
-            </Link>
-          </div>
-        )
+        <div className="flex w-1/3 justify-center">
+          <Link
+            className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
+            to={isAdmin ? "/admin" : `/customer/${userData.id}`}
+          >
+            {isAdmin ? "Admin" : "My profile"}
+          </Link>
+        </div>
       ) : (
         <div className="flex w-1/3 justify-evenly">
           <Link
