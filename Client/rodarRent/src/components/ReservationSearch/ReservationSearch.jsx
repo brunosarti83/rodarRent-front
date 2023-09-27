@@ -10,7 +10,7 @@ import { setFilters } from "../../redux/actions";
 const ReservationSearch = () => {
   const dispatch = useDispatch();
   const filterObject = useSelector((state) => state.veh.filterObject);
-  const userData = useSelector((state) => state.auth.customer[0]);
+  const userData = useSelector((state) => state.auth.customer);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [locations, setLocations] = useState([]);
 
