@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import DashboardActionsImg from '../../assets/img/dashboardClient.webp';
 
 
-const DashboardActions = ({ openEditModal, toast }) => {
+const DashboardActions = ({ openEditModal, openEditPasswordModal, toast }) => {
 
   const handleClick  = () =>{
     toast.success('Thank you for suscribing to our newsletter!')
