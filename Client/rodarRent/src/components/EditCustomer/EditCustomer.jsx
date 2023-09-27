@@ -27,11 +27,6 @@ const EditCustomer = () => {
     email: '',
   });
 
-  const [passwordFields, setPasswordFields] = useState({
-    currentPassword: '',
-    password: '',
-    repeatPass: '',
-  });
 
   const [errors, setErrors] = useState({
     id: '',
@@ -50,9 +45,6 @@ const EditCustomer = () => {
     repeatPass: '',
   });
 
-  const [passwordError, setPasswordError] = useState(null);
-
-  const [buttonText, setButtonText] = useState('Save');
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
@@ -60,6 +52,7 @@ const EditCustomer = () => {
         const response = await fetch(getCustomerDetailsUrl(id));
         const data = await response.json();
         setCustomer(data);
+        setErrors(validateEdit(data))
         setIsLoading(false);
       } catch (error) {
         console.error('Error', error);
@@ -84,45 +77,9 @@ const EditCustomer = () => {
     setErrors(validateEdit({ ...editedFields, [name]: value }));
   };
 
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-    setButtonText('Save Password');
-    setPasswordFields({ ...passwordFields, [name]: value });
-    setErrors(validatePass({ ...passwordFields, [name]: value }));
-  };
-
-  const handleUpdatePassword = async () => {
-
-    try {
-      if (passwordFields.password !== passwordFields.repeatPass) {
-        setPasswordError('Passwords do not match');
-        return;
-      }
-
-      const response = await fetch(updatePasswordUrl(id), {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: id,
-          currentPassword: passwordFields.currentPassword,
-          newPassword: passwordFields.password,
-        }),
-      });
-      setButtonText('Save');
-      handleSaveAndBack();
-
-      if (response.ok) {
-        setPasswordError(null);
-        console.log("Actualizada");
-      }
-    } catch (error) {
-      console.log('Error', error);
-    }
-  };
-
   const handleSaveAndBack = async () => {
+
+
     try {
       const response = await fetch(updateCustomerInfoUrl(id), {
         method: 'PUT',
@@ -132,23 +89,19 @@ const EditCustomer = () => {
         body: JSON.stringify(editedFields),
       });
 
-      setButtonText('Save');
-
       if (response.status === 200) {
-        toast.success('Datos actualizados con éxito');
-        setTimeout(() => {
-          window.location.href = `/customer/${id}`;
-        }, 2000);
-      } else {
-        console.error('Error en la solicitud:', response.statusText);
-        toast.error('Error al actualizar los datos');
+      
+        toast.success('Customer information updated successfully', {
+          autoClose: 3000
+        });
+
       }
     } catch (error) {
       console.error('Error', error);
       toast.error('Error inesperado');
     }
-  };
 
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -157,15 +110,15 @@ const EditCustomer = () => {
   const hasErrors = () => {
     for (const errorKey in errors) {
       if (errors[errorKey]) {
-        return true; // Si hay al menos un error, devuelve true
+        return true;
       }
     }
-    return false; // Si no hay errores, devuelve false
+    return false;
   };
 
   return (
     <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
-      <div className="w-120 drop-shadow-md border bg-white rounded-3xl dark:bg-slate-900">
+      <div className="w-120 drop-shadow-md border bg-white rounded-3xl focus:rounded-3xl dark:bg-slate-900">
         <form className=" w-120 px-16 py-5 flex flex-col flex-wrap  rounded-xl justify-center">
           <h1 className="font-poppins p-2 text-3xl">Edit your info</h1>
           <hr className="ml-8 mr-8 p-2 text-gray" />
@@ -448,112 +401,20 @@ const EditCustomer = () => {
               </div>
             </div>
           </div>
-          <div className='flex'>
-            <div className='w-full'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='currentPassword'
-              >
-                Current Password
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-full font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='password'
-                  name='currentPassword'
-                  value={passwordFields.currentPassword}
-                  onChange={handlePasswordChange}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className='flex'>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 mb-0 justify-start'
-                htmlFor='password'
-              >
-                Password
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='password'
-                  name='password'
-                  value={passwordFields.password}
-                  onChange={handlePasswordChange}
-                />
-                <span
-                  className={
-                    errors.password
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.password}
-                </span>
-              </div>
-              <span
-                className={
-                  errors.passwordMsj
-                    ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                    : null
-                }
-              >
-                {errors.passwordMsj}
-              </span>
-            </div>
-            <div className='w-2/4'>
-              <label
-                className='font-poppins text-sm flex m-1 justify-start'
-                htmlFor='repeatPass'
-              >
-                Repeat Password
-              </label>
-              <div className='flex items-center'>
-                <input
-                  className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
-                  type='password'
-                  name='repeatPass'
-                  value={passwordFields.repeatPass}
-                  onChange={handlePasswordChange}
-                />
-                <span
-                  className={
-                    errors.repeatPass
-                      ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                      : null
-                  }
-                >
-                  {errors.repeatPass}
-                </span>
-              </div>
-              <span
-                className={
-                  errors.repeatPassMsj
-                    ? 'font-poppins text-ls flex m-1 justify-start text-red'
-                    : null
-                }
-              >
-                {errors.repeatPassMsj}
-              </span>
-            </div>
-          </div>
 
           <div className="flex flex-col mt-4 mb-4">
             <button
               className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
-              onClick={handleUpdatePassword}
+              onClick={handleSaveAndBack}
               disabled={hasErrors()}
             >
-              {buttonText}
+              Save
             </button>
 
           </div>
 
         </form>
-        <ToastContainer 
+        <ToastContainer
           position='top-left'
           autoClose={3000}
           hideProgressBar={false}

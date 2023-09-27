@@ -204,7 +204,7 @@ const CreateVehicle = () => {
             </div>
           )}
           <input
-            className="bg-slate-100"
+            className="ml-auto bg-slate-100 dark:bg-slate-950"
             type="text"
             list="brand"
             name="brand"
