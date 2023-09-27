@@ -44,6 +44,7 @@ export function setLocalStorage(key, value) {
 
 export function removeLocalStorage(key) {
     try {
+        window.localStorage.setItem(key, null)
         window.localStorage.removeItem(key);
     } catch (error) {
         console.error(error.message);

@@ -13,7 +13,7 @@ const validateEdit = (data) => {
   } else if (!regexEmail.test(data.email)) {
     errors.emailMsj = "It must be an email";
   }
-  if (!data.phoneNumber) {
+  if (!data.phoneNumber || data.phoneNumber==='n/a') {
     errors.phoneNumber = "(*)";
   }
   if (!data.personalId) {
@@ -22,23 +22,21 @@ const validateEdit = (data) => {
   if (!data.birthDate) {
     errors.birthDate = "(*)";
   }
-  if (!data.country) {
+  if (!data.country || data.country==='n/a') {
     errors.country = "(*)";
   }
-  if (!data.city) {
+  if (!data.city || data.city==='n/a') {
     errors.city = "(*)";
   }
-  if (!data.address) {
+  if (!data.address || data.address==='n/a') {
     errors.address = "(*)";
   }
-  if (!data.zipCode) {
+  if (!data.zipCode || data.zipCode==='n/a') {
     errors.zipCode = "(*)";
   }
-
 
 
   return errors;
 };
 
 export default validateEdit;
-

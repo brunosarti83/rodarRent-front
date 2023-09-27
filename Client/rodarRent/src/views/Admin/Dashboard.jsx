@@ -18,12 +18,12 @@ const Dashboard = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="Container grid grid-cols-6 gap-2">
+      <div className=" w-[calc(100vw-256px)] grid grid-cols-6 gap-2 dark:bg-slate-900 dark:text-gray-100">
         <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-1 col-span-2">
           <EstadiscticSales />
         </div>
 
-        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-3 col-span-2">
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-3 col-span-2 dark:bg-slate-950 dark:text-gray-100">
           <InfoAmount />
         </div>
 
@@ -52,6 +52,7 @@ const Dashboard = () => {
         <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 col-start-5 col-span-2">
           <MostCityRequiered />
         </div>
+
       </div>
     </LocalizationProvider>
   );
