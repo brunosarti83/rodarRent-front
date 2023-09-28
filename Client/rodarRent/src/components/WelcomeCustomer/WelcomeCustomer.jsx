@@ -3,7 +3,7 @@ import { BiLogOut} from "react-icons/bi"
 
 const WelcomeCustomer = ({ customer, onLogout }) => {
   return (
-    <div className="h-full flex justify-between items-center px-16">
+    <div className="h-full flex justify-between items-center px-14">
       {customer && (
         <div className="flex items-center">
         <h2 className="text-3xl font-semibold" >Welcome Back! <span className=" text-blue" >{`${customer.name} ${customer.lastName}`}</span></h2>

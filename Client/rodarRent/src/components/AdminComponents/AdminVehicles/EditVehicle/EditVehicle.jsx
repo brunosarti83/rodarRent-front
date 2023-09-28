@@ -6,10 +6,9 @@ import { BiErrorCircle } from "react-icons/bi";
 //Components
 import Loader from "../../../Loader/Loader";
 import ImageUpload from "../../ImageUpload/ImageUpload";
-import { toast } from "react-toastify";
 import validate from "./validateEditedVehicle";
 
-const EditVehicle = ({ selectedVehicle }) => {
+const EditVehicle = ({ selectedVehicle, toast, closeModal }) => {
     const [vehicle, setVehicle] = useState(null);
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState(null);
@@ -57,7 +56,6 @@ const EditVehicle = ({ selectedVehicle }) => {
             try {
                 const response = await axios.get(`${API_BASE_URL}/vehicles/${id}`);
                 setVehicle(response.data);
-
                 setLoading(false);
             } catch (error) {
                 console.log(error);
@@ -126,6 +124,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                     }
                 })
                 .then(() => {
+                    closeModal(2)
                     toast.success("Vehicle Updated Correctly");
 
                 })

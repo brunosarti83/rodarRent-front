@@ -112,7 +112,6 @@ const AdminVehicles = () => {
       closeModal(1)
       setSelectedVehicle(null)
     } catch (error) {
-      console.log(error)
       toast.error(error)
     }
   }
@@ -152,7 +151,7 @@ const AdminVehicles = () => {
           {/* SearchBar */}
           <div className="mb-3">
             <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/6 flex items-center dark:bg-slate-950 dark:border-none">
-              <input ref={searchRef} onChange={handleChange} className="px-3 py-2 w-4/5 dark:bg-slate-950" type="text" placeholder="Type a car domain" />
+              <input ref={searchRef} onChange={handleChange} className="px-3 py-2 w-4/5 text-sm dark:bg-slate-950" type="text" placeholder="Type a car domain" />
               <button onClick={handleSubmit} className="w-1/5 py-3 px-3 flex justify-center items-center hover:scale-125 transition-transform duration-300" >
                 <BiSearch />
               </button>
@@ -223,7 +222,7 @@ const AdminVehicles = () => {
             isOpen={isEditModalOpen}
             onRequestClose={() => closeModal(2)}
           >
-            <EditVehicle selectedVehicle={selectedVehicle} toast={toast} />
+            <EditVehicle selectedVehicle={selectedVehicle} toast={toast} closeModal={closeModal} />
           </Modal>
           <Modal
             className="w-1/3 min-h-[90dvh] p-4 bg-white rounded-xl flex flex-col dark:bg-slate-900"
