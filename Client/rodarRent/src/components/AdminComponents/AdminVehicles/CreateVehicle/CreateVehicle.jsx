@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // Components
 import Loader from "../../../Loader/Loader";
 import { toast } from "react-toastify";
@@ -11,10 +12,12 @@ import useLocations from "../../../../helpers/useLocations";
 import validate from "./validateCreateVehicle";
 import { BiErrorCircle } from "react-icons/bi";
 
-const CreateVehicle = () => {
+const CreateVehicle = ({ onClose }) => {
   const locations = useLocations();
   const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState({}); //this could be a custom hook - leave for later
+  const [loadingImg, setLoadingImg] = useState(false);
+  const [options, setOptions] = useState({}); //this could be passed by props
+  const [domains, setDomains] = useState([]); // what happens if domain exists on isActive:false vehicle ??
   const [images, setImages] = useState({});
   const [thisModelImages, setThisModelImages] = useState([]);
   const [nowShowing, setNowShowing] = useState("");
@@ -67,6 +70,7 @@ const CreateVehicle = () => {
       .then((response) => {
         setOptions(response.data.availableFilterOptions);
         setImages(response.data.images);
+        setDomains(response.data.results.map((car) => car.domain));
         setLoading(false);
       })
       .catch((err) => {
@@ -79,7 +83,7 @@ const CreateVehicle = () => {
     const prop = e.target.name;
     const value = e.target.value;
     setNewVehicle({ ...newVehicle, [prop]: value });
-    setErrors(validate({ ...newVehicle, [prop]: value }));
+    setErrors(validate({ ...newVehicle, [prop]: value }, domains));
     if (prop === "model") {
       if (images[value]) {
         setThisModelImages([...images[value]]);
@@ -113,11 +117,13 @@ const CreateVehicle = () => {
   });
 
   const onUseImage = async () => {
+    setLoadingImg(true);
     const secureURL = await loadImage(files[0]);
     setNowShowing(secureURL);
+    setLoadingImg(false);
     setThisModelImages([secureURL, ...thisModelImages]);
     setNewVehicle({ ...newVehicle, image: secureURL });
-    setErrors(validate({ ...newVehicle, image: secureURL }));
+    setErrors(validate({ ...newVehicle, image: secureURL }, domains));
   };
   const onDiscardImage = () => {
     setFiles([]);
@@ -132,8 +138,11 @@ const CreateVehicle = () => {
     e.preventDefault();
     axios
       .post(`${API_BASE_URL}/vehicles`, [newVehicle])
-      .then(() => {
-        toast.success("New Vehicle Loaded");
+      .then((response) => {
+        if (response.ok) {
+          toast.success("New Vehicle Loaded");
+          onClose();
+        }
       })
       .catch(() => {
         toast.error("ERROR-Unable to load vehicle");
@@ -160,6 +169,7 @@ const CreateVehicle = () => {
     });
     setThisModelImages([]);
     setNowShowing("");
+    onDiscardImage();
   };
   ///////////////////////
   // image Changer
@@ -178,7 +188,6 @@ const CreateVehicle = () => {
   ) : (
     <div className="font-poppins text-sm px-1">
       <h3 className="text-lg font-semibold my-3">Load New Vehicle Details:</h3>
-      {/* this should be a Form with a Submmit and validations */}
       <form>
         <div className="flex w-full my-2 relative">
           <label className="mr-auto">Brand:</label>
@@ -523,11 +532,11 @@ const CreateVehicle = () => {
         <div className="w-full rounded-lg">
           {thisModelImages.length ? (
             <div>
-              <div className="w-[90%] h-[250px] rounded-lg bg-white drop-shadow-lg mx-auto text-center flex items-center relative">
+              <div className="w-[90%] h-[250px] rounded-lg bg-white drop-shadow-lg mx-auto text-center flex items-center relative overflow-hidden">
                 <img
                   src={nowShowing}
                   alt="current vehicle image"
-                  className="p-1"
+                  className="p-1 w-full h-full object-cover"
                 />
                 <div
                   className="w-[150px] text-xs p-2 border-1 rounded-lg bg-sky-100 hover:cursor-pointer absolute bottom-0 right-0"
@@ -574,12 +583,18 @@ const CreateVehicle = () => {
                       </p>
                     )
                   ) : (
-                    <div className="p-2">
-                      <img
-                        src={files[0].preview}
-                        alt="preview image"
-                        className="p-1"
-                      />
+                    <div className="w-full flex justify-center align-middle">
+                      {loadingImg ? (
+                        <div className="mx-auto">
+                          <Loader />
+                        </div>
+                      ) : (
+                        <img
+                          src={files[0].preview}
+                          alt="preview image"
+                          className="p-1 w-full h-full object-cover"
+                        />
+                      )}
                     </div>
                   )}
                 </div>

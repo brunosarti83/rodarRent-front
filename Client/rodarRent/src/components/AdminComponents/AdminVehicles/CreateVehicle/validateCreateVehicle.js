@@ -1,5 +1,5 @@
 
-const validate = (data) =>{
+const validate = (data, domains) =>{
     const regexSpecialCharacters = /^[a-zA-Z0-9]+$/
     const regexNumbers = /^[0-9]+$/
     const errors = {}
@@ -18,6 +18,8 @@ const validate = (data) =>{
         errors.domain = 'Please Complete this field'
     }else if(data.domain.length !== 7 ){
         errors.domain = "The domain must have 7 characters"
+    }else if(domains.includes(data.domain)){
+        errors.domain = "This domain already belongs to other Vehicle"
     }
 
     if (!data.year) {

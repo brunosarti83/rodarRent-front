@@ -4,10 +4,10 @@ import { BiMessageAltCheck, BiMessageAltX, BiSearch } from "react-icons/bi";
 import Modal from "react-modal";
 import axios from "axios";
 import { API_BASE_URL } from "../../helpers/routes";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //*Components
-import Loader from "../../components/Loader/Loader"
+import Loader from "../../components/Loader/Loader";
 import VehicleCard from "../../components/AdminComponents/AdminVehicles/VehicleCard";
 import Pagination from "../../components/AdminComponents/AdminVehicles/PaginationAdminVehicle";
 import EditVehicle from "../../components/AdminComponents/AdminVehicles/EditVehicle/EditVehicle";
@@ -107,15 +107,17 @@ const AdminVehicles = () => {
 
   const handleDelete = async (vehicleId) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/vehicles/${vehicleId}`)
-      toast.success(response.data)
-      closeModal(1)
-      setSelectedVehicle(null)
+      const response = await axios.delete(
+        `${API_BASE_URL}/vehicles/${vehicleId}`
+      );
+      toast.success(response.data);
+      closeModal(1);
+      setSelectedVehicle(null);
     } catch (error) {
-      console.log(error)
-      toast.error(error)
+      console.log(error);
+      toast.error(error);
     }
-  }
+  };
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -125,42 +127,54 @@ const AdminVehicles = () => {
   const handleSubmit = async () => {
     if (domain) {
       try {
-        const response = await axios.get(`${API_BASE_URL}/vehicles`, { params: { domain } })
-        setIsSearching(true) //* doesn't show pagination buttons when the user searches a domain
-        setDomain('')
-        setVehicles({ results: [] })
-        setVehicles(response.data)
+        const response = await axios.get(`${API_BASE_URL}/vehicles`, {
+          params: { domain },
+        });
+        setIsSearching(true); //* doesn't show pagination buttons when the user searches a domain
+        setDomain("");
+        setVehicles({ results: [] });
+        setVehicles(response.data);
         if (searchRef.current) {
-          searchRef.current.value = '';
+          searchRef.current.value = "";
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     } else {
-      setIsSearching(false)
-      setCurrentPage(2)
+      setIsSearching(false);
+      setCurrentPage(2);
     }
   };
 
   return (
     <>
-      {loading ?
-        (<div className="h-[calc(100vh-112px)] w-[calc(100vw-256px)] flex items-center justify-center dark:bg-slate-900 dark:text-gray-100 " >
+      {loading ? (
+        <div className="h-[calc(100vh-112px)] w-[calc(100vw-256px)] flex items-center justify-center dark:bg-slate-900 dark:text-gray-100 ">
           <Loader />
-        </div>) :
-        (<div className="w-[calc(100vw-256px)] min-h-[calc(100vh-112px)] px-14 py-2 dark:bg-slate-900 dark:text-gray-100 " >
+        </div>
+      ) : (
+        <div className="w-[calc(100vw-256px)] min-h-[calc(100vh-112px)] px-14 py-2 dark:bg-slate-900 dark:text-gray-100 ">
           {/* SearchBar */}
           <div className="mb-3">
             <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/6 flex items-center dark:bg-slate-950 dark:border-none">
-              <input ref={searchRef} onChange={handleChange} className="px-3 py-2 w-4/5 dark:bg-slate-950" type="text" placeholder="Type a car domain" />
-              <button onClick={handleSubmit} className="w-1/5 py-3 px-3 flex justify-center items-center hover:scale-125 transition-transform duration-300" >
+              <input
+                ref={searchRef}
+                onChange={handleChange}
+                className="px-3 py-2 w-4/5 dark:bg-slate-950"
+                type="text"
+                placeholder="Type a car domain"
+              />
+              <button
+                onClick={handleSubmit}
+                className="w-1/5 py-3 px-3 flex justify-center items-center hover:scale-125 transition-transform duration-300"
+              >
                 <BiSearch />
               </button>
             </div>
           </div>
           <div className="flex justify-between  ">
-            <div className="w-3/5 xl:w-4/6  flex flex-col justify-between" >
-              <div className="" >
+            <div className="w-3/5 xl:w-4/6  flex flex-col justify-between">
+              <div className="">
                 {vehicles?.results?.map((vehicle, index) => (
                   <VehicleCard
                     index={index}
@@ -170,7 +184,7 @@ const AdminVehicles = () => {
                   />
                 ))}
                 {isSearching ? null : (
-                  <div className=" flex justify-center" >
+                  <div className=" flex justify-center">
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}
@@ -181,8 +195,8 @@ const AdminVehicles = () => {
               </div>
             </div>
             {/* Actions Panel */}
-            <div className="w-1/5 bg-white border border-gray-200 drop-shadow-lg rounded-lg font-poppins p-4 dark:bg-slate-950 dark:border-none" >
-              <div className="text-4xl font-normal border-b border-b-gray-300" >
+            <div className="w-1/5 bg-white border border-gray-200 drop-shadow-lg rounded-lg font-poppins p-4 dark:bg-slate-950 dark:border-none">
+              <div className="text-4xl font-normal border-b border-b-gray-300">
                 <h1>Actions</h1>
               </div>
               <br></br>
@@ -201,15 +215,28 @@ const AdminVehicles = () => {
             onRequestClose={() => closeModal(1)}
           >
             {selectedVehicle && (
-              <div className="w-full h-full bg-white flex flex-col items-center justify-center font-poppins dark:bg-slate-900 dark:text-gray-100" >
-                <h3 className="text-2xl font-bold" >Are you sure you want to delete this vehicle?</h3>
-                <h2 className="pt-5 text-lg  " >Domain: <span className="font-semibold" >{selectedVehicle.domain}</span></h2>
-                <div className="flex justify-evenly w-full pt-5 " >
-                  <button onClick={() => handleDelete(selectedVehicle.id)} className=" w-1/5 py-1 flex justify-evenly items-center text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-green-700 hover:text-white transition-all duration-300 dark:bg-slate-950 dark:hover:bg-green-700">
+              <div className="w-full h-full bg-white flex flex-col items-center justify-center font-poppins dark:bg-slate-900 dark:text-gray-100">
+                <h3 className="text-2xl font-bold">
+                  Are you sure you want to delete this vehicle?
+                </h3>
+                <h2 className="pt-5 text-lg  ">
+                  Domain:{" "}
+                  <span className="font-semibold">
+                    {selectedVehicle.domain}
+                  </span>
+                </h2>
+                <div className="flex justify-evenly w-full pt-5 ">
+                  <button
+                    onClick={() => handleDelete(selectedVehicle.id)}
+                    className=" w-1/5 py-1 flex justify-evenly items-center text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-green-700 hover:text-white transition-all duration-300 dark:bg-slate-950 dark:hover:bg-green-700"
+                  >
                     Yes
                     <BiMessageAltCheck />
                   </button>
-                  <button onClick={() => closeModal(1)} className=" w-1/5 py-1 flex items-center justify-evenly text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-red hover:text-white transition-all duration-300 dark:bg-slate-950 dark:hover:bg-red " >
+                  <button
+                    onClick={() => closeModal(1)}
+                    className=" w-1/5 py-1 flex items-center justify-evenly text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-red hover:text-white transition-all duration-300 dark:bg-slate-950 dark:hover:bg-red "
+                  >
                     No
                     <BiMessageAltX />
                   </button>
@@ -231,7 +258,7 @@ const AdminVehicles = () => {
             isOpen={isCreateModalOpen}
             onRequestClose={() => closeModal(3)}
           >
-            <CreateVehicle />
+            <CreateVehicle onClose={() => closeModal(3)} />
           </Modal>
           <ToastContainer
             position="top-left"
@@ -246,10 +273,9 @@ const AdminVehicles = () => {
             theme="light"
           />
         </div>
-        )}
+      )}
     </>
   );
 };
 
 export default AdminVehicles;
-
