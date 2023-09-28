@@ -29,7 +29,7 @@ const AdminNav = () => {
                     <Link to={routesHelper.adminClients} >
                         <button className={`w-full flex flex-col h-16 text-lg justify-evenly items-center ${location.pathname === routesHelper.adminClients ? 'bg-gray-200 dark:bg-slate-950' : 'bg-white dark:bg-slate-900'} transition duration-400 hover:bg-gray-200`}>
                             <BiUser />
-                            Clients
+                            Customers
                         </button>
                     </Link>
                     <Link to={routesHelper.adminVehicles} >
