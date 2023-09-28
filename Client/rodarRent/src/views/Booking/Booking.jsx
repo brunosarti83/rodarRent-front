@@ -164,9 +164,9 @@ const Booking = () => {
   };
 
   return (
-    <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
-      <div className="sticky drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
-        <form className="px-12 py-5 flex flex-col flex-wrap w-full justify-center">
+    <div className="max-h-full w-full 2xl:h-noNavDesktop lg:h-noNavLaptop bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center flex-col sm:flex-row">
+      <div className="m-4 sticky sm:drop-shadow-md sm:border bg-white rounded-3xl  dark:bg-slate-900">
+        <form className="px-6 sm:px-12 py-5 flex flex-col flex-wrap w-full justify-center">
           <div>
             <h1 className="font-poppins p-2 text-3xl">
               Thank you for your booking
@@ -295,7 +295,7 @@ const Booking = () => {
               </span>
             </div>
           </div>
-          <div className="flex flex-col justify-start items-start p-2 m-2">
+          <div className="flex flex-col justify-start items-start px-2 mx-2">
             <label
               className="font-poppins text-sm flex m-1 mb-0 justify-start items-center"
               htmlFor=""
@@ -322,22 +322,9 @@ const Booking = () => {
             </label>
           </div>
         </form>
-        <div className="flex justify-end">
-        <button
-            className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
-            onClick={()=>navigate(-1)}
-          >
-            Cancel
-          </button>
-          <button
-            className="font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
-            onClick={handleSubmit}
-          >
-            Reserve Deal
-          </button>
-        </div>
+        
       </div>
-      <div className="max-h-full w-1/4 m-8 flex flex-col p-8 drop-shadow-md border bg-white rounded-3xl  dark:bg-slate-900">
+      <div className="max-h-full sm:w-1/4 m-4 flex flex-col px-6 sm:drop-shadow-md sm:border bg-white rounded-3xl  dark:bg-slate-900">
         <div className="flex justify-center">
           <img className="w-full" src={vehicle.image} alt="Car Image" />
         </div>
@@ -374,6 +361,20 @@ const Booking = () => {
             <span className="">Total amount: </span>
             <span>$ {bookingData.totalAmount}</span>
           </div>
+        </div>
+        <div className="flex justify-end">
+        <button
+            className="text-sm font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+            onClick={()=>navigate(-1)}
+          >
+            Cancel
+          </button>
+          <button
+            className="text-sm font-poppins bg-blue cursor-pointer rounded-lg p-2 m-2 text-white"
+            onClick={handleSubmit}
+          >
+            Reserve Deal
+          </button>
         </div>
       </div>
       <ToastContainer
