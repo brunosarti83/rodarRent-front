@@ -89,32 +89,35 @@ const ReservationSearch = () => {
   const isAdmin = userData?.UserId === 1;
 
   return (
-    <div className=" h-24 w-full p-3 flex items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
-      <div className="flex h-full ml-5">
-        <form className="flex w-full h-full items-center" action="">
-          <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
-            <label className="text-xs mb-2">Pick up Date</label>
-            <input
-              onChange={handleChange}
-              className="text-xs border rounded dark:bg-slate-950"
-              type="date"
-              name="startDate"
-              value={search.startDate || ""}
-              id=""
-            />
+    <div className="min-h-24 w-full p-3 flex flex-wrap items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
+      <div className="flex flex-wrap h-full w-full ml-5">
+        <form className="flex w-full h-full items-center flex-wrap" action="">
+          <div className="w-full flex justify-center mb-2">
+            <div className="min-w-[140px] flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
+              <label className="text-xs mb-2">Pick up Date</label>
+              <input
+                onChange={handleChange}
+                className="text-xs border rounded dark:bg-slate-950"
+                type="date"
+                name="startDate"
+                value={search.startDate || ""}
+                id=""
+              />
+            </div>
+            <div className="min-w-[140px] flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
+              <label className=" text-xs mb-2">Return Date</label>
+              <input
+                onChange={handleChange}
+                className="text-xs border rounded dark:bg-slate-950"
+                type="date"
+                name="finishDate"
+                value={search.finishDate || ""}
+                id=""
+              />
+            </div>
           </div>
-          <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
-            <label className=" text-xs mb-2">Return Date</label>
-            <input
-              onChange={handleChange}
-              className="text-xs border rounded dark:bg-slate-950"
-              type="date"
-              name="finishDate"
-              value={search.finishDate || ""}
-              id=""
-            />
-          </div>
-          <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-2 dark:bg-slate-950">
+          <div className="w-full flex flex-wrap gap-2 justify-around mb-2">
+          <div className="min-w-[290px] flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-2 dark:bg-slate-950">
             <label className=" text-xs mb-2 mt-1">Pick Up Location</label>
             <select
               className="text-xs border rounded dark:bg-slate-950"
@@ -130,8 +133,8 @@ const ReservationSearch = () => {
               ))}
             </select>
           </div>
-          <div className="flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-2 dark:bg-slate-950">
-            <label className=" text-xs mb-2 mt-1">Return Location</label>
+          <div className="min-w-[290px] flex flex-col border bg-white drop-shadow-md rounded-lg w-2/6 p-2 h-full mr-2 dark:bg-slate-950">
+            <label className="text-xs mb-2 mt-1">Return Location</label>
             <select
               className="text-xs border rounded dark:bg-slate-950"
               name="returnLocationId"
@@ -146,6 +149,7 @@ const ReservationSearch = () => {
               ))}
             </select>
           </div>
+          </div>
           <button
             onClick={handleSubmit}
             disabled={disableButton}
@@ -155,31 +159,33 @@ const ReservationSearch = () => {
           </button>
         </form>
       </div>
-      {isLoggedIn ? (
-        <div className="flex w-1/4 justify-center">
-          <Link
-            className="text-md text-white bg-blue font-semibold py-3 px-10 rounded-lg"
-            to={isAdmin ? "/admin" : `/customer/${userData.id}`}
-          >
-            {isAdmin ? "Admin" : "My profile"}
-          </Link>
-        </div>
-      ) : (
-        <div className="flex w-1/4 justify-around">
-          <Link
-            className="text-md py-3 px-10 rounded-lg transition duration-300 hover:bg-black hover:text-white"
-            to={routesHelper.register}
-          >
-            Register
-          </Link>
-          <Link
-            className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
-            to={routesHelper.login}
-          >
-            Log in
-          </Link>
-        </div>
-      )}
+      
+        {isLoggedIn ? (
+          <div className="flex w-1/4 justify-center">
+            <Link
+              className="text-md text-white bg-blue font-semibold py-3 px-10 rounded-lg"
+              to={isAdmin ? "/admin" : `/customer/${userData.id}`}
+            >
+              {isAdmin ? "Admin" : "My profile"}
+            </Link>
+          </div>
+        ) : (
+          <div className="flex w-1/4 justify-around">
+            <Link
+              className="text-md py-3 px-10 rounded-lg transition duration-300 hover:bg-black hover:text-white"
+              to={routesHelper.register}
+            >
+              Register
+            </Link>
+            <Link
+              className="text-md text-blue font-semibold py-3 px-10 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
+              to={routesHelper.login}
+            >
+              Log in
+            </Link>
+          </div>
+        )}
+  
     </div>
   );
 };

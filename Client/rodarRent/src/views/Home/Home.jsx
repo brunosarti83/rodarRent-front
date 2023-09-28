@@ -17,7 +17,7 @@ function Home() {
     }, [isUserOnline]);
 
     return (
-        <div>
+        <div className="flex flex-col">
             <ReservationSearch /> 
             <CarList />
         </div>
