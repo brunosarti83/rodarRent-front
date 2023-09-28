@@ -8,7 +8,7 @@ import Loader from "../../../Loader/Loader";
 import ImageUpload from "../../ImageUpload/ImageUpload";
 import validate from "./validateEditedVehicle";
 
-const EditVehicle = ({ selectedVehicle, toast, closeModal }) => {
+const EditVehicle = ({ selectedVehicle, toast, closeModal, setIsEditSubmitted }) => {
     const [vehicle, setVehicle] = useState(null);
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState(null);
@@ -92,7 +92,7 @@ const EditVehicle = ({ selectedVehicle, toast, closeModal }) => {
         for (const key in editedFields) {
             if (editedFields[key] !== vehicle[key]) {
                 if (key === "pricePerDay") {
-                    editedData[key] = editedFields[key].replace(/\$/g, "").replace(/\s/g, "");
+                    editedData[key] = editedFields[key].replace(/\$/g, "").replace(/\s/g, "").slice(0,-3);
                 } else {
                     editedData[key] = editedFields[key];
                 }
@@ -124,9 +124,11 @@ const EditVehicle = ({ selectedVehicle, toast, closeModal }) => {
                     }
                 })
                 .then(() => {
-                    closeModal(2)
                     toast.success("Vehicle Updated Correctly");
-
+                    setTimeout(() => {
+                        closeModal(2);
+                        setIsEditSubmitted(true);
+                    }, 3500);
                 })
                 .catch((error) => {
                     toast.error(error);
