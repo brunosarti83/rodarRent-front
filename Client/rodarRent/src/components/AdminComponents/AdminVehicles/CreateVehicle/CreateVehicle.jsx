@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 // hooks & libraries
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
-import { API_BASE_URL } from "../../../../helpers/routes";
+import routesHelper from "../../../../helpers/routes";
 import { useDropzone } from "react-dropzone";
 import loadImage from "../../../../helpers/loadImage";
 import useLocations from "../../../../helpers/useLocations";
@@ -66,7 +66,7 @@ const CreateVehicle = ({ onClose }) => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API_BASE_URL}/vehicles`)
+      .get(`${routesHelper.baseBackUrl}/vehicles`)
       .then((response) => {
         setOptions(response.data.availableFilterOptions);
         setImages(response.data.images);
@@ -136,16 +136,20 @@ const CreateVehicle = ({ onClose }) => {
   // handle Submit & Clear button
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true)
     axios
-      .post(`${API_BASE_URL}/vehicles`, [newVehicle])
+      .post(`${routesHelper.baseBackUrl}/vehicles`, [newVehicle])
       .then((response) => {
-        if (response.ok) {
+        if (response.status === 200) {
           toast.success("New Vehicle Loaded");
           onClose();
+          window.location.reload()
+          setLoading(false)
         }
       })
       .catch(() => {
-        toast.error("ERROR-Unable to load vehicle");
+        toast.error("ERROR-Unable to load vehicle - check domain");
+        setLoading(false)
       });
   };
 
@@ -186,7 +190,7 @@ const CreateVehicle = ({ onClose }) => {
       <Loader />
     </div>
   ) : (
-    <div className="font-poppins text-sm px-1">
+    <div className="font-poppins text-sm px-1 dark:text-gray-100">
       <h3 className="text-lg font-semibold my-3">Load New Vehicle Details:</h3>
       <form>
         <div className="flex w-full my-2 relative">
@@ -209,7 +213,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <input
-              className="ml-auto bg-slate-100 dark:bg-slate-950"
+              className="ml-auto bg-slate-100 border border-gray-200 rounded-lg dark:bg-slate-950"
               type="text"
               list="brand"
               name="brand"
@@ -243,7 +247,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <input
-              className="ml-auto bg-slate-100"
+              className="ml-auto bg-slate-100 border border-gray-200 rounded-lg dark:bg-slate-950"
               type="text"
               list="model"
               name="model"
@@ -279,7 +283,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <input
-              className="ml-auto bg-slate-100"
+              className="ml-auto bg-slate-100 border border-gray-200 rounded-lg dark:bg-slate-950"
               type="text"
               name="domain"
               value={newVehicle.domain}
@@ -305,7 +309,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <input
-              className="ml-auto bg-slate-100"
+              className="ml-auto bg-slate-100 border border-gray-200 rounded-lg dark:bg-slate-950"
               type="number"
               min="1950"
               max="2023"
@@ -333,7 +337,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <select
-              className="ml-auto bg-slate-100"
+              className="ml-auto bg-slate-100 border border-gray-200 rounded-lg dark:bg-slate-950"
               id="type"
               name="type"
               value={newVehicle.type}
@@ -372,7 +376,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <select
-              className="ml-auto bg-slate-100"
+              className="ml-auto bg-slate-100 border border-gray-200 rounded-lg dark:bg-slate-950"
               id="transmission"
               name="transmission"
               value={newVehicle.transmission}
@@ -407,7 +411,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <select
-              className="ml-auto bg-slate-100"
+              className="ml-auto bg-slate-100 border border-gray-200 rounded-lg dark:bg-slate-950"
               id="fuel"
               name="fuel"
               value={newVehicle.fuel}
@@ -446,7 +450,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <input
-              className="ml-auto bg-slate-100 text-center"
+              className="ml-auto bg-slate-100 border border-gray-200 rounded-lg dark:bg-slate-950"
               type="number"
               min="2"
               max="8"
@@ -479,7 +483,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <input
-              className="ml-auto bg-slate-100 text-center"
+              className="ml-auto bg-slate-100 border border-gray-200 text-center rounded-lg dark:bg-slate-950"
               type="number"
               min="0"
               max="1000"
@@ -512,7 +516,7 @@ const CreateVehicle = ({ onClose }) => {
               </div>
             )}
             <select
-              className="mx-auto bg-slate-100 text-center max-w-[500px]"
+              className="mx-auto bg-slate-100 border border-gray-200 rounded-lg text-center max-w-[500px] dark:bg-slate-950"
               id="LocationId"
               name="LocationId"
               value={newVehicle.LocationId}
@@ -532,7 +536,7 @@ const CreateVehicle = ({ onClose }) => {
         <div className="w-full rounded-lg">
           {thisModelImages.length ? (
             <div>
-              <div className="w-[90%] h-[250px] rounded-lg bg-white drop-shadow-lg mx-auto text-center flex items-center relative overflow-hidden">
+              <div className="w-[90%] h-[250px] rounded-lg bg-white drop-shadow-lg mx-auto text-center flex items-center relative overflow-hidden dark:bg-slate-950 dark:text-gray-100">
                 <img
                   src={nowShowing}
                   alt="current vehicle image"
@@ -550,7 +554,7 @@ const CreateVehicle = ({ onClose }) => {
                   {thisModelImages.indexOf(nowShowing) <
                     thisModelImages.length - 1 && (
                     <div
-                      className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer"
+                      className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer dark:br-slate-950 dark:text-gray-100 dark:border dark:border-gray-200"
                       onClick={handleImgNext}
                     >
                       ⇒
@@ -558,7 +562,7 @@ const CreateVehicle = ({ onClose }) => {
                   )}
                   {thisModelImages.indexOf(nowShowing) > 0 && (
                     <div
-                      className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer"
+                      className="py-2 px-3 rounded-lg shadow-md bg-white m-2 text-lg text-center align-center hover:cursor-pointer dark:br-slate-950 dark:text-gray-100 dark:border dark:border-gray-200"
                       onClick={handleImgPrev}
                     >
                       ⇐
@@ -571,14 +575,14 @@ const CreateVehicle = ({ onClose }) => {
             <div>
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <div className="w-[85%] h-[220px] rounded-lg bg-white drop-shadow-lg mx-auto text-center flex items-center border-dashed border-4 border-gray-400 mt-4 overflow-hidden">
+                <div className="w-[85%] h-[220px] rounded-lg bg-white drop-shadow-lg mx-auto text-center flex items-center border-dashed border-4 border-gray-400 mt-4 overflow-hidden dark:bg-slate-950 dark:text-gray-100">
                   {!files.length ? (
                     isDragActive ? (
-                      <p className="text-md font-bold text-gray-500 mx-4">
+                      <p className="text-md font-bold text-gray-500 mx-4 dark:text-gray-100">
                         Drop your image file here
                       </p>
                     ) : (
-                      <p className="text-md font-bold text-gray-500 mx-4">
+                      <p className="text-md font-bold text-gray-500 mx-4 dark:text-gray-100">
                         Drag and drop image file here, or click to select file
                       </p>
                     )
@@ -637,7 +641,7 @@ const CreateVehicle = ({ onClose }) => {
           <div>
             <button
               onClick={handleClear}
-              className="bg-white text-gray-500 h-10 px-10 mr-auto rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3"
+              className="bg-white text-gray-500 h-10 px-10 mr-auto rounded-lg text-md disabled:opacity-50 disabled:cursor-not-allowed mt-3 dark:bg-slate-900 dark:text-gray-100"
             >
               Clear
             </button>
