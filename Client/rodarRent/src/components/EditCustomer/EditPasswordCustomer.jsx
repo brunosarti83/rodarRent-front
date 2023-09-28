@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom'; // Importa useParams correctamente
-import Loader from '../Loader/Loader';
+import { useParams } from 'react-router-dom';
 import validatePass from './validatePass';
 import { updatePasswordUrl } from '../../helpers/routes';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditPasswordCustomer = () => {
-  const { id } = useParams(); // Usa useParams correctamente
+  const { id } = useParams();
   const [passwordFields, setPasswordFields] = useState({
     currentPassword: '',
     password: '',
@@ -21,22 +20,22 @@ const EditPasswordCustomer = () => {
   });
 
   const [passwordError, setPasswordError] = useState(null);
-  const [buttonText, setButtonText] = useState('Save');
+  const [isSaving, setIsSaving] = useState(false);
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    setButtonText('Save Password');
     setPasswordFields({ ...passwordFields, [name]: value });
     setErrors(validatePass({ ...passwordFields, [name]: value }));
   };
 
   const handleUpdatePassword = async () => {
-    try {
-      if (passwordFields.password !== passwordFields.repeatPass) {
-        setPasswordError('Passwords do not match');
-        return;
-      }
+    if (isSaving) {
+      return;
+    }
 
+    setIsSaving(true);
+
+    try {
       const response = await fetch(updatePasswordUrl(id), {
         method: 'PUT',
         headers: {
@@ -48,23 +47,34 @@ const EditPasswordCustomer = () => {
           newPassword: passwordFields.password,
         }),
       });
-      
-      setButtonText('Save');
 
-      if (response.ok) {
-        setPasswordError(null);
-        
-        toast.success('Password updated successfully');
+      if (response.status === 200) {
+        toast.success('Password updated successfully', {
+          autoClose: 3000,
+        });
 
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      } else if (response.status === 401) {
+        // Notificación de error 404
+        toast.error('Error updating password: Incorrect password.');
+        setIsSaving(false);
+      } else if (response.status === 500) {
+        // Notificación de error 500
+        toast.error('Password update failed: Internal server error');
+        setIsSaving(false);
       } else {
-        console.error('Request error:', response.statusText);
-        toast.error('Error updating password');
+        setIsSaving(false);
       }
     } catch (error) {
       console.error('Error', error);
       toast.error('Unexpected error');
+      setIsSaving(false);
     }
   };
+
+  const hasErrors = Object.values(errors).some((error) => error);
 
   return (
     <div className="w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
@@ -174,17 +184,17 @@ const EditPasswordCustomer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col mt-4 mb-4">
+           <div className="flex flex-col mt-4 mb-4">
             <button
               className="font-poppins bg-blue cursor-pointer rounded-lg p-1 m-2 text-white"
               onClick={handleUpdatePassword}
-              disabled={Object.values(errors).some((error) => error)}
+              disabled={hasErrors || isSaving} 
             >
-              {buttonText}
+              Save
             </button>
           </div>
         </form>
-        <ToastContainer
+        {/* <ToastContainer
           position="top-left"
           autoClose={3000}
           hideProgressBar={false}
@@ -194,8 +204,8 @@ const EditPasswordCustomer = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="light"
-        />
+          theme="light" */}
+        {/* /> */}
       </div>
     </div>
   );

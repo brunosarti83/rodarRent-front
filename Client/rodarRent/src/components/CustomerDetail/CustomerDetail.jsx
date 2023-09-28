@@ -74,11 +74,6 @@ const CustomerDetail = () => {
 
   const closeEditPasswordCustomerModal = () => {
     setIsEditPasswordCustomerModalOpen(false);
-
-    toast.success('Customer Password updated successfully', {
-      position: 'top-left',
-      autoClose: 3000,
-    });
   };
 
   const openEditBookingModal = () => {
@@ -134,16 +129,20 @@ const CustomerDetail = () => {
       }
     };
     fetchCustomerDetails();
+    
+  }, []);
+
+  useEffect (() => {
     if(customer) {
-    const {address, zipCode, phoneNumber,city, country} = customer
-    if (address==='n/a' || zipCode==='n/a' || phoneNumber==='n/a' || city==='n/a' || country==='n/a' && !isWarningShown) {
-    openEditCustomerModal()
-    // toast.warning('Please complete your personal data', {
-    //   autoClose: 3000,
-    // })
-    setIsWarningShown(true)
-  } 
-  }}, [id,customer]);
+      const {address, zipCode, phoneNumber,city, country} = customer
+      if (address==='n/a' || zipCode==='n/a' || phoneNumber==='n/a' || city==='n/a' || country==='n/a' && !isWarningShown) {
+      openEditCustomerModal()
+      //toast.warning('Please complete your personal data', {
+         //autoClose: 3000,
+      //})
+      setIsWarningShown(true)
+    } 
+  }},[id, customer])
 
   useEffect(() => {
     const fetchCustomerBookings = async () => {

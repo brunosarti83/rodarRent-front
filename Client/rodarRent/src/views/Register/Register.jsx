@@ -90,10 +90,11 @@ function Register() {
       }, 4000);
 
       const body = {
-        userName: response.data.name,
-        toEmailAddress: response.data.email,
-        replyToEmailAddress: 'rodarrent@outlook.com',
-        subject: `Welcome ${response.data.name}`,
+
+        userName: response.data.name, 
+        toEmailAddress: response.data.email, 
+        replyToEmailAddress: 'rodarrentadm@outlook.com',
+        subject: `Welcome ${response.data.name}`, 
         template: 'register',
       };
 
