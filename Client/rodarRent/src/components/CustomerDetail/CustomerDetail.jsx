@@ -1,26 +1,23 @@
-import { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import Loader from "../Loader/Loader";
-import DashboardActions from "../DashboardActions/DashboardActions";
-import Modal from "react-modal";
-import { toast } from "react-toastify";
-import EditCustomer from "../EditCustomer/EditCustomer";
-import EditPasswordCustomer from "../EditCustomer/EditPasswordCustomer";
-import EditBooking from "../EditBooking/EditBooking";
-import CustomerInfo from "../CustomerInfo/CustomerInfo";
-import WelcomeCustomer from "../WelcomeCustomer/WelcomeCustomer";
-import { BiTrash } from "react-icons/bi";
-import {
-  getCustomerDetailsUrl,
-  getBookingsByIdCustomerUrl,
-  getAllVehicles,
-} from "../../helpers/routes";
-import { useDispatch } from "react-redux";
-import { logOut } from "../../redux/actions";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import Loader from '../Loader/Loader';
+import DashboardActions from '../DashboardActions/DashboardActions';
+import Modal from 'react-modal';
+import { toast } from 'react-toastify';
+import ReviewForm from '../ReviewForm/ReviewForm';
+import EditCustomer from '../EditCustomer/EditCustomer';
+import EditPasswordCustomer from '../EditCustomer/EditPasswordCustomer';
+import EditBooking from '../EditBooking/EditBooking';
+import CustomerInfo from '../CustomerInfo/CustomerInfo';
+import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
+import { BiTrash } from 'react-icons/bi';
+import { getCustomerDetailsUrl, getBookingsByIdCustomerUrl, getAllVehicles } from '../../helpers/routes';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../redux/actions';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CustomerDetail = () => {
   const { id } = useParams();
@@ -30,6 +27,7 @@ const CustomerDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isEditCustomerModalOpen, setIsEditCustomerModalOpen] = useState(false);
   const [isEditPasswordCustomerModalOpen, setIsEditPasswordCustomerModalOpen] =
     useState(false);
@@ -60,6 +58,14 @@ const CustomerDetail = () => {
       const dateB = new Date(b.startDate);
       return dateA - dateB;
     });
+  };
+
+  const openReviewCustomerModal = () => {
+    setIsReviewModalOpen(true);
+  };
+  
+  const closeReviewCustomerModal = () => {
+    setIsReviewModalOpen(false);
   };
 
   const openEditCustomerModal = () => {
@@ -338,11 +344,22 @@ const CustomerDetail = () => {
         </div>
 
         <div className="row-start-1 row-end-4 col-start-3 flex justify-center">
-          <DashboardActions
-            openEditModal={openEditCustomerModal}
-            openEditPasswordModal={openEditPasswordCustomerModal}
-          />
+          <DashboardActions openReviewModal={openReviewCustomerModal} openEditModal={openEditCustomerModal}
+          openEditPasswordModal={openEditPasswordCustomerModal} />
         </div>
+
+        <Modal
+          isOpen={isReviewModalOpen}
+          onRequestClose={closeReviewCustomerModal}
+          shouldCloseOnOverlayClick={true}
+          contentLabel="Review Modal"
+          className="fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
+          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black"
+          ref={modalRefCustomer}
+          onAfterOpen={closeModalOnClickOutside}
+        >
+          <ReviewForm closeReviewModal={closeReviewCustomerModal} />
+        </Modal>
 
         <Modal
           isOpen={isEditCustomerModalOpen}
