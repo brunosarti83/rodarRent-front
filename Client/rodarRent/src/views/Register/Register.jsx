@@ -128,7 +128,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray '
+                    className='w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='text'
                     name='name'
                     value={userData.name}
@@ -150,7 +150,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='text'
                     name='lastName'
                     value={userData.lastName}
@@ -174,7 +174,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='text'
                     name='email'
                     value={userData.email}
@@ -205,7 +205,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950  dark:text-gray-100'
                     type='text'
                     name='phoneNumber'
                     value={userData.phoneNumber}
@@ -229,7 +229,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='text'
                     name='personalId'
                     value={userData.personalId}
@@ -251,7 +251,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100'
                     type='date'
                     name='birthDate'
                     value={userData.birthDate}
@@ -275,7 +275,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='text'
                     name='country'
                     value={userData.country}
@@ -297,7 +297,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='text'
                     name='city'
                     value={userData.city}
@@ -321,7 +321,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='text'
                     name='address'
                     value={userData.address}
@@ -343,7 +343,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='text'
                     name='zipCode'
                     value={userData.zipCode}
@@ -367,7 +367,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='password'
                     name='password'
                     value={userData.password}
@@ -381,7 +381,7 @@ function Register() {
                     >
                       <BiErrorCircle className={`text-red text-xl ${errors.passwordMsj ? "cursor-pointer" : ""}`} />
                       {showError.password && errors.passwordMsj && (
-                        <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                        <div className=" bg-white w-32 border font-semibold border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1 dark:bg-slate-950">
                           {errors.passwordMsj}
                         </div>
                       )}
@@ -398,7 +398,7 @@ function Register() {
                 </label>
                 <div className='flex items-center'>
                   <input
-                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray'
+                    className='w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
                     type='password'
                     name='repeatPass'
                     value={userData.repeatPass}
@@ -435,7 +435,7 @@ function Register() {
               </button>
               <button
                 onClick={handleGoogleReg}
-                className='font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray'
+                className='font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 '
               >
                 <img
                   className='relative w-6 m-1'

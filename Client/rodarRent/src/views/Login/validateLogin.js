@@ -12,7 +12,7 @@ const validate = (data) => {
     errors.password = "Password is required";
   }
   if (!regexPass.test(data.password)) {
-    errors.password = "The password must have: At least 6 characters, An uppercase letter and An uppercase letter "
+    errors.password = "The password must have: At least 6 characters, An uppercase letter and a number "
   }
   return errors;
 };
