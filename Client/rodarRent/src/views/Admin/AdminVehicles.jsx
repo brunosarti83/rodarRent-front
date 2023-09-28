@@ -1,4 +1,4 @@
-//Hooks & Tools
+//*Hooks & Tools
 import { useEffect, useState, useRef } from "react";
 import { BiMessageAltCheck, BiMessageAltX, BiSearch } from "react-icons/bi";
 import Modal from "react-modal";
@@ -6,7 +6,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../../helpers/routes";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//Components
+//*Components
 import Loader from "../../components/Loader/Loader";
 import VehicleCard from "../../components/AdminComponents/AdminVehicles/VehicleCard";
 import Pagination from "../../components/AdminComponents/AdminVehicles/PaginationAdminVehicle";
@@ -115,6 +115,7 @@ const AdminVehicles = () => {
       setSelectedVehicle(null);
     } catch (error) {
       console.log(error);
+      toast.error(error);
     }
   };
 
@@ -129,7 +130,7 @@ const AdminVehicles = () => {
         const response = await axios.get(`${API_BASE_URL}/vehicles`, {
           params: { domain },
         });
-        setIsSearching(true);
+        setIsSearching(true); //* doesn't show pagination buttons when the user searches a domain
         setDomain("");
         setVehicles({ results: [] });
         setVehicles(response.data);
@@ -148,18 +149,18 @@ const AdminVehicles = () => {
   return (
     <>
       {loading ? (
-        <div className="h-full w-[calc(100vw-256px)] flex items-center justify-center ">
+        <div className="h-[calc(100vh-112px)] w-[calc(100vw-256px)] flex items-center justify-center dark:bg-slate-900 dark:text-gray-100 ">
           <Loader />
         </div>
       ) : (
-        <div className="w-[calc(100vw-256px)] h-full px-14 py-2">
-          {/* SearchBar? */}
+        <div className="w-[calc(100vw-256px)] min-h-[calc(100vh-112px)] px-14 py-2 dark:bg-slate-900 dark:text-gray-100 ">
+          {/* SearchBar */}
           <div className="mb-3">
-            <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/6 flex items-center">
+            <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/6 flex items-center dark:bg-slate-950 dark:border-none">
               <input
                 ref={searchRef}
                 onChange={handleChange}
-                className="px-3 py-2 w-4/5"
+                className="px-3 py-2 w-4/5 dark:bg-slate-950"
                 type="text"
                 placeholder="Type a car domain"
               />
@@ -194,13 +195,13 @@ const AdminVehicles = () => {
               </div>
             </div>
             {/* Actions Panel */}
-            <div className="w-1/5 bg-white border border-gray-200 drop-shadow-lg rounded-lg font-poppins p-4">
+            <div className="w-1/5 bg-white border border-gray-200 drop-shadow-lg rounded-lg font-poppins p-4 dark:bg-slate-950 dark:border-none">
               <div className="text-4xl font-normal border-b border-b-gray-300">
                 <h1>Actions</h1>
               </div>
               <br></br>
               <div
-                className="w-full bg-white border-gray-200 drop-shadow-lg rounded-lg font-poppins p-2 text-sm text-center hover:cursor-pointer"
+                className="w-full bg-white border-gray-200 drop-shadow-lg rounded-lg font-poppins p-2 text-sm text-center hover:cursor-pointer dark:bg-slate-900"
                 onClick={() => openModal(3)}
               >
                 <h4>Create New Vehicle</h4>
@@ -214,7 +215,7 @@ const AdminVehicles = () => {
             onRequestClose={() => closeModal(1)}
           >
             {selectedVehicle && (
-              <div className="w-full h-full bg-white flex flex-col items-center justify-center font-poppins">
+              <div className="w-full h-full bg-white flex flex-col items-center justify-center font-poppins dark:bg-slate-900 dark:text-gray-100">
                 <h3 className="text-2xl font-bold">
                   Are you sure you want to delete this vehicle?
                 </h3>
@@ -227,14 +228,14 @@ const AdminVehicles = () => {
                 <div className="flex justify-evenly w-full pt-5 ">
                   <button
                     onClick={() => handleDelete(selectedVehicle.id)}
-                    className=" w-1/5 py-1 flex justify-evenly items-center text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-green-700 hover:text-white transition-all duration-300"
+                    className=" w-1/5 py-1 flex justify-evenly items-center text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-green-700 hover:text-white transition-all duration-300 dark:bg-slate-950 dark:hover:bg-green-700"
                   >
                     Yes
                     <BiMessageAltCheck />
                   </button>
                   <button
                     onClick={() => closeModal(1)}
-                    className=" w-1/5 py-1 flex items-center justify-evenly text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-red hover:text-white transition-all duration-300 "
+                    className=" w-1/5 py-1 flex items-center justify-evenly text-lg rounded-md border border-gray-300 bg-white drop-shadow-lg hover:drop-shadow-none hover:bg-red hover:text-white transition-all duration-300 dark:bg-slate-950 dark:hover:bg-red "
                   >
                     No
                     <BiMessageAltX />
@@ -249,15 +250,15 @@ const AdminVehicles = () => {
             isOpen={isEditModalOpen}
             onRequestClose={() => closeModal(2)}
           >
-            <EditVehicle selectedVehicle={selectedVehicle} />
+            <EditVehicle selectedVehicle={selectedVehicle} toast={toast} />
           </Modal>
           <Modal
-            className="w-1/3 p-4 bg-white rounded-xl dark:bg-slate-900"
+            className="w-1/3 min-h-[90dvh] p-4 bg-white rounded-xl flex flex-col dark:bg-slate-900"
             overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-40 bg-black"
             isOpen={isCreateModalOpen}
             onRequestClose={() => closeModal(3)}
           >
-            <CreateVehicle />
+            <CreateVehicle onClose={() => closeModal(3)} />
           </Modal>
           <ToastContainer
             position="top-left"

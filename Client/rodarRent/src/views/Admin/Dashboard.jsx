@@ -12,22 +12,18 @@ import MostRequieredBrands from "./MostRequiredBrands";
 import MostCityRequiered from "./MostCityRequiered";
 
 const Dashboard = () => {
-  function fetchBookings() {
-    return fetch("http://localhost:3001/booking/filter").then((res) =>
-      res.json()
-    );
-  }
-
-  const queryBookings = useQuery(["bookings"], fetchBookings);
+  const queryVehicles = useQuery(["vehicles"], () =>
+    fetch("http://localhost:3001/vehicles").then((res) => res.json())
+  );
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="Container grid grid-cols-6 gap-2">
+      <div className=" w-[calc(100vw-256px)] grid grid-cols-6 gap-2 dark:bg-slate-900 dark:text-gray-100">
         <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-1 col-span-2">
           <EstadiscticSales />
         </div>
 
-        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-3 col-span-2">
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-72 col-start-3 col-span-2 dark:bg-slate-950 dark:text-gray-100">
           <InfoAmount />
         </div>
 
@@ -36,7 +32,11 @@ const Dashboard = () => {
         </div>
 
         <div className="border-2 rounded-2xl bg-gray-100 p-4 m-2 h-full col-start-1 col-span-3">
-          {queryBookings.isLoading ? <Loader /> : <TableDashboard />}
+          {queryVehicles.isLoading ? (
+            <Loader />
+          ) : (
+            <TableDashboard data={queryVehicles?.data?.results} />
+          )}
         </div>
 
         <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 h-full col-start-4 col-span-3">

@@ -70,6 +70,7 @@ export const InfoAmount = () => {
 
   const queryBookings = useQuery(["bookings"], fetchBookings);
 
+
   return (
     <div>
           <div className="text-center text-2xl font-semibold">Profit Record</div>

@@ -5,9 +5,11 @@ import { API_BASE_URL } from "../../helpers/routes";
 import axios from "axios";
 import Loader from "../Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { getLocalStorage } from "../../helpers/storage";
 
 const Reviews = () => {
   const navigate = useNavigate();
+  const loggedIn = getLocalStorage("isLoggedIn");
   const [loading, setLoading] = useState(true);
   const [dataReview, setDataReview] = useState([]);
   const [activeButton, setActiveButton] = useState("all");
@@ -35,7 +37,7 @@ const Reviews = () => {
     setActiveButton(buttonName);
   };
   const review = () => {
-    navigate("/reviews");
+    loggedIn ? navigate("/review") : navigate("/login");
   };
 
   const countReviews = dataReview.length;
@@ -44,14 +46,14 @@ const Reviews = () => {
   let promRating = sumRating > 0 ? (sumRating / countReviews).toFixed(2) : "";
 
   return (
-    <div>
+    <div className="w-full md:w-3/5">
       {loading ? (
-        <div className="flex h-[72vh] justify-center items-center">
+        <div className="flex justify-center items-center m-14">
           <Loader />
         </div>
       ) : (
-        <div className="cursor-default p-4 flex flex-col transition duration-300 dark:bg-slate-900 dark:text-gray-100">
-          <div className="font-poppins text-sm p-4 m-4 flex items-center">
+        <div className="w-full cursor-default flex flex-col overflow-x-hidden transition duration-300 dark:bg-slate-900 dark:text-gray-100">
+          <div className="flex flex-wrap p-2 md:p-8 font-poppins text-sm m-4 items-center justify-center">
             <svg
               className="w-4 h-4 text-yellow-300 mr-1"
               aria-hidden="true"
@@ -68,15 +70,15 @@ const Reviews = () => {
             <span className="text-sm font-medium text-gray-900 dark:text-white">
               {`${countReviews} reviews`}
             </span>
-            <div className="flex pl-4">
+            <div className="flex p-1 md:p-4">
               <button
                 name="all"
                 onClick={() => handleFilter("date", "all")}
                 disabled={activeButton === "all" ? true : false}
                 className={
                   activeButton === "all"
-                    ? "underline font-bold pl-4"
-                    : "pl-4 transition ease-in-out delay-150 hover:scale-105"
+                    ? "underline font-bold md:p-4 p-2"
+                    : "p-2 md:p-4 transition ease-in-out delay-150 hover:scale-105"
                 }
               >
                 All Reviews
@@ -87,8 +89,8 @@ const Reviews = () => {
                 disabled={activeButton === "positives" ? true : false}
                 className={
                   activeButton === "positives"
-                    ? "underline font-bold pl-4"
-                    : "pl-4 transition ease-in-out delay-150 hover:scale-105"
+                    ? "underline font-bold md:p-4 p-2"
+                    : "p-2 md:p-4 transition ease-in-out delay-150 hover:scale-105"
                 }
               >
                 Positives Reviews
@@ -99,15 +101,15 @@ const Reviews = () => {
                 disabled={activeButton === "negatives" ? true : false}
                 className={
                   activeButton === "negatives"
-                    ? "underline font-bold pl-4"
-                    : "pl-4 transition ease-in-out delay-150 hover:scale-105"
+                    ? "underline font-bold md:p-4 p-2"
+                    : "p-2 md:p-4 transition ease-in-out delay-150 hover:scale-105"
                 }
               >
                 Negatives Reviews
               </button>
             </div>
           </div>
-          <div>
+          <div className="">
             {dataReview ? (
               dataReview.map((review) => <Review review={review} />)
             ) : (

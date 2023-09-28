@@ -33,7 +33,7 @@ const ReviewForm = () => {
         .post(`${API_BASE_URL}/reviews`, reviewData)
         .then((response) => {
           console.log(response);
-          toast.success(`Sent review!, tanks ${customer.name}`);
+          toast.success(`Sent review!, thanks ${customer.name}`);
           setTimeout(() => {
             navigate('/aboutUs');
           }, 4000);
@@ -56,7 +56,7 @@ const ReviewForm = () => {
     }
   };
   return (
-    <div className="font-poppins w-full h-noNavDesktop  bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
+    <div className=" font-poppins w-full h-full bg-white dark:bg-slate-900 duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className="drop-shadow-md border bg-slate-50 rounded-xl h-formLaptop dark:bg-slate-900">
         <form className="pt-14 px-16 flex flex-col flex-wrap w-full rounded-xl">
           <div className="flex items-center">

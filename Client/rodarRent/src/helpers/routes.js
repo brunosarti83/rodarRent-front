@@ -21,7 +21,7 @@ const routesHelper = {
   googleAuthAux: '/googleAuthAux',
   editInfo: '/edit-customer/:id',
   bookingByIdCustomer: '/myBookings',
-  changePassword: '/changePassword/:id',
+  editPasswordCustomer: '/editPasswordCustomer/:id',
   forgotpasswordUrl: '/customers/forgotpassword'
 };
 
