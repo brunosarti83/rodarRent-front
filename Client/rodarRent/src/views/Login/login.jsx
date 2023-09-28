@@ -96,7 +96,7 @@ const Login = () => {
                 >
                   <BiErrorCircle className="text-red text-xl cursor-pointer " />
                   {showError.email && (
-                    <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                    <div className=" bg-white w-32 border font-semibold border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1 dark:bg-slate-900 ">
                       {errors.email}
                     </div>
                   )}
@@ -130,7 +130,7 @@ const Login = () => {
                 >
                   <BiErrorCircle className="text-red text-xl cursor-pointer " />
                   {showError.password && (
-                    <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                    <div className=" bg-white w-32 border font-semibold border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1 dark:bg-slate-900">
                       {errors.password}
                     </div>
                   )}
@@ -146,7 +146,7 @@ const Login = () => {
                 Sign In
               </button>
               <a
-                className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
+                className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950  transition-shadow duration-300 ease-in-out hover:drop-shadow-none "
                 href={routesHelper.baseBackUrl + routesHelper.authGoogle}
               >
                 <img
