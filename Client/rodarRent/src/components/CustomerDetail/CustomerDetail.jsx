@@ -139,6 +139,9 @@ const CustomerDetail = () => {
       }
     };
     fetchCustomerDetails();
+  }, []);
+
+  useEffect(() => {
     if (customer) {
       const { address, zipCode, phoneNumber, city, country } = customer;
       if (
@@ -149,13 +152,13 @@ const CustomerDetail = () => {
         (country === "n/a" && !isWarningShown)
       ) {
         openEditCustomerModal();
-        // toast.warning('Please complete your personal data', {
-        //   autoClose: 3000,
-        // })
+        //toast.warning('Please complete your personal data', {
+        //autoClose: 3000,
+        //})
         setIsWarningShown(true);
       }
     }
-  }, [id, customer]); // acá está el quilombo infinito
+  }, [id, customer]);
 
   useEffect(() => {
     const fetchCustomerBookings = async () => {
