@@ -108,10 +108,10 @@ function Register() {
   };
 
   return (
-    <div className="w-full h-[calc(100vh-112px)] bg-white dark:bg-slate-900 transition duration-300 dark:text-gray-100 flex items-center justify-center">
-      <div className="h-register flex">
-        <div className="drop-shadow-md border bg-white rounded-l-3xl  dark:bg-slate-900">
-          <form className="px-16 pt-10 flex flex-col flex-wrap w-full rounded-xl justify-center">
+    <div className="w-full h-full bg-white dark:bg-slate-900 transition duration-300 dark:text-gray-100 flex items-center justify-center">
+      <div className="flex">
+        <div className="sm:drop-shadow-md sm:border bg-white rounded-l-3xl  dark:bg-slate-900">
+          <form className="px-8 pt-0 sm:px-16 sm:pt-10 flex flex-col flex-wrap w-full rounded-xl justify-center">
             <h1 className="font-poppins p-2 text-3xl">Welcome to RodarRent!</h1>
             <h6 className="font-poppins p-2 text-gray">
               Please enter your info
@@ -127,7 +127,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray "
+                    className="w-10/12 font-poppins text-sm flex justify-start items-center p-1 m-1 text-black rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="text"
                     name="name"
                     value={userData.name}
@@ -149,7 +149,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="text"
                     name="lastName"
                     value={userData.lastName}
@@ -173,7 +173,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="text"
                     name="email"
                     value={userData.email}
@@ -212,7 +212,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950  dark:text-gray-100"
                     type="text"
                     name="phoneNumber"
                     value={userData.phoneNumber}
@@ -236,7 +236,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="text"
                     name="personalId"
                     value={userData.personalId}
@@ -258,7 +258,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100"
                     type="date"
                     name="birthDate"
                     value={userData.birthDate}
@@ -282,7 +282,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="text"
                     name="country"
                     value={userData.country}
@@ -304,7 +304,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="text"
                     name="city"
                     value={userData.city}
@@ -328,7 +328,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="text"
                     name="address"
                     value={userData.address}
@@ -350,7 +350,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-black text-sm flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="text"
                     name="zipCode"
                     value={userData.zipCode}
@@ -374,7 +374,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="password"
                     name="password"
                     value={userData.password}
@@ -396,7 +396,7 @@ function Register() {
                         }`}
                       />
                       {showError.password && errors.passwordMsj && (
-                        <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                        <div className=" bg-white w-32 border font-semibold border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1 dark:bg-slate-950">
                           {errors.passwordMsj}
                         </div>
                       )}
@@ -413,7 +413,7 @@ function Register() {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray"
+                    className="w-10/12 font-poppins text-sm text-black flex justify-start items-center p-1 m-1 rounded-lg drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
                     type="password"
                     name="repeatPass"
                     value={userData.repeatPass}
@@ -458,7 +458,7 @@ function Register() {
               </button>
               <button
                 onClick={handleGoogleReg}
-                className="font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray"
+                className="font-poppins text-black bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 dark:text-gray-100 "
               >
                 <img
                   className="relative w-6 m-1"
@@ -468,18 +468,16 @@ function Register() {
                 Sign up with google
               </button>
             </div>
-            <hr className="ml-8 mr-8 text-gray" />
-            <div className="flex justify-center items-center m-5">
-              <p className="font-poppins text-gray text-xs m-2">
-                Already have an account?
-              </p>
-              <p className="text-sm underline decoration-solid font-poppins">
-                <Link to={routesHelper.login}>Sign in</Link>
-              </p>
-            </div>
           </form>
+          <hr className="ml-8 mr-8" />
+          <div className="flex justify-center items-center m-5">
+            <p className="font-poppins text-xs m-2">Already have an account?</p>
+            <p className="text-sm underline decoration-solid font-poppins">
+              <Link to={routesHelper.login}>Sign in</Link>
+            </p>
+          </div>
         </div>
-        <div className="drop-shadow-md rounded-r-3xl flex flex-col justify-evenly items-center bg-blue">
+        <div className="hidden sm:block drop-shadow-md rounded-r-3xl flex-col justify-evenly items-center bg-blue">
           <div className="text-4xl text-center font-semibold pb-6 text-white">
             <h1>One step closer to</h1>
             <h1>your dream car!</h1>

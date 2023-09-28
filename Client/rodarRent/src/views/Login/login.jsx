@@ -62,8 +62,8 @@ const Login = () => {
   return (
     <div className="w-full h-[calc(100vh-112px)] bg-white dark:bg-slate-900 transition-colors duration-300 dark:text-gray-100 flex items-center justify-center">
       <div className='flex h-formLaptop' >
-        <div className="drop-shadow-md border bg-white rounded-l-3xl h-formLaptop  dark:bg-slate-900">
-          <form className=" pt-14 px-16 flex flex-col flex-wrap w-full rounded-xl">
+        <div className="sm:drop-shadow-md sm:border bg-white rounded-l-3xl h-formLaptop  dark:bg-slate-900">
+          <form className="px-8 pt-14 sm:px-16 flex flex-col flex-wrap w-full rounded-xl">
             <h1 className="font-poppins font-medium  text-4xl">Welcome back!</h1>
             <h6 className="font-poppins pb-6 text-gray">
               Please enter your details
@@ -96,7 +96,7 @@ const Login = () => {
                 >
                   <BiErrorCircle className="text-red text-xl cursor-pointer " />
                   {showError.email && (
-                    <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                    <div className=" bg-white w-32 border font-semibold border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1 dark:bg-slate-900 ">
                       {errors.email}
                     </div>
                   )}
@@ -130,7 +130,7 @@ const Login = () => {
                 >
                   <BiErrorCircle className="text-red text-xl cursor-pointer " />
                   {showError.password && (
-                    <div className=" bg-white w-32 border border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1">
+                    <div className=" bg-white w-32 border font-semibold border-gray-300 text-red absolute rounded-lg -bottom-14 transform -translate-x-1/2 z-20 p-1 dark:bg-slate-900">
                       {errors.password}
                     </div>
                   )}
@@ -146,7 +146,7 @@ const Login = () => {
                 Sign In
               </button>
               <a
-                className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950 transition duration-300 ease-in-out hover:drop-shadow-none "
+                className="font-poppins bg-white cursor-pointer rounded-lg p-1 m-2 flex flex-row justify-center items-center drop-shadow-md border border-gray dark:bg-slate-950  transition-shadow duration-300 ease-in-out hover:drop-shadow-none "
                 href={routesHelper.baseBackUrl + routesHelper.authGoogle}
               >
                 <img
@@ -177,7 +177,7 @@ const Login = () => {
             </div>
           </form>
         </div>
-        <div className=" drop-shadow-md rounded-r-3xl bg-blue  pt-14">
+        <div className=" hidden sm:block drop-shadow-md rounded-r-3xl bg-blue  pt-14">
           <div className="text-4xl text-center font-semibold pb-6 text-white" >
             <h1>One step closer to</h1>
             <h1>your dream car!</h1>
