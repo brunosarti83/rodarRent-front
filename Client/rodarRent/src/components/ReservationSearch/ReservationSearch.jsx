@@ -156,7 +156,7 @@ const ReservationSearch = () => {
         </form>
       </div>
       {isLoggedIn ? (
-        <div className="flex w-1/4 justify-center">
+        <div className="flex w-1/6 justify-evenly">
           <Link
             className="text-md text-white bg-blue font-semibold py-3 px-10 rounded-lg"
             to={isAdmin ? "/admin" : `/customer/${userData.id}`}
