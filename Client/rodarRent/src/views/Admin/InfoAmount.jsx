@@ -1,14 +1,14 @@
 import { useQuery } from "react-query";
-import Loader from "../../components/Loader/Loader";
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { API_BASE_URL } from "../../helpers/routes";
 
 export const InfoAmount = () => {
-  const [income, setIncome] = React.useState('');
+  const [income, setIncome] = React.useState('today');
   const [ytdIncome, setYtdIncome] = React.useState(null);
   const [mtdIncome, setMtdIncome] = React.useState(null);
   const [todayIncome, setTodayIncome] = React.useState(null);
@@ -20,7 +20,7 @@ export const InfoAmount = () => {
   const calculateIncomes = (bookings) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1; // Los meses son base 0
+    const currentMonth = currentDate.getMonth() + 1;
 
     const ytd = bookings.reduce((total, booking) => {
       const bookingYear = new Date(booking.startDate).getFullYear();
@@ -32,7 +32,7 @@ export const InfoAmount = () => {
 
     const mtd = bookings.reduce((total, booking) => {
       const bookingYear = new Date(booking.startDate).getFullYear();
-      const bookingMonth = new Date(booking.startDate).getMonth() + 1; // Meses base 0
+      const bookingMonth = new Date(booking.startDate).getMonth() + 1;
       if (bookingYear === currentYear && bookingMonth === currentMonth) {
         return total + booking.amount;
       }
@@ -42,7 +42,7 @@ export const InfoAmount = () => {
     const today = bookings.reduce((total, booking) => {
       const bookingDate = new Date(booking.startDate);
       const bookingYear = bookingDate.getFullYear();
-      const bookingMonth = bookingDate.getMonth() + 1; // Meses base 0
+      const bookingMonth = bookingDate.getMonth() + 1;
       const bookingDay = bookingDate.getDate();
       if (
         bookingYear === currentYear &&
@@ -60,7 +60,8 @@ export const InfoAmount = () => {
   };
 
   function fetchBookings() {
-    return fetch("http://localhost:3001/booking/filter")
+    return fetch(`${API_BASE_URL}/booking/filter`)
+    
       .then((res) => res.json())
       .then((data) => {
         calculateIncomes(data);
@@ -70,10 +71,15 @@ export const InfoAmount = () => {
 
   const queryBookings = useQuery(["bookings"], fetchBookings);
 
+  React.useEffect(() => {
+    if (!queryBookings.isLoading) {
+      calculateIncomes(queryBookings.data);
+    }
+  }, [queryBookings.data]);
 
   return (
     <div>
-          <div className="text-center text-2xl font-semibold">Profit Record</div>
+      <div className="text-center text-2xl font-semibold">Profit Record</div>
 
       <div className="flex w-full justify-around pt-5">
         <Box sx={{ minWidth: 120 }}>
@@ -93,20 +99,14 @@ export const InfoAmount = () => {
           </FormControl>
         </Box>
       </div>
+
       <div className="text-center mt-10">
-        {income === "ytd" && ytdIncome !== null ? (
-          <div className="text-5xl">${ytdIncome}</div>
-        ) : income === "mtd" && mtdIncome !== null ? (
-          <div className="text-5xl">${mtdIncome}</div>
-        ) : income === "today" && todayIncome !== null ? (
-          <div className="text-5xl">${todayIncome}</div>
+        {queryBookings.isLoading ? ( ""
         ) : (
-          <Loader />
+          <div className="text-5xl">${income === "ytd" ? ytdIncome : income === "mtd" ? mtdIncome : todayIncome}</div>
         )}
         <hr className="border-t-2 border-gray-300 w-3/4 mx-auto my-6" />
       </div>
-      </div>
-
+    </div>
   );
-  
-}
+};

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import * as echarts from "echarts";
 
-const uData = [20, 22, 27, 17, 20, 20];
-const pData = [24, 22, 28, 22, 24, 28];
+const uData = [28, 23, 28, 26, 25, 24];
+const pData = [26, 26, 28, 28, 30, 27];
 const xLabels = ["Oct-23", "Nov-23", "Dec-23", "Jan-24", "Feb-24", "Mar-24"];
 
 export const FutureSales = () => {
@@ -38,7 +38,7 @@ export const FutureSales = () => {
       },
       yAxis: {
         type: "value",
-        min:15,
+        min:18,
       },
       series: [
         {
