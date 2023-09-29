@@ -4,7 +4,7 @@ import Loader from "../../components/Loader/Loader";
 import PaginationAdminCustomer from "../../components/AdminComponents/AdminClients/PaginationAdminCustomer";
 import axios from "axios";
 import { BiTrash, BiSearchAlt, BiX } from 'react-icons/bi';
-import { MdOutlineAdminPanelSettings, MdAdminPanelSettings } from 'react-icons/Md';
+import { MdOutlineAdminPanelSettings, MdAdminPanelSettings } from 'react-icons/md';
 import { API_BASE_URL } from "../../helpers/routes";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
