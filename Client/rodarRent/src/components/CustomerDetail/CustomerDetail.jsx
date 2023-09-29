@@ -6,6 +6,7 @@ import Loader from '../Loader/Loader';
 import DashboardActions from '../DashboardActions/DashboardActions';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
+import ReviewForm from '../ReviewForm/ReviewForm';
 import EditCustomer from '../EditCustomer/EditCustomer';
 import EditPasswordCustomer from '../EditCustomer/EditPasswordCustomer';
 import EditBooking from '../EditBooking/EditBooking';
@@ -26,25 +27,25 @@ const CustomerDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isEditCustomerModalOpen, setIsEditCustomerModalOpen] = useState(false);
-  const [isEditPasswordCustomerModalOpen, setIsEditPasswordCustomerModalOpen] = useState(false);
+  const [isEditPasswordCustomerModalOpen, setIsEditPasswordCustomerModalOpen] =
+    useState(false);
   const [isEditBookingModalOpen, setIsEditBookingModalOpen] = useState(false);
   const [allVehicles, setAllVehicles] = useState([]);
   const modalRefCustomer = useRef(null);
   const modalRefPasswordCustomer = useRef(null);
   const modalRefBooking = useRef(null);
   const [isWarningShown, setIsWarningShown] = useState(false);
-  
 
   useEffect(() => {
-    
     const fetchVehicles = async () => {
       try {
         const response = await axios.get(getAllVehicles());
         const vehiclesArray = response.data.results;
         setAllVehicles(vehiclesArray);
       } catch (error) {
-        console.error('Error fetching vehicles', error);
+        console.error("Error fetching vehicles", error);
       }
     };
 
@@ -59,13 +60,20 @@ const CustomerDetail = () => {
     });
   };
 
+  const openReviewCustomerModal = () => {
+    setIsReviewModalOpen(true);
+  };
+  
+  const closeReviewCustomerModal = () => {
+    setIsReviewModalOpen(false);
+  };
+
   const openEditCustomerModal = () => {
     setIsEditCustomerModalOpen(true);
   };
 
   const closeEditCustomerModal = () => {
     setIsEditCustomerModalOpen(false);
-
   };
 
   const openEditPasswordCustomerModal = () => {
@@ -87,17 +95,25 @@ const CustomerDetail = () => {
   const handleOverlayClick = (e) => {
     if (modalRefCustomer.current && e.target === modalRefCustomer.current) {
       closeEditCustomerModal();
-    } else if (modalRefPasswordCustomer.current && e.target === modalRefPasswordCustomer.current) {
+    } else if (
+      modalRefPasswordCustomer.current &&
+      e.target === modalRefPasswordCustomer.current
+    ) {
       closeEditPasswordCustomerModal();
-    } else if (modalRefBooking.current && e.target === modalRefBooking.current) {
+    } else if (
+      modalRefBooking.current &&
+      e.target === modalRefBooking.current
+    ) {
       closeEditBookingModal();
     }
   };
 
   const closeModalOnClickOutside = (e) => {
     if (
-      (modalRefCustomer.current && !modalRefCustomer.current.contains(e.target)) ||
-      (modalRefPasswordCustomer.current && !modalRefPasswordCustomer.current.contains(e.target)) ||
+      (modalRefCustomer.current &&
+        !modalRefCustomer.current.contains(e.target)) ||
+      (modalRefPasswordCustomer.current &&
+        !modalRefPasswordCustomer.current.contains(e.target)) ||
       (modalRefBooking.current && !modalRefBooking.current.contains(e.target))
     ) {
       closeEditCustomerModal();
@@ -107,9 +123,9 @@ const CustomerDetail = () => {
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', closeModalOnClickOutside);
+    document.addEventListener("mousedown", closeModalOnClickOutside);
     return () => {
-      document.removeEventListener('mousedown', closeModalOnClickOutside);
+      document.removeEventListener("mousedown", closeModalOnClickOutside);
     };
   }, []);
 
@@ -124,25 +140,31 @@ const CustomerDetail = () => {
         setCustomer(data);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error', error);
+        console.error("Error", error);
         setIsLoading(false);
       }
     };
     fetchCustomerDetails();
-    
   }, []);
 
-  useEffect (() => {
-    if(customer) {
-      const {address, zipCode, phoneNumber,city, country} = customer
-      if (address==='n/a' || zipCode==='n/a' || phoneNumber==='n/a' || city==='n/a' || country==='n/a' && !isWarningShown) {
-      openEditCustomerModal()
-      //toast.warning('Please complete your personal data', {
-         //autoClose: 3000,
-      //})
-      setIsWarningShown(true)
-    } 
-  }},[id, customer])
+  useEffect(() => {
+    if (customer) {
+      const { address, zipCode, phoneNumber, city, country } = customer;
+      if (
+        address === "n/a" ||
+        zipCode === "n/a" ||
+        phoneNumber === "n/a" ||
+        city === "n/a" ||
+        (country === "n/a" && !isWarningShown)
+      ) {
+        openEditCustomerModal();
+        //toast.warning('Please complete your personal data', {
+        //autoClose: 3000,
+        //})
+        setIsWarningShown(true);
+      }
+    }
+  }, [id, customer]);
 
   useEffect(() => {
     const fetchCustomerBookings = async () => {
@@ -154,24 +176,27 @@ const CustomerDetail = () => {
           if (Array.isArray(data)) {
             const formattedData = data.map((booking) => ({
               ...booking,
-              formattedStartDate: new Date(booking.startDate).toLocaleDateString(),
-              formattedFinishDate: new Date(booking.finishDate).toLocaleDateString(),
+              formattedStartDate: new Date(
+                booking.startDate
+              ).toLocaleDateString(),
+              formattedFinishDate: new Date(
+                booking.finishDate
+              ).toLocaleDateString(),
             }));
 
             const sortedBookings = sortBookingsByStartDate(formattedData);
             setCustomerBookings(sortedBookings);
           } else {
-            console.error('Data is not an array:', data);
+            console.error("Data is not an array:", data);
           }
         }
       } catch (error) {
-        console.error('Error', error);
+        console.error("Error", error);
       }
     };
 
     fetchCustomerBookings();
   }, [id]);
-
 
   const handleEditBooking = (bookingId) => {
     setSelectedBookingId(bookingId);
@@ -238,13 +263,16 @@ const CustomerDetail = () => {
                       {currentBookings.map((booking) => (
                         <tr key={booking.id}>
                           <td className="w-1/4 h-10 px-6 py-3 bg-white rounded-md shadow">
-                            {allVehicles.map((vehicle) => (
-                              vehicle.id === booking.VehicleId && (
-                                <div key={vehicle.id}>
-                                  <span>{vehicle.brand} - {vehicle.model}</span>
-                                </div>
-                              )
-                            ))}
+                            {allVehicles.map(
+                              (vehicle) =>
+                                vehicle.id === booking.VehicleId && (
+                                  <div key={vehicle.id}>
+                                    <span>
+                                      {vehicle.brand} - {vehicle.model}
+                                    </span>
+                                  </div>
+                                )
+                            )}
                           </td>
                           <td className="w-1/4 h-10 px-6 py-3 bg-white rounded-md shadow">
                             {booking.formattedStartDate}
@@ -258,23 +286,27 @@ const CustomerDetail = () => {
                           <td className="w-1/4 h-10 px-6 py-3 bg-white rounded-md shadow">
                             <div className="flex items-center justify-between">
                               <span
-                                className={`${booking.stateBooking === 'completed'
-                                  ? 'text-green-500'
-                                  : booking.stateBooking === 'confirmed'
-                                    ? 'text-yellow-500'
-                                    : booking.stateBooking === 'pending'
-                                      ? 'text-cyan-500'
-                                      : booking.stateBooking === 'canceled'
-                                        ? 'text-red'
-                                        : ''
-                                  }`}
+                                className={`${
+                                  booking.stateBooking === "completed"
+                                    ? "text-green-500"
+                                    : booking.stateBooking === "confirmed"
+                                    ? "text-yellow-500"
+                                    : booking.stateBooking === "pending"
+                                    ? "text-cyan-500"
+                                    : booking.stateBooking === "canceled"
+                                    ? "text-red"
+                                    : ""
+                                }`}
                               >
                                 {booking.stateBooking}
                               </span>
                               <div className="flex text-2xl">
-                                {(booking.stateBooking === 'confirmed' || booking.stateBooking === 'pending') && (
+                                {(booking.stateBooking === "confirmed" ||
+                                  booking.stateBooking === "pending") && (
                                   <BiTrash
-                                    onClick={() => handleEditBooking(booking.id)}
+                                    onClick={() =>
+                                      handleEditBooking(booking.id)
+                                    }
                                     className="ml-2 cursor-pointer hover:scale-125 hover:text-red transition-all duration-200"
                                   />
                                 )}
@@ -290,10 +322,16 @@ const CustomerDetail = () => {
             </div>
             <div className="w-2/3 h-1/3">
               <div className="mt-4 flex justify-between mx-[24rem]">
-                <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                >
                   ❮
                 </button>
-                <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
                   ❯
                 </button>
               </div>
@@ -306,8 +344,22 @@ const CustomerDetail = () => {
         </div>
 
         <div className="row-start-1 row-end-4 col-start-3 flex justify-center">
-          <DashboardActions openEditModal={openEditCustomerModal} openEditPasswordModal={openEditPasswordCustomerModal} toast={toast} />
+          <DashboardActions openReviewModal={openReviewCustomerModal} openEditModal={openEditCustomerModal}
+          openEditPasswordModal={openEditPasswordCustomerModal} />
         </div>
+
+        <Modal
+          isOpen={isReviewModalOpen}
+          onRequestClose={closeReviewCustomerModal}
+          shouldCloseOnOverlayClick={true}
+          contentLabel="Review Modal"
+          className="fixed inset-1/2 w'2/3 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white dark:bg-slate-900 rounded-sm shadow-lg"
+          overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black"
+          ref={modalRefCustomer}
+          onAfterOpen={closeModalOnClickOutside}
+        >
+          <ReviewForm closeReviewModal={closeReviewCustomerModal} />
+        </Modal>
 
         <Modal
           isOpen={isEditCustomerModalOpen}
@@ -321,7 +373,7 @@ const CustomerDetail = () => {
         >
           <EditCustomer closeEditModal={closeEditCustomerModal} />
         </Modal>
-   
+
         <Modal
           isOpen={isEditPasswordCustomerModalOpen}
           onRequestClose={closeEditPasswordCustomerModal}
@@ -331,9 +383,11 @@ const CustomerDetail = () => {
           overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-10 bg-black"
           ref={modalRefPasswordCustomer}
           onAfterOpen={closeModalOnClickOutside}
-          >
-          <EditPasswordCustomer closeEditPasswordModal={closeEditPasswordCustomerModal} />
-          </Modal>
+        >
+          <EditPasswordCustomer
+            closeEditPasswordModal={closeEditPasswordCustomerModal}
+          />
+        </Modal>
 
         <Modal
           isOpen={isEditBookingModalOpen}
@@ -346,7 +400,11 @@ const CustomerDetail = () => {
           onAfterOpen={closeModalOnClickOutside}
         >
           {selectedBookingId && (
-            <EditBooking bookingId={selectedBookingId} allVehicles={allVehicles} onClose={closeEditBookingModal} />
+            <EditBooking
+              bookingId={selectedBookingId}
+              allVehicles={allVehicles}
+              onClose={closeEditBookingModal}
+            />
           )}
         </Modal>
       </div>
