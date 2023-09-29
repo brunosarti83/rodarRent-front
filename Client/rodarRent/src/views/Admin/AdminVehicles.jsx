@@ -27,37 +27,44 @@ const AdminVehicles = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   //*Selected Vehicle
   const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [isEditSubmitted, setIsEditSubmitted] = useState(false)
   //*SearchBar States
-  const [domain, setDomain] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
+  const [searchParams, setSearchParams] = useState({
+    domain: "",
+    model: "",
+    brand: "",
+  });
+  const [isSearchingDomain, setIsSearchingDomain] = useState(false);
+  const [isSearching, setIsSearching] = useState(false)
 
   //*carga inicial y paginado
   useEffect(() => {
     loading || setLoading(true);
     const limit = 3;
     const offset = (currentPage - 1) * limit;
-
-    axios
-      .get(`${API_BASE_URL}/vehicles`, { params: { limit, offset } })
-      .then((response) => {
-        setVehicles(response.data);
-        setTotalPages(response.data.totalPages);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
+    if (!isSearching) {
+      axios
+        .get(`${API_BASE_URL}/vehicles`, { params: { limit, offset } })
+        .then((response) => {
+          setVehicles(response.data);
+          setTotalPages(response.data.totalPages);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+        });
+    }
   }, [currentPage]);
 
-  //*actualiza vehicles post eliminacion
+  //*actualiza vehicles post eliminacion y editado
   useEffect(() => {
     loading || setLoading(true);
 
     const limit = 3;
     const offset = (currentPage - 1) * 3;
 
-    if (selectedVehicle === null) {
+    if (selectedVehicle === null || isEditSubmitted === true) {
       axios
         .get(`${API_BASE_URL}/vehicles`, {
           params: { limit, offset },
@@ -65,6 +72,7 @@ const AdminVehicles = () => {
         .then((response) => {
           setVehicles(response.data);
           setTotalPages(response.data.totalPages);
+          setIsEditSubmitted(false)
           setLoading(false);
         })
         .catch((error) => {
@@ -73,7 +81,8 @@ const AdminVehicles = () => {
     } else {
       setLoading(false);
     }
-  }, [selectedVehicle]);
+  }, [selectedVehicle, isEditSubmitted]);
+
 
   const onPageChange = (page) => {
     setCurrentPage(page);
@@ -119,28 +128,54 @@ const AdminVehicles = () => {
     }
   };
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setDomain(value);
+  const handleChange = (e, field) => {
+    const value = e.target.value;
+    setSearchParams((prevParams) => ({
+      ...prevParams,
+      [field]: value,
+    }));
   };
 
+
   const handleSubmit = async () => {
-    if (domain) {
+    const limit = 3;
+    const offset = (currentPage - 1) * 3;
+
+    if (searchParams.domain || searchParams.model || searchParams.brand) {
       try {
         const response = await axios.get(`${API_BASE_URL}/vehicles`, {
-          params: { domain },
+          params: { ...searchParams, limit, offset },
         });
-        setIsSearching(true); //* doesn't show pagination buttons when the user searches a domain
-        setDomain("");
-        setVehicles({ results: [] });
-        setVehicles(response.data);
+
+        if (searchParams.domain) {
+          setIsSearchingDomain(true); //* doesn't show pagination buttons when the user searches a domain
+          setSearchParams((prevParams) => ({
+            ...prevParams,
+            domain: "",
+          }));
+          setVehicles({ results: [] });
+          setVehicles(response.data);
+        } else {
+          setIsSearching(true);
+          setSearchParams({
+            domain: "",
+            model: "",
+            brand: "",
+          });
+          setVehicles(response.data);
+          setTotalPages(response.data.totalPages);
+        }
+
+
         if (searchRef.current) {
           searchRef.current.value = "";
         }
       } catch (error) {
         console.log(error);
+        // Manejar el error aquí si es necesario
       }
     } else {
+      setIsSearchingDomain(false);
       setIsSearching(false);
       setCurrentPage(2);
     }
@@ -155,19 +190,22 @@ const AdminVehicles = () => {
       ) : (
         <div className="w-[calc(100vw-256px)] min-h-[calc(100vh-112px)] px-14 py-2 dark:bg-slate-900 dark:text-gray-100 ">
           {/* SearchBar */}
-          <div className="mb-3">
-            <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/6 flex items-center dark:bg-slate-950 dark:border-none">
-              <input
-                ref={searchRef}
-                onChange={handleChange}
-                className="px-3 py-2 w-4/5 dark:bg-slate-950"
-                type="text"
-                placeholder="Type a car domain"
-              />
-              <button
-                onClick={handleSubmit}
-                className="w-1/5 py-3 px-3 flex justify-center items-center hover:scale-125 transition-transform duration-300"
-              >
+          <div className="mb-3 flex w-3/5 justify-between">
+            <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/4 flex items-center dark:bg-slate-950 dark:border-none">
+              <input ref={searchRef} onChange={(e) => handleChange(e, "domain")} className="px-3 py-2 w-4/5 text-sm dark:bg-slate-950" type="text" placeholder="Type a car domain" />
+              <button onClick={handleSubmit} className="w-1/5 py-3 px-3 flex justify-center items-center hover:scale-125 transition-transform duration-300" >
+                <BiSearch />
+              </button>
+            </div>
+            <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/4 flex items-center dark:bg-slate-950 dark:border-none">
+              <input ref={searchRef} onChange={(e) => handleChange(e, "brand")} className="px-3 py-2 w-4/5 text-sm dark:bg-slate-950" type="text" placeholder="Type a car brand" />
+              <button onClick={handleSubmit} className="w-1/5 py-3 px-3 flex justify-center items-center hover:scale-125 transition-transform duration-300" >
+                <BiSearch />
+              </button>
+            </div>
+            <div className="bg-white border text-lg border-gray-200 rounded-lg drop-shadow-lg w-1/4 flex items-center dark:bg-slate-950 dark:border-none">
+              <input ref={searchRef} onChange={(e) => handleChange(e, "model")} className="px-3 py-2 w-4/5 text-sm dark:bg-slate-950" type="text" placeholder="Type a car model" />
+              <button onClick={handleSubmit} className="w-1/5 py-3 px-3 flex justify-center items-center hover:scale-125 transition-transform duration-300" >
                 <BiSearch />
               </button>
             </div>
@@ -183,8 +221,9 @@ const AdminVehicles = () => {
                     openModal={openModal}
                   />
                 ))}
-                {isSearching ? null : (
-                  <div className=" flex justify-center">
+
+                {isSearchingDomain ? null : (
+                  <div className=" flex justify-center" >
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}
@@ -250,7 +289,7 @@ const AdminVehicles = () => {
             isOpen={isEditModalOpen}
             onRequestClose={() => closeModal(2)}
           >
-            <EditVehicle selectedVehicle={selectedVehicle} toast={toast} />
+            <EditVehicle setIsEditSubmitted={setIsEditSubmitted} selectedVehicle={selectedVehicle} toast={toast} closeModal={closeModal} />
           </Modal>
           <Modal
             className="w-1/3 min-h-[90dvh] p-4 bg-white rounded-xl flex flex-col dark:bg-slate-900"
