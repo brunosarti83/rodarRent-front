@@ -115,7 +115,7 @@ export default function TableDashboard({data}) {
 
   return (
     <div className="text-center text-2xl font-semibold mt-2">
-      Vehicles available
+      Vehicles
       <Paper style={{ height: 400, width: '100%' }}>
         <TableVirtuoso
           data={tableData}

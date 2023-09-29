@@ -21,12 +21,12 @@ function Home() {
     }
   }, [isUserOnline]);
 
-  return (
-    <div>
-      <ReservationSearch />
-      <CarList />
-    </div>
-  );
+    return (
+        <div className="flex flex-col">
+            <ReservationSearch /> 
+            <CarList />
+        </div>
+    )
 }
 
 export default Home;

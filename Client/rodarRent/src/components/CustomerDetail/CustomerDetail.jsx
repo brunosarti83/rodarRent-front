@@ -238,11 +238,11 @@ const CustomerDetail = () => {
   const currentBookings = paginate(customerBookings);
 
   return (
-    <div className="h-noNavDesktop font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100">
+    <div className="min-h-[calc(100vh-112px)] font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100">
       <div className="w-full h-16 rounded-t-lg p-6 flex flex-col justify-evenly ">
         <WelcomeCustomer customer={customer} onLogout={handleLogout} />
       </div>
-      <div className="grid grid-cols-3 grid-row-3 h-customerDetail">
+      <div className="grid grid-cols-3 grid-row-3 h-full">
         <div className="flex justify-center col-start-1 col-end-3 row-start-1 row-end-3">
           <div className="w-full p-4">
             <div className="border-b-2 border-gray-300">

@@ -12,8 +12,9 @@ import MostRequieredBrands from "./MostRequiredBrands";
 import MostCityRequiered from "./MostCityRequiered";
 
 const Dashboard = () => {
+
   const queryVehicles = useQuery(["vehicles"], () =>
-    fetch("http://localhost:3001/vehicles").then((res) => res.json())
+    fetch(`${API_BASE_URL}/vehicles`).then((res) => res.json())
   );
 
   return (
