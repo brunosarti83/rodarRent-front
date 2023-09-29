@@ -62,7 +62,7 @@ function AdminClients() {
           customer.address,
           customer.email,
           customer.isActive ? "Yes" : "No",
-          customer.UserId,
+          //customer.UserId,
         ];
 
         return searchableFields.some((field) =>
