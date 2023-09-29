@@ -1,27 +1,27 @@
-import { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import Loader from "../Loader/Loader";
-import DashboardActions from "../DashboardActions/DashboardActions";
-import Modal from "react-modal";
-import { toast } from "react-toastify";
-import ReviewForm from "../ReviewForm/ReviewForm";
-import EditCustomer from "../EditCustomer/EditCustomer";
-import EditPasswordCustomer from "../EditCustomer/EditPasswordCustomer";
-import EditBooking from "../EditBooking/EditBooking";
-import CustomerInfo from "../CustomerInfo/CustomerInfo";
-import WelcomeCustomer from "../WelcomeCustomer/WelcomeCustomer";
-import { BiTrash } from "react-icons/bi";
+import { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import Loader from '../Loader/Loader';
+import DashboardActions from '../DashboardActions/DashboardActions';
+import Modal from 'react-modal';
+import { toast } from 'react-toastify';
+import ReviewForm from '../ReviewForm/ReviewForm';
+import EditCustomer from '../EditCustomer/EditCustomer';
+import EditPasswordCustomer from '../EditCustomer/EditPasswordCustomer';
+import EditBooking from '../EditBooking/EditBooking';
+import CustomerInfo from '../CustomerInfo/CustomerInfo';
+import WelcomeCustomer from '../WelcomeCustomer/WelcomeCustomer';
+import { BiTrash } from 'react-icons/bi';
 import {
   getCustomerDetailsUrl,
   getBookingsByIdCustomerUrl,
   getAllVehicles,
-} from "../../helpers/routes";
-import { useDispatch } from "react-redux";
-import { logOut } from "../../redux/actions";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+} from '../../helpers/routes';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../redux/actions';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CustomerDetail = () => {
   const { id } = useParams();
@@ -49,7 +49,7 @@ const CustomerDetail = () => {
         const vehiclesArray = response.data.results;
         setAllVehicles(vehiclesArray);
       } catch (error) {
-        console.error("Error fetching vehicles", error);
+        console.error('Error fetching vehicles', error);
       }
     };
 
@@ -127,9 +127,9 @@ const CustomerDetail = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", closeModalOnClickOutside);
+    document.addEventListener('mousedown', closeModalOnClickOutside);
     return () => {
-      document.removeEventListener("mousedown", closeModalOnClickOutside);
+      document.removeEventListener('mousedown', closeModalOnClickOutside);
     };
   }, []);
 
@@ -144,7 +144,7 @@ const CustomerDetail = () => {
         setCustomer(data);
         setIsLoading(false);
       } catch (error) {
-        console.error("Error", error);
+        console.error('Error', error);
         setIsLoading(false);
       }
     };
@@ -155,11 +155,11 @@ const CustomerDetail = () => {
     if (customer) {
       const { address, zipCode, phoneNumber, city, country } = customer;
       if (
-        address === "n/a" ||
-        zipCode === "n/a" ||
-        phoneNumber === "n/a" ||
-        city === "n/a" ||
-        (country === "n/a" && !isWarningShown)
+        address === 'n/a' ||
+        zipCode === 'n/a' ||
+        phoneNumber === 'n/a' ||
+        city === 'n/a' ||
+        (country === 'n/a' && !isWarningShown)
       ) {
         openEditCustomerModal();
         //toast.warning('Please complete your personal data', {
@@ -176,26 +176,39 @@ const CustomerDetail = () => {
         if (id) {
           const response = await fetch(getBookingsByIdCustomerUrl(id));
           const data = await response.json();
-
+          // console.log(data);
           if (Array.isArray(data)) {
-            const formattedData = data.map((booking) => ({
-              ...booking,
-              formattedStartDate: new Date(
-                booking.startDate
-              ).toLocaleDateString(),
-              formattedFinishDate: new Date(
-                booking.finishDate
-              ).toLocaleDateString(),
-            }));
+            const formattedData = data.map((booking) => {
+              // Parse the date strings to Date objects and set the timezone to UTC
+              const startDate = new Date(booking.startDate);
+              const finishDate = new Date(booking.finishDate);
+
+              return {
+                ...booking,
+                formattedStartDate: startDate.toLocaleDateString('en-GB', {
+                  timeZone: 'UTC', // Set the timezone to UTC
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                }),
+                formattedFinishDate: finishDate.toLocaleDateString('en-GB', {
+                  timeZone: 'UTC', // Set the timezone to UTC
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                }),
+              };
+            });
+            // console.log(formattedData);
 
             const sortedBookings = sortBookingsByStartDate(formattedData);
             setCustomerBookings(sortedBookings);
           } else {
-            console.error("Data is not an array:", data);
+            console.error('Data is not an array:', data);
           }
         }
       } catch (error) {
-        console.error("Error", error);
+        console.error('Error', error);
       }
     };
 
@@ -285,7 +298,7 @@ const CustomerDetail = () => {
                                       {vehicle.brand} - {vehicle.model}
                                     </span>
                                   </div>
-                                )
+                                ),
                             )}
                           </td>
                           <td className="w-1/4 h-10 px-6 py-3 bg-white rounded-md shadow">
@@ -301,22 +314,22 @@ const CustomerDetail = () => {
                             <div className="flex items-center justify-between">
                               <span
                                 className={`${
-                                  booking.stateBooking === "completed"
-                                    ? "text-green-500"
-                                    : booking.stateBooking === "confirmed"
-                                    ? "text-yellow-500"
-                                    : booking.stateBooking === "pending"
-                                    ? "text-cyan-500"
-                                    : booking.stateBooking === "canceled"
-                                    ? "text-red"
-                                    : ""
+                                  booking.stateBooking === 'completed'
+                                    ? 'text-green-500'
+                                    : booking.stateBooking === 'confirmed'
+                                    ? 'text-yellow-500'
+                                    : booking.stateBooking === 'pending'
+                                    ? 'text-cyan-500'
+                                    : booking.stateBooking === 'canceled'
+                                    ? 'text-red'
+                                    : ''
                                 }`}
                               >
                                 {booking.stateBooking}
                               </span>
                               <div className="flex text-2xl">
-                                {(booking.stateBooking === "confirmed" ||
-                                  booking.stateBooking === "pending") && (
+                                {(booking.stateBooking === 'confirmed' ||
+                                  booking.stateBooking === 'pending') && (
                                   <BiTrash
                                     onClick={() =>
                                       handleEditBooking(booking.id)
