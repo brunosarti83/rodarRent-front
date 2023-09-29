@@ -1,16 +1,30 @@
 import { PieChart } from "@mui/x-charts/PieChart";
-import { Fullscreen } from "@mui/icons-material";
+// import { useQuery } from "react-query";
+// import { API_BASE_URL } from "../../helpers/routes";
+
 
 const data = [
-  { label: "Tesla", value: 4 },
-  { label: "BMW", value: 5 },
-  { label: "Mercedes Benz", value: 3 },
-  { label: "Audi", value: 2 },
-  { label: "Toyota", value: 2 },
-  { label: "Jeep", value: 1 },
+  { label: "Mercedes Benz", value: 15 },
+  { label: "Volkswagen", value: 13 },
+  { label: "Chevrolet", value: 8 },
+  { label: "Ford", value: 8 },
+  { label: "Audi", value: 7 },
+  { label: "Nissan", value: 4 },
 ];
 
 export default function MostRequiredBrands() {
+
+//   const brandRequired = useQuery(["mostRequiredBrands"], () =>
+//   fetch("http://localhost:3001/booking/mostRequiredBrands").then((res) => res.json())
+// );
+
+// console.log(brandRequired.data)
+
+// const data = brandRequired?.data.map((e)=>({
+//   label:e.model, 
+//   value:e.count
+// }))
+  
   return (
     <div className="text-center">
       <h2 className="text-2xl font-bold mt-4">Most Required Brands</h2>
