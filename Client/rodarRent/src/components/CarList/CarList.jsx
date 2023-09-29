@@ -52,7 +52,7 @@ const CarList = () => {
   };
 
   return (
-    <div>
+    <div className="bg-white dark:bg-slate-900 transition-colors duration-300" >
       {loading ? (
         <div className="flex min-h-[calc(100vh-136px)] w-full justify-center items-center">
           <Loader />
