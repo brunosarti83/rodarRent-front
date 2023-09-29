@@ -233,6 +233,16 @@ const CustomerDetail = () => {
 
   const currentBookings = paginate(customerBookings);
 
+  const toastAlert = (message, type) => {
+    if (type ==="success"){
+      toast.success(message);
+    }
+    else if (type ==="error"){
+      toast.error(message);
+    }
+    else toast.info(message);
+  }
+
   return (
     <div className="min-h-[calc(100vh-112px)] font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100">
       <div className="w-full h-16 rounded-t-lg p-6 flex flex-col justify-evenly ">
@@ -358,7 +368,7 @@ const CustomerDetail = () => {
           ref={modalRefCustomer}
           onAfterOpen={closeModalOnClickOutside}
         >
-          <ReviewForm closeReviewModal={closeReviewCustomerModal} />
+          <ReviewForm closeReviewModal={closeReviewCustomerModal} toastAlert={toastAlert}/>
         </Modal>
 
         <Modal
