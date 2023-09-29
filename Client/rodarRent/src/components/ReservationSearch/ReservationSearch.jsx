@@ -91,7 +91,10 @@ const ReservationSearch = () => {
   return (
     <div className="min-h-24 w-full p-3 flex flex-wrap-reverse lg:flex-wrap items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
       <div className="flex flex-wrap h-full w-full ml-2 lg:ml-5 my-2">
-        <form className="flex w-full lg:w-[70%] h-full items-center flex-wrap" action="">
+        <form
+          className="flex w-full lg:w-[70%] h-full items-center flex-wrap"
+          action=""
+        >
           <div className="w-full md:w-2/5 lg:w-2/10 flex justify-center sm:justify-around mb-2">
             <div className="min-w-[140px] w-[40%] sm:min-w-[280px] md:min-w-[140px] md:w-[140px] flex flex-col border bg-white drop-shadow-md rounded-lg px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
               <label className="text-xs mb-2">Pick up Date</label>
@@ -117,38 +120,38 @@ const ReservationSearch = () => {
             </div>
           </div>
           <div className="w-full md:w-[60%] lg:w-[55%] flex flex-wrap gap-2 justify-around md:justify-center mb-2">
-          <div className="w-[80%] min-w-[280px] sm:max-w-[280px] md:min-w-[200px] md:w-2/5 flex flex-col border bg-white drop-shadow-md rounded-lg p-2 h-full mr-2 dark:bg-slate-950">
-            <label className=" text-xs mb-2 mt-1">Pick Up Location</label>
-            <select
-              className="text-xs border rounded dark:bg-slate-950"
-              name="pickUpLocationId"
-              value={search.pickUpLocationId || ""}
-              onChange={handleChange}
-            >
-              <option value="">Choose pick up location</option>
-              {locations.map((loc) => (
-                <option key={loc.id} value={loc.id}>
-                  {`${loc.alias} - ${loc.city}`}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="w-[80%] min-w-[280px] sm:max-w-[280px]  md:min-w-[200px] md:w-2/5 flex flex-col border bg-white drop-shadow-md rounded-lg p-2 h-full mr-2 dark:bg-slate-950">
-            <label className="text-xs mb-2 mt-1">Return Location</label>
-            <select
-              className="text-xs border rounded dark:bg-slate-950"
-              name="returnLocationId"
-              value={search.returnLocationId || ""}
-              onChange={handleChange}
-            >
-              <option value="">Choose a return location</option>
-              {locations.map((loc) => (
-                <option key={loc.id} value={loc.id}>
-                  {`${loc.alias} - ${loc.city}`}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="w-[80%] min-w-[280px] sm:max-w-[280px] md:min-w-[200px] md:w-2/5 flex flex-col border bg-white drop-shadow-md rounded-lg p-2 h-full mr-2 dark:bg-slate-950">
+              <label className=" text-xs mb-2 mt-1">Pick Up Location</label>
+              <select
+                className="text-xs border rounded dark:bg-slate-950"
+                name="pickUpLocationId"
+                value={search.pickUpLocationId || ""}
+                onChange={handleChange}
+              >
+                <option value="">Choose pick up location</option>
+                {locations.map((loc) => (
+                  <option key={loc.id} value={loc.id}>
+                    {`${loc.alias} - ${loc.city}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="w-[80%] min-w-[280px] sm:max-w-[280px]  md:min-w-[200px] md:w-2/5 flex flex-col border bg-white drop-shadow-md rounded-lg p-2 h-full mr-2 dark:bg-slate-950">
+              <label className="text-xs mb-2 mt-1">Return Location</label>
+              <select
+                className="text-xs border rounded dark:bg-slate-950"
+                name="returnLocationId"
+                value={search.returnLocationId || ""}
+                onChange={handleChange}
+              >
+                <option value="">Choose a return location</option>
+                {locations.map((loc) => (
+                  <option key={loc.id} value={loc.id}>
+                    {`${loc.alias} - ${loc.city}`}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <button
             onClick={handleSubmit}
@@ -159,33 +162,32 @@ const ReservationSearch = () => {
           </button>
         </form>
       </div>
-      
-        {isLoggedIn ? (
-          <div className="flex w-full md:w-1/4 justify-center my-3">
-            <Link
-              className="text-md text-white bg-blue font-semibold py-3 px-10 rounded-lg"
-              to={isAdmin ? "/admin" : `/customer/${userData.id}`}
-            >
-              {isAdmin ? "Admin" : "My profile"}
-            </Link>
-          </div>
-        ) : (
-          <div className="flex w-full lg:w-[30%] my-3 lg:ml-auto justify-around sm:justify-end sm:gap-x-4 mr-2">
-            <Link
-              className="text-md py-3 px-9 rounded-lg transition duration-300 hover:bg-black hover:text-white"
-              to={routesHelper.register}
-            >
-              Register
-            </Link>
-            <Link
-              className="text-md text-blue font-semibold py-3 px-12 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
-              to={routesHelper.login}
-            >
-              Log in
-            </Link>
-          </div>
-        )}
 
+      {isLoggedIn ? (
+        <div className="flex w-full md:w-1/4 justify-center my-3">
+          <Link
+            className="text-md text-white bg-blue font-semibold py-3 px-10 rounded-lg"
+            to={isAdmin ? "/admin" : `/customer/${userData.id}`}
+          >
+            {isAdmin ? "Admin" : "My profile"}
+          </Link>
+        </div>
+      ) : (
+        <div className="flex w-full lg:w-[30%] my-3 lg:ml-auto justify-around sm:justify-end sm:gap-x-4 mr-2">
+          <Link
+            className="text-md py-3 px-9 rounded-lg transition duration-300 hover:bg-black hover:text-white"
+            to={routesHelper.register}
+          >
+            Register
+          </Link>
+          <Link
+            className="text-md text-blue font-semibold py-3 px-12 rounded-lg transition duration-300 hover:bg-blue hover:text-white"
+            to={routesHelper.login}
+          >
+            Log in
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

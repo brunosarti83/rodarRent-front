@@ -25,7 +25,7 @@ function Landing() {
   ];
 
   return (
-    <div className=" bg-white transition duration-300 dark:bg-slate-900 text-black dark:text-gray-100 min-h-[calc(100vh-112px)] flex flex-col justify-between">
+    <div className=" bg-white transition duration-300 dark:bg-slate-900 text-black dark:text-gray-100 h-[calc(100vh-112px)] flex flex-col justify-between">
       <div className="flex flex-col sm:flex-row">
         <div
           data-aos="fade-right"

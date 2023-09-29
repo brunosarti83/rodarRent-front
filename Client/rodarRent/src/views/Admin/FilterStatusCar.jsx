@@ -7,9 +7,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Loader from "../../components/Loader/Loader";
+import { API_BASE_URL } from "../../helpers/routes";
 
 export const FilterStatusCar = () => {
   const [selectedVehicle, setSelectedVehicle] = useState("");
@@ -18,14 +17,14 @@ export const FilterStatusCar = () => {
   const [dropOffDate, setDropOffDate] = useState(dayjs(new Date()));
 
   const queryVehicles = useQuery(["vehicles"], () =>
-    fetch("http://localhost:3001/vehicles").then((res) => res.json())
+    fetch(`${API_BASE_URL}/vehicles`).then((res) => res.json())
   );
 
   function fetchAvailable(carId, pickUpDate, dropOffDate) {
     const startDate = pickUpDate.toISOString().slice(0, 10);
     const endDate = dropOffDate.toISOString().slice(0, 10);
     console.log(startDate, endDate);
-    const url = `http://localhost:3001/available/${carId}/${startDate}/${endDate}`;
+    const url = `${API_BASE_URL}/available/${carId}/${startDate}/${endDate}`;
     console.log(url);
     return fetch(url).then((res) => res.json());
   }
@@ -131,7 +130,7 @@ export const FilterStatusCar = () => {
             : ""
         }`}
       >
-        Status : {queryAvailable.data?.state || <Loader />}
+        Status : {queryAvailable.data?.state || "Select car..."}
       </div>
     </div>
   );
