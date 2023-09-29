@@ -1,16 +1,25 @@
 import React, { useEffect } from "react";
 import * as echarts from "echarts";
+import { API_BASE_URL } from "../../helpers/routes";
+import { useQuery } from "react-query";
 
 const MostCityRequiered = () => {
-  useEffect(() => {
-    // Datos de población de 4 ciudades (ejemplo)
-    const data = [
-      { name: "Aiport Mendoza", value: 4, color: "blue" },
-      { name: "Oficce Mendoza", value: 8, color: "green" },
-      { name: "MainOficce Bs As", value: 6, color: "red" },
-      { name: "Aeroparque Bs As", value: 2, color: "yellow" },
-    ];
 
+  const locationRequired = useQuery(["locationRequired"], () =>
+    fetch(`${API_BASE_URL}/location/mostRequired`).then((res) => res.json())
+  );
+
+  const colorCity = ["red", "blue", "yellow", "green"];
+
+  const data = locationRequired?.data?.map((e, index) => ({
+    name: e.alias,
+    value: e.count,
+    itemStyle: {
+      color: colorCity[index % colorCity.length],
+    },
+  }));
+
+  useEffect(() => {
     const chartContainer = document.getElementById("pieChart");
     const myChart = echarts.init(chartContainer);
 
@@ -18,7 +27,7 @@ const MostCityRequiered = () => {
       title: {
         text: "Most Requested Cities",
         left: "center",
-        top:20
+        top: 20,
       },
       tooltip: {
         trigger: "item",
@@ -27,23 +36,16 @@ const MostCityRequiered = () => {
       legend: {
         orient: "horizontal",
         left: 10,
-        top:50,
-        // bottom: 90,
-        data: data.map((item) => item.name),
+        top: 50,
+        data: data?.map((item) => item.name),
       },
       series: [
         {
           name: "Locations",
           type: "pie",
-          radius: ["20%", "40%"], 
-          center: ["50%", "60%"], 
-          data: data.map((item) => ({
-            name: item.name,
-            value: item.value,
-            itemStyle: {
-              color: item.color,
-            },
-          })),
+          radius: ["20%", "40%"],
+          center: ["50%", "60%"],
+          data: data,
           emphasis: {
             scale: true,
             scaleSize: 7,
@@ -71,7 +73,7 @@ const MostCityRequiered = () => {
       window.removeEventListener("resize", resizeHandler);
       myChart.dispose();
     };
-  }, []);
+  }, [data]);
 
   return (
     <div className="w-full h-full">

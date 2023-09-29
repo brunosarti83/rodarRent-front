@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import * as echarts from "echarts";
 import { useQuery } from "react-query";
+import { API_BASE_URL } from "../../helpers/routes";
 
 export const GrafInfo = () => {
+
   const querySummary = useQuery(["booking", "summary"], () =>
-    fetch("http://localhost:3001/booking/summary").then((res) => res.json())
+    fetch(`${API_BASE_URL}/booking/summary`).then((res) => res.json())
   );
 
   useEffect(() => {
