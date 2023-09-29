@@ -57,7 +57,9 @@ function Landing() {
           />
         </div>
       </div>
-      <div className=" 2xl:h-32 xl:h-32 lg:h-32 md:w-auto flex flex-row 2xl:flex-nowrap xl:flex-nowrap lg:flex-nowrap md:flex-wrap xs:flex-wrap items-center justify-evenly">
+      <div
+        className=" 2xl:h-32 xl:h-32 lg:h-32 md:w-auto flex flex-row 2xl:flex-nowrap xl:flex-nowrap lg:flex-nowrap md:flex-wrap xs:flex-wrap items-center justify-evenly"
+        >
         {brandLogos.map((brand, index) => (
           <div
             className="2xl:w-full xl:w-full lg:w-full md:w-1/5 xs:w-1/4 "
