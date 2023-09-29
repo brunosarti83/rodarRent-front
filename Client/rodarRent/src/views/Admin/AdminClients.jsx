@@ -332,7 +332,7 @@ function AdminClients() {
             >
               <option value="lastName">Last Name</option>
               <option value="name">Name</option>
-              <option value="UserId">Admin</option>
+              {/* <option value="UserId">Admin</option> */}
               <option value="city">City</option>
               <option value="country">Country</option>
               <option value="isActive">Status</option>
