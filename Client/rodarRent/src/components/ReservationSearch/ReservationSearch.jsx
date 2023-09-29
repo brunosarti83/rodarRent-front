@@ -89,7 +89,7 @@ const ReservationSearch = () => {
   const isAdmin = userData?.UserId === 1;
 
   return (
-    <div className="min-h-24 w-full p-3 flex flex-wrap-reverse lg:flex-wrap items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
+    <div className="min-h-24 w-full p-3 flex flex-wrap-reverse 2xl:flex-nowrap xl:flex-nowrap md:flex-wrap lg:flex-wrap items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
       <div className="flex flex-wrap h-full w-full lg:w-3/4 ml-2 lg:ml-3 my-2 lg:mr-auto md:justify-start">
         <form
           className="flex w-full h-full items-center flex-wrap lg:flex-nowrap md:justify-start"
