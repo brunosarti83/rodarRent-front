@@ -62,7 +62,6 @@ function AdminClients() {
           customer.address,
           customer.email,
           customer.isActive ? "Yes" : "No",
-          customer.UserId,
         ];
 
         return searchableFields.some((field) =>
@@ -111,7 +110,6 @@ function AdminClients() {
       setCurrentPage(currentPage);
     }
   };
-
   const handleDeactivateSelectedCustomer = async (customerIds) => {
     try {
       const deactivateRequests = customerIds.map(async (customerId) => {
