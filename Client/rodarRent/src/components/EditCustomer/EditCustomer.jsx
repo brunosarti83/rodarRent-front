@@ -69,7 +69,7 @@ const EditCustomer = () => {
       setEditedFields({
         ...customer,
       });
-      setErrors(validateEdit(...customer));
+      setErrors(validateEdit({...customer}));
     }
   }, [customer]);
 
