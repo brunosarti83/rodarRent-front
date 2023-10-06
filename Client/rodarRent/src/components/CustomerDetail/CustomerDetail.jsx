@@ -262,11 +262,11 @@ const CustomerDetail = () => {
 
   return (
     <div className="min-h-[calc(100vh-112px)] font-poppins transition duration-300 dark:bg-slate-900 dark:text-gray-100">
-      <div className="w-full h-16 rounded-t-lg p-6 flex flex-col justify-evenly ">
+      <div className="w-full sm:h-16 rounded-t-lg p-6 flex flex-col justify-evenly ">
         <WelcomeCustomer customer={customer} onLogout={handleLogout} />
       </div>
-      <div className="grid grid-cols-3 grid-row-3 h-full">
-        <div className="flex justify-center col-start-1 col-end-3 row-start-1 row-end-3">
+      <div className="grid grid-cols-3 grid-row-3 h-full mt-10">
+        <div className="flex justify-center col-start-1 col-end-4 sm:col-end-3 row-start-1 row-end-2 sm:row-end-3">
           <div className="w-full p-4">
             <div className="border-b-2 border-gray-300">
               <h1 className="text-2xl font-medium text-black dark:text-gray-100 font-poppins">
@@ -347,8 +347,8 @@ const CustomerDetail = () => {
                 </div>
               )}
             </div>
-            <div className="w-2/3 h-1/3">
-              <div className="mt-4 flex justify-between mx-[24rem]">
+            <div className="w-2/3 h-1/3 mx-auto">
+              <div className="mt-4 flex justify-center gap-x-8">
                 <button
                   onClick={handlePreviousPage}
                   disabled={currentPage === 1}
@@ -366,16 +366,13 @@ const CustomerDetail = () => {
           </div>
         </div>
 
-        <div className="flex w-full col-start-1 col-end-3 row-start-3 row-end-4">
+        <div className="flex flex-col justify-end w-full col-start-1 col-end-4 sm:col-end-3 row-start-2 sm:row-start-3 row-end-3 sm:row-end-4">
           {customer && <CustomerInfo customer={customer} />}
         </div>
 
-        <div className="row-start-1 row-end-4 col-start-3 flex justify-center">
-          <DashboardActions
-            openReviewModal={openReviewCustomerModal}
-            openEditModal={openEditCustomerModal}
-            openEditPasswordModal={openEditPasswordCustomerModal}
-          />
+        <div className="row-start-3 sm:row-start-1 row-end-4 col-start-1 sm:col-start-3 col-end-4 flex justify-center">
+          <DashboardActions openReviewModal={openReviewCustomerModal} openEditModal={openEditCustomerModal}
+          openEditPasswordModal={openEditPasswordCustomerModal} />
         </div>
 
         <Modal
