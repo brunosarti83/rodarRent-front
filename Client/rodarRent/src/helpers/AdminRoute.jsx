@@ -1,31 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  getCustomerDetailsUrl,
-} from '../helpers/routes';
+import { useNavigate } from "react-router-dom";
+import { getLocalStorage } from "./storage";
+import routesHelper from "../helpers/routes";
 
 const AdminRoute = ({ children }) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-
+  const user = getLocalStorage('loginData');
+   
   useEffect(() => {
-    async function fetchUserDetails() {
-      try {
-        const response = await fetch(getCustomerDetailsUrl()); // Utiliza la función getCustomerDetailsUrl para obtener la URL
-        const data = await response.json();
-        setUser(data);
-      } catch (error) {
-        console.error("Error", error);
-      }
+    if (!user || !(user.UserId === 1)) {
+      navigate(routesHelper.cars)
     }
+  }, [])
 
-    fetchUserDetails();
-  }, []);
-
-  if (user && user.UserId === 1) {
-    return children;
-  } else {
-    return null;
-  }
+  return children;
+  
 };
 
 export default AdminRoute;

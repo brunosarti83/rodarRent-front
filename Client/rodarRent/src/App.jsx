@@ -54,7 +54,8 @@ function App() {
         <Route path={routesHelper.allBookings} element={<BookingList />} />
         <Route path={routesHelper.googleAuthAux} element={<GoogleAuthAux />} />
         <Route path={routesHelper.editPasswordCustomer} element={<EditPasswordCustomer/>} />
-        <Route path={routesHelper.admin} element={<AdminRoute />}>
+        {/* <Route path={routesHelper.admin} element={<AdminRoute />}> */}
+        <Route path={routesHelper.admin} element={<AdminRoute><Admin/></AdminRoute>}>
           <Route index element={<Dashboard />} />
           <Route path={routesHelper.admin} element={<Dashboard />} />
           <Route path={routesHelper.adminClients} element={<AdminClients />} />
