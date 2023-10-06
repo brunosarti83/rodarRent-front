@@ -111,7 +111,7 @@ const EstadisticSales = () => {
           },
           axisLabel: {
             interval: 0,
-            rotate: 30,
+            rotate: 90,
           },
         },
       ],
