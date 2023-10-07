@@ -9,7 +9,7 @@ const EstadisticSales = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/payments`);
+        const response = await axios.get(`${API_BASE_URL}/booking/history`);
         const fetchedData = response.data;
 
         // Initialize arrays for the entire year
@@ -30,47 +30,40 @@ const EstadisticSales = () => {
           'Dec-23',
         ];
 
-        // Group by year and month
-        const groupedData = fetchedData.reduce((acc, item) => {
-          const date = new Date(item.date);
-          const yearMonth = `${date.toLocaleString('en-us', {
-            month: 'short',
-          })}-${date.getFullYear().toString().substr(-2)}`;
+        // Convert "month" strings to "MMM-YY" format
+        const formattedData = fetchedData.map((item) => ({
+          month:
+            new Date(item.month).toLocaleString('en-us', {
+              month: 'short',
+            }) +
+            '-' +
+            new Date(item.month).getFullYear().toString().substr(-2),
+          count: item.count,
+        }));
 
-          if (!acc[yearMonth]) {
-            acc[yearMonth] = {
-              amount: 0,
-              count: 0,
-            };
+        // Group formatted data by month and year
+        formattedData.forEach((item) => {
+          const index = xLabels.indexOf(item.month);
+          if (index !== -1) {
+            uData[index] = parseInt(item.count); // Parse the count as an integer
           }
+        });
 
-          acc[yearMonth].amount += item.amount;
-          acc[yearMonth].count++;
-
-          return acc;
-        }, {});
-
-        // Calculate average sales
-        const totalSales = Object.values(groupedData).reduce(
-          (total, item) => total + item.amount,
+        // Calculate average count of reservations
+        const totalReservations = Object.values(fetchedData).reduce(
+          (total, item) => total + Number(item.count),
           0,
         );
-        const averageSales = Math.round(
-          totalSales / Object.keys(groupedData).length / 1000,
+
+        const averageReservations = Math.ceil(
+          totalReservations / Object.keys(fetchedData).length,
         );
 
         // Set forecasted sales (pData) based on average sales and specified percentages
-        pData.fill(Math.round(averageSales * 0.95), 0, 3); // first quarter is 5% less than average
-        pData.fill(Math.round(averageSales * 1.01), 3, 6); // second quarter is 1% more than average
-        pData.fill(Math.round(averageSales * 1.1), 6, 9); // third quarter is 10% more than average
-        pData.fill(Math.round(averageSales * 1.2), 9, 12); // fourth quarter is 20% more than average
-
-        // Match grouped data with xLabels
-        xLabels.forEach((label, index) => {
-          if (groupedData[label]) {
-            uData[index] = Math.round(groupedData[label].amount / 1000);
-          }
-        });
+        pData.fill(Math.ceil(averageReservations * 0.95), 0, 3); // first quarter is 5% less than average
+        pData.fill(Math.ceil(averageReservations * 1.01), 3, 6); // second quarter is 1% more than average
+        pData.fill(Math.ceil(averageReservations * 1.1), 6, 9); // third quarter is 10% more than average
+        pData.fill(Math.ceil(averageReservations * 1.2), 9, 12); // fourth quarter is 20% more than average
 
         setData({ pData, uData, xLabels });
       } catch (error) {
@@ -119,7 +112,7 @@ const EstadisticSales = () => {
         {
           type: 'value',
           axisLabel: {
-            formatter: '{value} K',
+            formatter: '{value}',
           },
         },
       ],
