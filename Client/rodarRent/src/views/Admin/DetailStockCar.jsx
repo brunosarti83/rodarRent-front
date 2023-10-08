@@ -13,7 +13,6 @@ import toyota from "../../assets/img/brandsLogos/toyota.png";
 import vw from "../../assets/img/brandsLogos/vw.png";
 
 function DetailStockCar(data) {
-  console.log(data);
   const allBrand = data?.data?.map((e) => e.brand);
 
   const audiCount = allBrand.filter((brand) => brand === "Audi").length;
@@ -30,54 +29,54 @@ function DetailStockCar(data) {
   const vwCount = allBrand.filter((brand) => brand === "Volkswagen").length;
 
   return (
-    <div className="grid grid-cols-6">
-      <div className="text-center flex flex-col items-center justify-center">
+    <div className="grid grid-cols-6 ">
+      <div className="text-center flex flex-col items-center justify-center p-4">
         <img className="w-10 h-10" src={audi} alt={audi} />
-        <p>Stock: {audiCount}</p>
+        <p># {audiCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={chevrolet} alt={chevrolet} />
-        <p>Stock: {chevroletCount}</p>
+        <p># {chevroletCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={fiat} alt={fiat} />
-        <p>Stock: {fiatCount}</p>
+        <p># {fiatCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={ford} alt={ford} />
-        <p>Stock: {fordCount}</p>
+        <p># {fordCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={honda} alt={honda} />
-        <p>Stock: {hondaCount}</p>
+        <p># {hondaCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={hyundai} alt={hyundai} />
-        <p>Stock: {hyundaiCount}</p>
+        <p># {hyundaiCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={jeep} alt={jeep} />
-        <p>Stock: {jeepCount}</p>
+        <p># {jeepCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={mercedes} alt={mercedes} />
-        <p>Stock: {mercedesCount}</p>
+        <p># {mercedesCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={nissan} alt={nissan} />
-        <p>Stock: {nissanCount}</p>
+        <p># {nissanCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={tesla} alt={tesla} />
-        <p>Stock: {teslaCount}</p>
+        <p># {teslaCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={toyota} alt={toyota} />
-        <p>Stock: {toyotaCount}</p>
+        <p># {toyotaCount}</p>
       </div>
       <div className="text-center flex flex-col items-center justify-center">
         <img className="w-10 h-10" src={vw} alt={vw} />
-        <p>Stock: {vwCount}</p>
+        <p># {vwCount}</p>
       </div>
     </div>
   );
