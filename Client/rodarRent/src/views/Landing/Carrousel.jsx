@@ -22,35 +22,59 @@ function Carrousel() {
           <img className="w-20 h-20" src={chevrolet} alt={chevrolet} />
           <img className="w-20 h-20" src={honda} alt={honda} />
           <img className="w-20 h-20" src={hyundai} alt={hyundai} />
-          <img className="w-20 h-20" src={mercedes} alt={mercedes} />
+          <img
+            className="w-20 h-20 dark:drop-shadow-[0_25px_25px_rgba(255,255,255,0.75)]"
+            src={mercedes}
+            alt={mercedes}
+          />
           <img className="w-20 h-20" src={tesla} alt={tesla} />
           <img className="w-20 h-20" src={toyota} alt={toyota} />
           <img className="w-20 h-20" src={vw} alt={vw} />
           <img className="w-20 h-20" src={ford} alt={ford} />
-          <img className="w-20 h-20" src={audi} alt={audi} />
+          <img
+            className="w-20 h-20 dark:drop-shadow-[0_25px_25px_rgba(255,255,255,0.75)]"
+            src={audi}
+            alt={audi}
+          />
           <img className="w-20 h-20" src={fiat} alt={fiat} />
           <img className="w-20 h-20" src={jeep} alt={jeep} />
           <img className="w-20 h-20" src={nissan} alt={nissan} />
           <img className="w-20 h-20" src={chevrolet} alt={chevrolet} />
           <img className="w-20 h-20" src={honda} alt={honda} />
           <img className="w-20 h-20" src={hyundai} alt={hyundai} />
-          <img className="w-20 h-20" src={mercedes} alt={mercedes} />
+          <img
+            className="w-20 h-20 dark:drop-shadow-[0_25px_25px_rgba(255,255,255,0.75)]"
+            src={mercedes}
+            alt={mercedes}
+          />
           <img className="w-20 h-20" src={tesla} alt={tesla} />
           <img className="w-20 h-20" src={toyota} alt={toyota} />
           <img className="w-20 h-20" src={vw} alt={vw} />
           <img className="w-20 h-20" src={ford} alt={ford} />
-          <img className="w-20 h-20" src={audi} alt={audi} />
+          <img
+            className="w-20 h-20 dark:drop-shadow-[0_25px_25px_rgba(255,255,255,0.75)]"
+            src={audi}
+            alt={audi}
+          />
           <img className="w-20 h-20" src={fiat} alt={fiat} />
           <img className="w-20 h-20" src={jeep} alt={jeep} />
           <img className="w-20 h-20" src={nissan} alt={nissan} />
           <img className="w-20 h-20" src={chevrolet} alt={chevrolet} />
           <img className="w-20 h-20" src={honda} alt={honda} />
           <img className="w-20 h-20" src={hyundai} alt={hyundai} />
-          <img className="w-20 h-20" src={mercedes} alt={mercedes} />
+          <img
+            className="w-20 h-20 dark:drop-shadow-[0_25px_25px_rgba(255,255,255,0.75)]"
+            src={mercedes}
+            alt={mercedes}
+          />
           <img className="w-20 h-20" src={tesla} alt={tesla} />
           <img className="w-20 h-20" src={toyota} alt={toyota} />
           <img className="w-20 h-20" src={vw} alt={vw} />
-          <img className="w-20 h-20" src={audi} alt={audi} />
+          <img
+            className="w-20 h-20 dark:drop-shadow-[0_25px_25px_rgba(255,255,255,0.75)]"
+            src={audi}
+            alt={audi}
+          />
           <img className="w-20 h-20" src={fiat} alt={fiat} />
         </div>
       </div>
