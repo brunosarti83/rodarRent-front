@@ -10,9 +10,10 @@ import EstadiscticSales from "./EstadisticSales";
 import { FutureSales } from "./FutureSales";
 import MostRequieredBrands from "./MostRequiredBrands";
 import MostCityRequiered from "./MostCityRequiered";
+import StockVehicles from "./StockVehicles";
+import DetailStockCar from "./DetailStockCar";
 
 const Dashboard = () => {
-
   const queryVehicles = useQuery(["vehicles"], () =>
     fetch(`${API_BASE_URL}/vehicles`).then((res) => res.json())
   );
@@ -53,9 +54,22 @@ const Dashboard = () => {
         <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 col-start-5 col-span-2">
           <MostCityRequiered />
         </div>
-        <br></br>
-        <br></br>
-        <br></br>
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 col-start-1 col-span-2">
+          {queryVehicles.isLoading ? (
+            <Loader />
+          ) : (
+            <StockVehicles data={queryVehicles?.data?.results} />
+          )}{" "}
+        </div>
+
+        <div className="border-2 rounded-2xl bg-gray-100 pl-2 m-2 col-start-3 col-span-4">
+          {queryVehicles.isLoading ? (
+            <Loader />
+          ) : (
+            <DetailStockCar data={queryVehicles?.data?.results} />
+          )}{" "}
+        </div>
       </div>
     </LocalizationProvider>
   );
