@@ -1,16 +1,16 @@
 import React from "react";
-import audi from "../../assets/img/brandsLogos/audi.svg";
-import chevrolet from "../../assets/img/brandsLogos/chevrolet.png";
-import fiat from "../../assets/img/brandsLogos/fiat.svg";
-import ford from "../../assets/img/brandsLogos/ford.svg";
-import honda from "../../assets/img/brandsLogos/honda.png";
-import hyundai from "../../assets/img/brandsLogos/hyundai.png";
-import jeep from "../../assets/img/brandsLogos/jeep.svg";
-import mercedes from "../../assets/img/brandsLogos/mercedes.png";
-import nissan from "../../assets/img/brandsLogos/nissan.svg";
-import tesla from "../../assets/img/brandsLogos/tesla.png";
-import toyota from "../../assets/img/brandsLogos/toyota.png";
-import vw from "../../assets/img/brandsLogos/vw.png";
+import audi from "../../assets/img/carrouselLogos/audi.svg";
+import chevrolet from "../../assets/img/carrouselLogos/chevrolet.png";
+import fiat from "../../assets/img/carrouselLogos/fiat.svg";
+import ford from "../../assets/img/carrouselLogos/ford.svg";
+import honda from "../../assets/img/carrouselLogos/honda.png";
+import hyundai from "../../assets/img/carrouselLogos/hyundai.png";
+import jeep from "../../assets/img/carrouselLogos/jeep.svg";
+import mercedes from "../../assets/img/carrouselLogos/mercedes.png";
+import nissan from "../../assets/img/carrouselLogos/nissan.svg";
+import tesla from "../../assets/img/carrouselLogos/tesla.png";
+import toyota from "../../assets/img/carrouselLogos/toyota.png";
+import vw from "../../assets/img/carrouselLogos/vw.png";
 
 function DetailStockCar(data) {
   const allBrand = data?.data?.map((e) => e.brand);
