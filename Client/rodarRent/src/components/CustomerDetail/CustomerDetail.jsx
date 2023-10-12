@@ -275,7 +275,7 @@ const CustomerDetail = () => {
               {customerBookings.length === 0 ? (
                 <p>No bookings found for this customer.</p>
               ) : (
-                <div className="rounded-lg bg-white border border-gray-300 drop-shadow-md mt-10">
+                <div className="rounded-lg bg-white border border-gray-300 drop-shadow-md mt-10 overflow-x-scroll sm:overflow-auto p-1">
                   <table className="w-full h-max rounded-lg border-1 bg-gradient border-1 border-black">
                     <thead>
                       <tr>

@@ -2,6 +2,7 @@ import { setLocalStorage, removeLocalStorage } from './storage';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import revalidateCustomerData from './revalidateCustomerData';
+import routesHelper from './routes';
 
 export const successLogin = async (customerData, navigate) => {
   
@@ -25,11 +26,10 @@ export const successLogin = async (customerData, navigate) => {
   }}, '4000');
 };
 
-export const logOutSession = async (navigate) =>{
+export const logOutSession = async (navigate) => {
   setLocalStorage('isLoggedIn', false)
   removeLocalStorage('loginData')
   toast.success('Logged Out Succesfuly',{position:'top-left'})
-  setTimeout(()=>{
-    navigate('/cars')
-  },'2000')
+  window.location.href = `${routesHelper.baseBackUrl}/logout`
+  //navigate(routesHelper.cars)
 }
