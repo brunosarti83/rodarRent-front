@@ -2,7 +2,6 @@ import { setLocalStorage, removeLocalStorage } from './storage';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import revalidateCustomerData from './revalidateCustomerData';
-import axios from "axios";
 import routesHelper from './routes';
 
 export const successLogin = async (customerData, navigate) => {
@@ -32,6 +31,5 @@ export const logOutSession = async (navigate) => {
   removeLocalStorage('loginData')
   toast.success('Logged Out Succesfuly',{position:'top-left'})
   window.location.href = `${routesHelper.baseBackUrl}/logout`
-  
   //navigate(routesHelper.cars)
 }
