@@ -11,9 +11,14 @@ const CarCard = ({ car, toastAlert }) => {
   const navigate = useNavigate();
   const filterObject = getSessionStorage("filterObject");
   const isLogged = useSelector((state) => state.auth.isLoggedIn);
+
   const handlerClick = () => {
     if (!isLogged) toastAlert("Must be logged in to make a booking");
-    else if (!filterObject)
+    else if (!filterObject || 
+      !filterObject.startDate || 
+      !filterObject.finishDate || 
+      !filterObject.pickUpLocationId || 
+      !filterObject.returnLocationId)
       toastAlert(
         "You must filter the available vehicles searching by location, pickup and return date"
       );

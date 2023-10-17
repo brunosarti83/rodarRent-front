@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import mercadoPagoImg from "../../assets/img/mercado-pago.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,10 +6,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { getLocalStorage, getSessionStorage } from "../../helpers/storage";
 import axios from "axios";
 import {
-  API_BASE_URL,
   createReservationUrl,
   paymentUrl,
 } from "../../helpers/routes";
+import useVehicleById from "../../helpers/useVehicleById";
+import useLocations from "../../helpers/useLocations";
 
 const Booking = () => {
   const customer = getLocalStorage("loginData");
@@ -18,34 +19,12 @@ const Booking = () => {
   const queryParams = new URLSearchParams(location.search);
   const carId = queryParams.get("parametro");
   const filterObject = getSessionStorage("filterObject");
-  //console.log(filterObject);
-  const [locations, setLocations] = useState([]);
-
-  const [vehicle, setVehicle] = useState({
-    price: "",
-    image: "",
-  });
-
-  function getVehicleById(carId) {
-    axios.get(`${API_BASE_URL}/vehicles/${carId}`).then((vehicle) => {
-      setVehicle({
-        title: vehicle.data.brand + " " + vehicle.data.model,
-        price: vehicle.data.pricePerDay,
-        image: vehicle.data.image,
-      });
-    });
-  }
-  let pickUp = "";
-  async function getLocations () {
-    await axios.get(`${API_BASE_URL}/locations`).then(({ data }) => {
-      setLocations(data);
-    });
-  }
   
-  useEffect(() => {
-    getVehicleById(carId);
-    getLocations();
-  }, [carId]);
+  const vehicle = useVehicleById(carId) 
+  const locations = useLocations()
+
+
+  let pickUp = "";
   
   let today = new Date();
   let año = today.getFullYear();

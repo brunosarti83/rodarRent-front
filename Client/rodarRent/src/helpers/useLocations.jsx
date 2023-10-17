@@ -11,7 +11,9 @@ const useLocations = () => {
         setLocations(response.data);
       })
       .catch((err) => {
-        console.log(err.message);
+        window.alert(
+          `An error ocurred retrieving locations from server: ${err.message}`
+        );
       });
   }, []);
   return locations;

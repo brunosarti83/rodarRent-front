@@ -1,4 +1,5 @@
-export function getSessionStorage(key) { //se borra al cerrar pestaña
+// sessionStorage //////////////////////
+export function getSessionStorage(key) { //gets deleted when browser tab is closed
     try {
         const item = window.sessionStorage.getItem(key)
         if (item) {
@@ -20,7 +21,8 @@ export function setSessionStorage(key, value) {
     }
 }
 
-export function getLocalStorage(key) { //se borra al borrar historial de navegador
+// localStorage //////////////////
+export function getLocalStorage(key) { //gets deleted when browser history/cache is cleared
     try {
         const item = window.localStorage.getItem(key)
         if (item) {

@@ -370,7 +370,7 @@ const CustomerDetail = () => {
           {customer && <CustomerInfo customer={customer} />}
         </div>
 
-        <div className="row-start-3 sm:row-start-1 row-end-4 col-start-1 sm:col-start-3 col-end-4 flex justify-center">
+        <div className="row-start-3 sm:row-start-1 row-end-4 col-start-1 sm:col-start-3 col-end-4 flex justify-center self-center">
           <DashboardActions openReviewModal={openReviewCustomerModal} openEditModal={openEditCustomerModal}
           openEditPasswordModal={openEditPasswordCustomerModal} />
         </div>
