@@ -23,33 +23,6 @@ const Booking = () => {
   const vehicle = useVehicleById(carId) 
   const locations = useLocations()
 
-
-  let pickUp = "";
-  
-  let today = new Date();
-  let año = today.getFullYear();
-  let mes = today.getMonth() + 1; // Los meses comienzan desde 0, así que sumamos 1
-  let díaS = today.getDate();
-  let díaE = today.getDate() + 1;
-
-  // Formatear la fecha en "yyyy-mm-dd"
-  let fechaFormateadaStart =
-    año +
-    "-" +
-    (mes < 10 ? "0" : "") +
-    mes +
-    "-" +
-    (díaS < 10 ? "0" : "") +
-    díaS;
-  let fechaFormateadaEnd =
-    año +
-    "-" +
-    (mes < 10 ? "0" : "") +
-    mes +
-    "-" +
-    (díaE < 10 ? "0" : "") +
-    díaE;
-
   const [bookingData, setBookingData] = useState({
     name: customer.name,
     lastName: customer.lastName,
@@ -58,18 +31,15 @@ const Booking = () => {
     address: customer.address,
     address2: "",
     terms: false,
-    startDate: filterObject?.startDate || fechaFormateadaStart,
-    endDate: filterObject?.finishDate || fechaFormateadaEnd,
+    startDate: filterObject?.startDate || "",
+    endDate: filterObject?.finishDate || "",
     pickUpLocationId: filterObject?.pickUpLocationId || "",
     returnLocationId: filterObject?.returnLocationId || "",
     totalAmount: 0
   });
 
-  pickUp = locations.filter((e)=>e.id === bookingData.pickUpLocationId)[0]
-  console.log(pickUp);
-//console.log(locations);
-  const dropOff = locations.filter((e)=>e.id === bookingData.returnLocationId)[0]
-  //console.log(dropOff);
+  const pickUp = locations.filter((loc)=>loc.id === bookingData.pickUpLocationId)[0]
+  const dropOff = locations.filter((loc)=>loc.id === bookingData.returnLocationId)[0]
 
   let days = 0;
   days =
@@ -95,8 +65,8 @@ const Booking = () => {
   };
 
   const handleSubmit = async (event) => {
-    if (document.getElementsByName("terms")[0].checked) {
-      event.preventDefault();
+    event.preventDefault();
+    if (bookingData.terms) {
       try {
         const response = await fetch(createReservationUrl(), {
           method: "POST",
@@ -117,7 +87,6 @@ const Booking = () => {
           };
           const queryParams = new URLSearchParams(payData).toString();
           const url = `${paymentUrl()}?${queryParams}`;
-          //console.log(url);
           const responseUrl = await axios.get(url, {
             headers: {
               "Content-Type": "application/json",
@@ -283,7 +252,7 @@ const Booking = () => {
                 className="m-2 cursor-pointer"
                 type="checkbox"
                 name="terms"
-                onChange={handleChange}
+                onChange={() => setBookingData({...bookingData, terms: !bookingData.terms})}
               />
               I agree with terms conditions and privacy policy.
             </label>
