@@ -10,7 +10,7 @@ const useVehicleById = (id) => {
         transmission: "",
         fuel: "",
         passengers: "",
-        price: "",
+        pricePerDay: "",
         image: "",
     });
     
@@ -25,7 +25,7 @@ const useVehicleById = (id) => {
                 transmission: vehicle.data.transmission,
                 fuel: vehicle.data.fuel,
                 passengers: vehicle.data.passengers,
-                price: vehicle.data.pricePerDay,
+                pricePerDay: vehicle.data.pricePerDay,
                 image: vehicle.data.image,
                 });
             });

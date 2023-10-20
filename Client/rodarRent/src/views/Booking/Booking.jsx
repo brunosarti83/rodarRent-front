@@ -46,7 +46,7 @@ const Booking = () => {
     (new Date(bookingData.endDate) - new Date(bookingData.startDate)) /
     (1000 * 60 * 60 * 24);
 
-  bookingData.totalAmount = days * vehicle.price;
+  bookingData.totalAmount = days * vehicle.pricePerDay;
 
   const handleChange = (event) => {
     const property = event.target.name;
@@ -59,7 +59,7 @@ const Booking = () => {
     CustomerId: customer.id,
     startDate: bookingData.startDate,
     finishDate: bookingData.endDate,
-    pricePerDay: vehicle.price,
+    pricePerDay: vehicle.pricePerDay,
     pickUpLocationId: bookingData.pickUpLocationId,
     returnLocationId: bookingData.returnLocationId,
   };
@@ -73,17 +73,17 @@ const Booking = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(reservationData),
+          body: JSON.stringify({...reservationData, isActive: false}),
         });
 
         if (response.ok) {
           const bookingResponse = await response.json();
           const payData = {
             id: bookingResponse.id,
-            title: vehicle.title,
+            title: `${vehicle.brand} ${vehicle.model}`,
             quantity: days,
             currency_id: "ARS",
-            unit_price: vehicle.price,
+            unit_price: vehicle.pricePerDay,
           };
           const queryParams = new URLSearchParams(payData).toString();
           const url = `${paymentUrl()}?${queryParams}`;
@@ -291,7 +291,7 @@ const Booking = () => {
         <div className="flex flex-col border rounded-lg p-1 my-2">
           <div className="flex justify-between font-poppins text-sm p-1 my-2">
             <span className="">Price per day: </span>
-            <span>$ {vehicle.price}</span>
+            <span>$ {vehicle.pricePerDay}</span>
           </div>
           <div className="flex justify-between font-poppins text-sm p-1 my-2">
             <span className="">Total days: </span>
