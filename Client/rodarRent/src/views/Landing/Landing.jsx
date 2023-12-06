@@ -9,6 +9,9 @@ import landRover from "../../assets/img/brandsLogos/landRover.svg";
 import nissan from "../../assets/img/brandsLogos/nissan.svg";
 import kia from "../../assets/img/brandsLogos/kia.svg";
 import ferrari from "../../assets/img/brandsLogos/ferrari.svg";
+import axios from 'axios';
+import { useEffect } from "react";
+import routesHelper from "../../helpers/routes";
 
 function Landing() {
   let brandLogos = [
@@ -23,6 +26,11 @@ function Landing() {
     { name: "kia", src: kia },
     { name: "ferrari", src: ferrari },
   ];
+
+  useEffect(() => {
+    // this is just to wake up free server instance from nap
+    axios.get(`${routesHelper.baseBackUrl}/hc`)
+  },[])
 
   return (
     <div className=" bg-white transition duration-300 dark:bg-slate-900 text-black dark:text-gray-100 h-[calc(100vh-112px)] flex flex-col justify-between">
