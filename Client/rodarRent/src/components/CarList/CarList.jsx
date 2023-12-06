@@ -58,7 +58,7 @@ const CarList = () => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col sm:flex-row w-full min-h-[calc(100vh-136px)] justify-between my-1 dark:bg-slate-900 dark:text-gray-100 transition duration-300">
+        <div className="flex flex-col sm:flex-row w-full min-h-[calc(100vh-136px)] justify-between my-1 dark:bg-slate-900 dark:text-gray-100 transition-colors duration-300">
           <div className="w-[90%] mx-auto md:m-1 md:w-1/4 lg:w-1/5 p-2 dark:bg-slate-900" style={{ height: '827px' }}>
             <h1 className="text-xl font-bold mb-2">Filter By</h1>
             <CarFilter />

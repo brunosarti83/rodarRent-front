@@ -1,42 +1,14 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+// Hooks & Tools
 import { Link, useParams } from 'react-router-dom';
-import Loader from '../../components/Loader/Loader';
-import routesHelper, { API_BASE_URL } from '../../helpers/routes';
+import routesHelper from '../../helpers/routes';
 import { BiArrowBack } from "react-icons/bi"
+import useVehicleById from '../../helpers/useVehicleById';
+// Components
+import Loader from '../../components/Loader/Loader';
 
 export default function Detail({ saveState }) {
-  const [vehicle, setVehicle] = useState({
-    id: "",
-    brand: "",
-    model: "",
-    transmission: "",
-    fuel: "",
-    passengers: "",
-    price: "",
-    image: "",
-  });
-
   const { id } = useParams();
-
-  function getVehicleById(id) {
-    axios.get(`${API_BASE_URL}/vehicles/${id}`).then((vehicle) => {
-      setVehicle({
-        id: vehicle.data.id,
-        brand: vehicle.data.brand,
-        model: vehicle.data.model,
-        transmission: vehicle.data.transmission,
-        fuel: vehicle.data.fuel,
-        passengers: vehicle.data.passengers,
-        price: vehicle.data.pricePerDay,
-        image: vehicle.data.image,
-      });
-    });
-  }
-
-  useEffect(() => {
-    getVehicleById(id);
-  }, [id]);
+  const vehicle = useVehicleById(id)
 
   return (
     <div className="bg-white w-full h-[calc(100vh-112px)] flex flex-col">

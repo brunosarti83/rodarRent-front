@@ -117,7 +117,7 @@ export function setFilters(filterObject){
   }
 }
 
-export const logIn = (loginData,navigate) => async (dispatch) =>{
+export const logIn = (loginData,navigate) => async (dispatch) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/customers/login`,loginData);
       if (response.status===200) {
@@ -143,12 +143,12 @@ export const rememberLogin = () =>{
   };
 }
 
-export const logOut = (navigate) => async(dispatch) =>{
+export const logOut = () => async(dispatch) => {
   try {
     dispatch({
       type:LOGOUT
     })
-    logOutSession(navigate)
+    logOutSession()
   } catch (error) {
     alert('Error during Logout:', error)
   }
@@ -156,17 +156,17 @@ export const logOut = (navigate) => async(dispatch) =>{
 
 //? ADMIN VEHICLES ACTIONS
 
-export const getVehicleAdmin = (pageObject) =>{
-  const queryString = queryMaker(pageObject)
-  return async function(dispatch){
-    try {
-      const response = await axios.get(`${API_BASE_URL}/vehicles`+ queryString)
-      dispatch({
-        type:GET_VEHICLE,
-        payload: response
-      })
-    } catch (error) {
-      alert(error)
-    }
-  }
-}
+// export const getVehicleAdmin = (pageObject) =>{
+//   const queryString = queryMaker(pageObject)
+//   return async function(dispatch){
+//     try {
+//       const response = await axios.get(`${API_BASE_URL}/vehicles`+ queryString)
+//       dispatch({
+//         type:GET_VEHICLE,
+//         payload: response
+//       })
+//     } catch (error) {
+//       alert(error)
+//     }
+//   }
+// }

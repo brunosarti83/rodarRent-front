@@ -7,19 +7,13 @@ import { useDispatch } from "react-redux";
 
 function Home() {
   const dispatch = useDispatch();
-  const isUserOnline = getLocalStorage("isLoggedIn");
+  const isUserLogged = getLocalStorage("isLoggedIn");
 
   useEffect(() => {
-    if (isUserOnline) {
+    if (isUserLogged) {
       dispatch(rememberLogin());
     }
-  }, [isUserOnline]);
-
-  useEffect(() => {
-    if (isUserOnline) {
-      dispatch(rememberLogin());
-    }
-  }, [isUserOnline]);
+  }, [isUserLogged]);
 
     return (
         <div className="flex flex-col">

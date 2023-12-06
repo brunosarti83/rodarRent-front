@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import mercadoPagoImg from "../../assets/img/mercado-pago.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,10 +6,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { getLocalStorage, getSessionStorage } from "../../helpers/storage";
 import axios from "axios";
 import {
-  API_BASE_URL,
   createReservationUrl,
   paymentUrl,
 } from "../../helpers/routes";
+import useVehicleById from "../../helpers/useVehicleById";
+import useLocations from "../../helpers/useLocations";
 
 const Booking = () => {
   const customer = getLocalStorage("loginData");
@@ -18,58 +19,9 @@ const Booking = () => {
   const queryParams = new URLSearchParams(location.search);
   const carId = queryParams.get("parametro");
   const filterObject = getSessionStorage("filterObject");
-  //console.log(filterObject);
-  const [locations, setLocations] = useState([]);
-
-  const [vehicle, setVehicle] = useState({
-    price: "",
-    image: "",
-  });
-
-  function getVehicleById(carId) {
-    axios.get(`${API_BASE_URL}/vehicles/${carId}`).then((vehicle) => {
-      setVehicle({
-        title: vehicle.data.brand + " " + vehicle.data.model,
-        price: vehicle.data.pricePerDay,
-        image: vehicle.data.image,
-      });
-    });
-  }
-  let pickUp = "";
-  async function getLocations () {
-    await axios.get(`${API_BASE_URL}/locations`).then(({ data }) => {
-      setLocations(data);
-    });
-  }
   
-  useEffect(() => {
-    getVehicleById(carId);
-    getLocations();
-  }, [carId]);
-  
-  let today = new Date();
-  let año = today.getFullYear();
-  let mes = today.getMonth() + 1; // Los meses comienzan desde 0, así que sumamos 1
-  let díaS = today.getDate();
-  let díaE = today.getDate() + 1;
-
-  // Formatear la fecha en "yyyy-mm-dd"
-  let fechaFormateadaStart =
-    año +
-    "-" +
-    (mes < 10 ? "0" : "") +
-    mes +
-    "-" +
-    (díaS < 10 ? "0" : "") +
-    díaS;
-  let fechaFormateadaEnd =
-    año +
-    "-" +
-    (mes < 10 ? "0" : "") +
-    mes +
-    "-" +
-    (díaE < 10 ? "0" : "") +
-    díaE;
+  const vehicle = useVehicleById(carId) 
+  const locations = useLocations()
 
   const [bookingData, setBookingData] = useState({
     name: customer.name,
@@ -79,25 +31,22 @@ const Booking = () => {
     address: customer.address,
     address2: "",
     terms: false,
-    startDate: filterObject?.startDate || fechaFormateadaStart,
-    endDate: filterObject?.finishDate || fechaFormateadaEnd,
+    startDate: filterObject?.startDate || "",
+    endDate: filterObject?.finishDate || "",
     pickUpLocationId: filterObject?.pickUpLocationId || "",
     returnLocationId: filterObject?.returnLocationId || "",
     totalAmount: 0
   });
 
-  pickUp = locations.filter((e)=>e.id === bookingData.pickUpLocationId)[0]
-  console.log(pickUp);
-//console.log(locations);
-  const dropOff = locations.filter((e)=>e.id === bookingData.returnLocationId)[0]
-  //console.log(dropOff);
+  const pickUp = locations.filter((loc)=>loc.id === bookingData.pickUpLocationId)[0]
+  const dropOff = locations.filter((loc)=>loc.id === bookingData.returnLocationId)[0]
 
   let days = 0;
   days =
     (new Date(bookingData.endDate) - new Date(bookingData.startDate)) /
     (1000 * 60 * 60 * 24);
 
-  bookingData.totalAmount = days * vehicle.price;
+  bookingData.totalAmount = days * vehicle.pricePerDay;
 
   const handleChange = (event) => {
     const property = event.target.name;
@@ -110,35 +59,34 @@ const Booking = () => {
     CustomerId: customer.id,
     startDate: bookingData.startDate,
     finishDate: bookingData.endDate,
-    pricePerDay: vehicle.price,
+    pricePerDay: vehicle.pricePerDay,
     pickUpLocationId: bookingData.pickUpLocationId,
     returnLocationId: bookingData.returnLocationId,
   };
 
   const handleSubmit = async (event) => {
-    if (document.getElementsByName("terms")[0].checked) {
-      event.preventDefault();
+    event.preventDefault();
+    if (bookingData.terms) {
       try {
         const response = await fetch(createReservationUrl(), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(reservationData),
+          body: JSON.stringify({...reservationData, isActive: false}),
         });
 
         if (response.ok) {
           const bookingResponse = await response.json();
           const payData = {
             id: bookingResponse.id,
-            title: vehicle.title,
+            title: `${vehicle.brand} ${vehicle.model}`,
             quantity: days,
             currency_id: "ARS",
-            unit_price: vehicle.price,
+            unit_price: vehicle.pricePerDay,
           };
           const queryParams = new URLSearchParams(payData).toString();
           const url = `${paymentUrl()}?${queryParams}`;
-          //console.log(url);
           const responseUrl = await axios.get(url, {
             headers: {
               "Content-Type": "application/json",
@@ -304,7 +252,7 @@ const Booking = () => {
                 className="m-2 cursor-pointer"
                 type="checkbox"
                 name="terms"
-                onChange={handleChange}
+                onChange={() => setBookingData({...bookingData, terms: !bookingData.terms})}
               />
               I agree with terms conditions and privacy policy.
             </label>
@@ -343,7 +291,7 @@ const Booking = () => {
         <div className="flex flex-col border rounded-lg p-1 my-2">
           <div className="flex justify-between font-poppins text-sm p-1 my-2">
             <span className="">Price per day: </span>
-            <span>$ {vehicle.price}</span>
+            <span>$ {vehicle.pricePerDay}</span>
           </div>
           <div className="flex justify-between font-poppins text-sm p-1 my-2">
             <span className="">Total days: </span>

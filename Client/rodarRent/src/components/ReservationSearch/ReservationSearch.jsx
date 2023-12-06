@@ -1,9 +1,9 @@
 // Hooks & tools
 import routesHelper from "../../helpers/routes";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import useLocations from "../../helpers/useLocations";
 // Actions
 import { setFilters } from "../../redux/actions";
 
@@ -12,27 +12,8 @@ const ReservationSearch = () => {
   const filterObject = useSelector((state) => state.veh.filterObject);
   const userData = useSelector((state) => state.auth.customer);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const [locations, setLocations] = useState([]);
+  const locations = useLocations()
 
-  useEffect(() => {
-    axios
-      .get(`${routesHelper.baseBackUrl}/locations`)
-      .then(({ data }) => {
-        setLocations(data);
-      })
-      .catch(() => {
-        axios
-          .get(`${routesHelper.baseBackUrl}/locations`)
-          .then(({ data }) => {
-            setLocations(data);
-          })
-          .catch((error) => {
-            window.alert(
-              `An error ocurred retrieving locations from server: ${error.message}`
-            );
-          });
-      });
-  }, []);
 
   const [search, setSearch] = useState({
     startDate: filterObject.startDate ? filterObject.startDate : "",
@@ -85,18 +66,18 @@ const ReservationSearch = () => {
     !search.returnLocationId ||
     new Date(search.finishDate) <= new Date(search.startDate);
 
-  // * Variable para verificar si el usuario es el admin
+  // * user isAdmin ?
   const isAdmin = userData?.UserId === 1;
 
   return (
-    <div className="min-h-24 w-full p-3 flex flex-wrap-reverse 2xl:flex-nowrap xl:flex-nowrap md:flex-wrap lg:flex-wrap items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition duration-300">
+    <div className="min-h-24 w-full p-3 flex flex-wrap-reverse 2xl:flex-nowrap xl:flex-nowrap md:flex-wrap lg:flex-wrap items-center justify-between font-poppins dark:bg-slate-900 dark:text-gray-100 transition-colors duration-300">
       <div className="flex flex-wrap h-full w-full lg:w-3/4 ml-2 lg:ml-3 my-2 lg:mr-auto md:justify-start">
         <form
           className="flex w-full h-full items-center flex-wrap lg:flex-nowrap md:justify-start"
           action=""
         >
           <div className="w-full md:w-2/5 lg:w-[300px] flex justify-center sm:justify-around mb-2">
-            <div className="min-w-[140px] w-[40%] sm:min-w-[280px] md:min-w-[140px] md:w-[140px] flex flex-col border bg-white drop-shadow-md rounded-lg px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
+            <div className="min-w-[140px] w-[40%] sm:min-w-[280px] md:min-w-[140px] md:w-[140px] flex flex-col border bg-white drop-shadow-md rounded-lg px-2 py-2.5 h-full mr-2 dark:bg-slate-950 mt-2">
               <label className="text-xs mb-2">Pick up Date</label>
               <input
                 onChange={handleChange}
@@ -107,7 +88,7 @@ const ReservationSearch = () => {
                 id=""
               />
             </div>
-            <div className="min-w-[140px] w-[40%] sm:min-w-[280px] md:min-w-[140px] md:w-[140px]  flex flex-col border bg-white drop-shadow-md rounded-lg px-2 py-2.5 h-full mr-2 dark:bg-slate-950">
+            <div className="min-w-[140px] w-[40%] sm:min-w-[280px] md:min-w-[140px] md:w-[140px]  flex flex-col border bg-white drop-shadow-md rounded-lg px-2 py-2.5 h-full mr-2 dark:bg-slate-950 mt-2">
               <label className=" text-xs mb-2">Return Date</label>
               <input
                 onChange={handleChange}
@@ -120,7 +101,7 @@ const ReservationSearch = () => {
             </div>
           </div>
           <div className="w-full md:w-[40%] lg:min-w-[450px] flex flex-wrap md:flex-nowrap gap-2 justify-around md:justify-start md:ml-2 mb-2">
-            <div className="w-[80%] min-w-[280px] sm:max-w-[280px] md:min-w-[190px] md:w-2/5 lg:min-w-[210px] flex flex-col border bg-white drop-shadow-md rounded-lg p-2 h-full mr-2 dark:bg-slate-950">
+            <div className="w-[80%] min-w-[280px] sm:max-w-[280px] md:min-w-[190px] md:w-2/5 lg:min-w-[210px] flex flex-col border bg-white drop-shadow-md rounded-lg p-2 h-full mr-2 dark:bg-slate-950 mt-2">
               <label className=" text-xs mb-2 mt-1">Pick Up Location</label>
               <select
                 className="text-xs border rounded dark:bg-slate-950"
@@ -136,7 +117,7 @@ const ReservationSearch = () => {
                 ))}
               </select>
             </div>
-            <div className="w-[80%] min-w-[280px] sm:max-w-[280px]  md:min-w-[190px] md:w-2/5 lg:min-w-[210px] flex flex-col border bg-white drop-shadow-md rounded-lg p-2 h-full mr-2 dark:bg-slate-950">
+            <div className="w-[80%] min-w-[280px] sm:max-w-[280px]  md:min-w-[190px] md:w-2/5 lg:min-w-[210px] flex flex-col border bg-white drop-shadow-md rounded-lg p-2 h-full mr-2 dark:bg-slate-950 mt-2">
               <label className="text-xs mb-2 mt-1">Return Location</label>
               <select
                 className="text-xs border rounded dark:bg-slate-950"

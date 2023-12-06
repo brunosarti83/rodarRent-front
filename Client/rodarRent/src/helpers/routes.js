@@ -26,7 +26,6 @@ const routesHelper = {
   summary:"/booking/sumary",
   locationRequired:"/location/mostRequired",
   mostRequiredBrands:"/booking/mostRequiredBrands"
-
 };
 
 export const API_BASE_URL = routesHelper.baseBackUrl;
@@ -45,7 +44,7 @@ export const getBookingById = (bookingId) => `${API_BASE_URL}/bookings/${booking
 export const getAllLocations = () => `${API_BASE_URL}/locations`;
 export const getAllVehicles = () => `${API_BASE_URL}/vehicles`;
 export const getAllCustomersUrl = () => `${API_BASE_URL}/customers`;
-export const getVehicleAvailabilityById = () => `${API_BASE_URL}/available/${VehicleId}/${startDate}/${finishDate}`;
+export const getVehicleAvailabilityById = (vehicleId, startDate, finishDate) => `${API_BASE_URL}/available/${vehicleId}/${startDate}/${finishDate}`;
 export const forgotpasswordUrl = `${API_BASE_URL}/customers/forgotpassword`;
 export const bookingSummary = () => `${API_BASE_URL}/booking/summary`;
 export const locationRequired = ()=> `${API_BASE_URL}/location/mostRequired`
