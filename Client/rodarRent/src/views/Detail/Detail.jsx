@@ -37,7 +37,7 @@ export default function Detail({ saveState }) {
                 <hr className='mt-3 border-gray-300' />
                 <div className='mt-3' >
                   <h2 className=' text-2xl font-extralight'>Price per Day</h2>
-                  <h1 className=' text-5xl mt-3 font-semibold' >${vehicle.price}.00</h1>
+                  <h1 className=' text-5xl mt-3 font-semibold' >${vehicle.pricePerDay}.00</h1>
                 </div>
                 <hr className='mt-3 border-gray-300' />
                 <div className='min-h-[50%]'>
